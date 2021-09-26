@@ -1,0 +1,36 @@
+:root {
+    position: absolute;
+    height: 100vh;
+    left: 0%;
+    right: 0%;
+    top: 0;
+    background-image: var(--image-url);
+    background-size: cover;
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-color);
+    --text-color: #495264;
+    --text-color-inverse: #fff;
+    --text-color-white: #fff;
+    --text-color-medium-grey: rgba(0,0,0,0.38);
+    --text-color-light-grey: rgba(0,0,0,0.2);
+    --card-color: #fff;
+    --image-url: url("../static/background.png");
+}
+
+
+:root[data-mode="dark"] {
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+        var(--image-url);
+    --text-color: #fff;
+    --text-color-inverse: #1a1d24;
+    --text-color-white: #fff;
+    --text-color-medium-grey: rgba(255,255,255,0.4);
+    --text-color-light-grey: rgba(255,255,255,0.3);
+    --card-color: #15181f;
+}
+
+body {
+    margin: 1em;
+    font-size: 16px;
+}
