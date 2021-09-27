@@ -1,22 +1,38 @@
 <script>
+    import Button from "$lib/shared/Button.svelte";
+    import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import Modal from "$lib/shared/Modal.svelte";
-    import { network, networks } from "../../stores/wallet";
+    import {
+        network,
+        supportedNetworks,
+        switchNetwork,
+    } from "../../stores/wallet";
 
     let networkDetails;
     let activeNetwork;
     let isSupported;
 
     network.subscribe(async (value) => {
-        networkDetails = await networks(value);
-        activeNetwork = networkDetails.name;
+        networkDetails = await supportedNetworks(value);
+        activeNetwork = networkDetails.chainName;
         isSupported = networkDetails.isSupported;
     });
 </script>
 
 {#if !isSupported}
-    <Modal title="Unsupported network">
-            <p>Active network is not supported!</p>
-            <div slot="footer"></div>
+    <Modal footer={false}>
+        <GradientTitle>Unsupported network</GradientTitle>
+        <p class="modal-text">Your active network is not supported!</p>
+        <p class="modal-text">Switch to one of the supported networks:</p>
+        <div class="buttons">
+            <Button on:click={() => switchNetwork("0x1")}>Ethereum Mainnet</Button>
+            <div class="spacer"></div>
+            <Button on:click={() => switchNetwork("0x22b")}>Nahmii</Button>
+            <div class="spacer"></div>
+            <Button on:click={() => switchNetwork("0x3")}>Ropsten</Button>
+            <div class="spacer"></div>
+            <Button on:click={() => switchNetwork("0x15b1")}>Nahmii Testnet</Button>
+        </div>
     </Modal>
 {/if}
 
@@ -34,11 +50,12 @@
         justify-content: center;
     }
 
-    .network-text  {
+    .network-text {
         display: inline-flex;
         color: var(--text-color-white);
         margin: 0;
         line-height: 16px;
+        white-space: nowrap;
     }
 
     .network-name::before {
@@ -60,5 +77,18 @@
     .info {
         opacity: 0.6;
         font-size: 12px;
+    }
+
+    .modal-text {
+        text-align: center;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .spacer {
+        padding-top: 0.5em;
     }
 </style>
