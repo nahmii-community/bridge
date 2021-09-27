@@ -1,9 +1,11 @@
 <script>
+    import Card from "$lib/shared/Card.svelte";
     import { createEventDispatcher } from "svelte";
     import { fade, fly } from "svelte/transition";
     import Button from "./Button.svelte";
 
-    export let title;
+    export let title = "";
+    export let footer = true;
 
     const dispatch = createEventDispatcher();
 
@@ -14,17 +16,19 @@
 
 <div transition:fade class="modal-backdrop" on:click={closeModal}>
     <div class="container">
-        <div transition:fade class="modal">
-            <h1>{title}</h1>
-            <div class="content">
+        <Card class="modal">
+            {#if title}
+                <h1>{title}</h1>
+            {/if}
+            <div>
                 <slot />
             </div>
-            <footer>
+            {#if footer}
                 <slot name="footer">
                     <Button on:click={closeModal}>Close</Button>
                 </slot>
-            </footer>
-        </div>
+            {/if}
+        </Card>
     </div>
 </div>
 
@@ -48,29 +52,8 @@
         margin: auto;
     }
 
-    .modal {
-        display: flex;
-        flex-direction: column;
-        padding: 2em;
-        background: var(--card-color);
-        border-radius: 12px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-        z-index: 999;
-        overflow-x: hidden;
-        width: 100%;
-    }
-
     h1 {
         padding: 1rem;
         margin: 0;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .content {
-        padding: 1rem;
-    }
-
-    footer {
-        padding: 1rem;
     }
 </style>
