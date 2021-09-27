@@ -1,16 +1,28 @@
 <script>
+    import Modal from "$lib/shared/Modal.svelte";
     import { network, networks } from "../../stores/wallet";
 
+    let networkDetails;
     let activeNetwork;
+    let isSupported;
 
     network.subscribe(async (value) => {
-        activeNetwork = (await networks(value)).name;
+        networkDetails = await networks(value);
+        activeNetwork = networkDetails.name;
+        isSupported = networkDetails.isSupported;
     });
 </script>
 
+{#if !isSupported}
+    <Modal title="Unsupported network">
+            <p>Active network is not supported!</p>
+            <div slot="footer"></div>
+    </Modal>
+{/if}
+
 <div class="network">
-    <p class="network-name">{activeNetwork}</p>
-    <p class="info">Network</p>
+    <p class="network-text network-name">{activeNetwork}</p>
+    <p class="network-text info">Network</p>
 </div>
 
 <style>
@@ -22,7 +34,7 @@
         justify-content: center;
     }
 
-    p {
+    .network-text  {
         display: inline-flex;
         color: var(--text-color-white);
         margin: 0;
