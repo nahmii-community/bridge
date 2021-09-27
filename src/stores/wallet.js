@@ -28,13 +28,13 @@ export const connectWallet = async () => {
     if (provider) {
         try {
             const chainId = await provider.request({
-                method: 'eth_chainId'
+                method: "eth_chainId"
             });
             network.set(chainId);
             provider.on("chainChanged", await handleChainChanged);
 
             const details = await provider.request({
-                method: 'eth_requestAccounts'
+                method: "eth_requestAccounts"
             });
             provider.on("accountsChanged", await handleAccountsChanged);
             wallet.set(details);
@@ -70,13 +70,14 @@ export const switchNetwork = async (chainId) => {
     if (provider) {
         try {
             await provider.request({
-                method: 'wallet_switchEthereumChain',
+                method: "wallet_switchEthereumChain",
                 params: [{ chainId: chainId }],
             });
         } catch (error) {
             // 4902 - Unrecognized chain error
             if (error.code === 4902) {
                 // Handle adding of chain separately.
+                // supportedNetworks(chainId) -> addNetwork(...)
             }
             console.log(error);
         }
@@ -85,3 +86,28 @@ export const switchNetwork = async (chainId) => {
     }
 }
 
+export const addNetwork = async (chainId, chainName, rpcUrls, blockExplorerUrls) => {
+    const provider = window.ethereum;
+    if (provider) {
+        try {
+            await provider.request({
+                method: "wallet_addEthereumChain",
+                params: [
+                    {
+                        chainId,
+                        chainName,
+                        rpcUrls,
+                        blockExplorerUrls,
+                        nativeCurrency: {
+                            name: "Ethereum",
+                            symbol: "ETH",
+                            decimals: 18
+                        }
+                    }
+                ]
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
