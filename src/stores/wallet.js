@@ -56,9 +56,9 @@ export const supportedNetworks = async (chainId) => {
             networkInfo = { chainId, chainName: "Ropsten", isSupported: true }
             break;
         case "0x15b1":
-            networkInfo = { 
-                chainId, 
-                chainName: "Nahmii Testnet", 
+            networkInfo = {
+                chainId,
+                chainName: "Nahmii Testnet",
                 isSupported: true,
                 rpcUrls: ["https://l2.testnet.nahmii.io"],
                 blockExplorerUrls: ["https://explorer.testnet.nahmii.io"]
@@ -83,9 +83,11 @@ export const switchNetwork = async (chainId) => {
             // 4902 - Unrecognized chain error
             if (error.code === 4902) {
                 // Handle adding of chain separately.
-                // supportedNetworks(chainId) -> addNetwork(...)
+                const { chainName, rpcUrls, blockExplorerUrls } = await supportedNetworks(chainId);
+                await addNetwork(chainId, chainName, rpcUrls, blockExplorerUrls);
+            } else {
+                console.error(error);
             }
-            console.log(error);
         }
     } else {
         console.log("User does not have an Ethereum provider installed");
