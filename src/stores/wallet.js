@@ -49,17 +49,23 @@ export const connectWallet = async () => {
     }
 };
 
-export const networks = async (chainId) => {
+export const supportedNetworks = async (chainId) => {
     let networkInfo;
     switch (chainId) {
         case "0x3":
-            networkInfo = { chainId, name: "Ropsten", isSupported: true }
+            networkInfo = { chainId, chainName: "Ropsten", isSupported: true }
             break;
         case "0x15b1":
-            networkInfo = { chainId, name: "Nahmii Testnet", isSupported: true }
+            networkInfo = { 
+                chainId, 
+                chainName: "Nahmii Testnet", 
+                isSupported: true,
+                rpcUrls: ["https://l2.testnet.nahmii.io"],
+                blockExplorerUrls: ["https://explorer.testnet.nahmii.io"]
+            }
             break;
         default:
-            networkInfo = { chainId, name: "Unsupported", isSupported: false }
+            networkInfo = { chainId, chainName: "Unsupported", isSupported: false }
             break;
     }
     return networkInfo;
