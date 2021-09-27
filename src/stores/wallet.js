@@ -4,7 +4,7 @@ export const network = writable("");
 export const wallet = writable("0x");
 export const isConnected = writable(false);
 
-function handleChainChanged(chainId) {
+async function handleChainChanged(chainId) {
     network.set(chainId);
 }
 
@@ -13,11 +13,13 @@ async function handleAccountsChanged(accounts) {
     const unsubscribe = wallet.subscribe((value) => {
         currentAccount = value[0];
     });
-    if (accounts.length === 0) {
 
+    if (accounts.length === 0) {
+        // User has not connected any account or MetaMask is locked.
     } else if (accounts[0] !== currentAccount) {
         wallet.set(accounts);
     }
+
     unsubscribe();
 }
 
@@ -30,13 +32,13 @@ export const connectWallet = async () => {
             });
             network.set(chainId);
             provider.on("chainChanged", await handleChainChanged);
-            console.log(chainId);
+
             const details = await provider.request({
                 method: 'eth_requestAccounts'
             });
-            console.log(details);
+            provider.on("accountsChanged", await handleAccountsChanged);
             wallet.set(details);
-            provider.on("accountsChanged", handleAccountsChanged);
+
             isConnected.set(true);
             return true;
         } catch (error) {
@@ -51,13 +53,13 @@ export const networks = async (chainId) => {
     let networkInfo;
     switch (chainId) {
         case "0x3":
-            networkInfo = { chainId, name: "Ropsten" }
+            networkInfo = { chainId, name: "Ropsten", isSupported: true }
             break;
         case "0x15b1":
-            networkInfo = { chainId, name: "Nahmii Testnet" }
+            networkInfo = { chainId, name: "Nahmii Testnet", isSupported: true }
             break;
         default:
-            networkInfo = { chainId, name: "Unsupported" }
+            networkInfo = { chainId, name: "Unsupported", isSupported: false }
             break;
     }
     return networkInfo;
