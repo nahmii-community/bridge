@@ -1,11 +1,24 @@
 import { writable } from "svelte/store";
 
-export const wallet = writable("0x");
 export const network = writable("");
+export const wallet = writable("0x");
 export const isConnected = writable(false);
 
 function handleChainChanged(chainId) {
     network.set(chainId);
+}
+
+async function handleAccountsChanged(accounts) {
+    let currentAccount;
+    const unsubscribe = wallet.subscribe((value) => {
+        currentAccount = value[0];
+    });
+    if (accounts.length === 0) {
+
+    } else if (accounts[0] !== currentAccount) {
+        wallet.set(accounts);
+    }
+    unsubscribe();
 }
 
 export const connectWallet = async () => {
@@ -16,13 +29,14 @@ export const connectWallet = async () => {
                 method: 'eth_chainId'
             });
             network.set(chainId);
-            provider.on("chainChanged", handleChainChanged);
+            provider.on("chainChanged", await handleChainChanged);
             console.log(chainId);
             const details = await provider.request({
                 method: 'eth_requestAccounts'
             });
             console.log(details);
             wallet.set(details);
+            provider.on("accountsChanged", handleAccountsChanged);
             isConnected.set(true);
             return true;
         } catch (error) {
