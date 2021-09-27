@@ -65,3 +65,23 @@ export const networks = async (chainId) => {
     return networkInfo;
 }
 
+export const switchNetwork = async (chainId) => {
+    const provider = window.ethereum;
+    if (provider) {
+        try {
+            await provider.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: chainId }],
+            });
+        } catch (error) {
+            // 4902 - Unrecognized chain error
+            if (error.code === 4902) {
+                // Handle adding of chain separately.
+            }
+            console.log(error);
+        }
+    } else {
+        console.log("User does not have an Ethereum provider installed");
+    }
+}
+
