@@ -52,8 +52,20 @@ export const connectWallet = async () => {
 export const supportedNetworks = async (chainId) => {
     let networkInfo;
     switch (chainId) {
+        case "0x1":
+            networkInfo = { chainId, chainName: "Mainnet", isSupported: true }
+            break;
         case "0x3":
             networkInfo = { chainId, chainName: "Ropsten", isSupported: true }
+            break;
+        case "0x22b":
+            networkInfo = {
+                chainId,
+                chainName: "Nahmii",
+                isSupported: true,
+                rpcUrls: ["https://l2.nahmii.io"],
+                blockExplorerUrls: ["https://explorer.nahmii.io"]
+            }
             break;
         case "0x15b1":
             networkInfo = {
