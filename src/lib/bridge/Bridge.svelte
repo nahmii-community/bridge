@@ -6,10 +6,11 @@
     import BridgeType from "./BridgeType.svelte";
     import To from "./To.svelte";
     import From from "./From.svelte";
-    import { network, supportedNetworks } from "../../stores/wallet";
+    import { network, supportedNetworks, switchNetwork } from "../../stores/wallet";
 
     let networkDetails;
     let activeNetwork;
+    let companionChainId;
     let companionNetwork;
     let L2;
 
@@ -20,14 +21,19 @@
     network.subscribe(async (value) => {
         networkDetails = await supportedNetworks(value);
         activeNetwork = networkDetails.chainName;
+        companionChainId = networkDetails.companionChainId;
         companionNetwork = networkDetails.companionChainName;
         L2 = networkDetails.L2;
     });
+
+    const flipNetworks = async () => {
+        await switchNetwork(companionChainId);
+    }
 </script>
 
 <div class="container">
     <Card>
-        <BridgeType bind:deposit />
+        <BridgeType bind:deposit on:network={flipNetworks} />
         <From network={activeNetwork} />
         <Divider />
         <To network={companionNetwork} />

@@ -1,8 +1,11 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
+
     export let deposit = true;
 
     function toggleTab() {
-        deposit = !deposit;
+        dispatch('network', {});
     }
 </script>
 
