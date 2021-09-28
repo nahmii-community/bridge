@@ -42,6 +42,9 @@ export const connectWallet = async () => {
             isConnected.set(true);
             return true;
         } catch (error) {
+            if (error.code === 4001) {
+                console.log("User rejected request");
+            }
             return false;
         }
     } else {
