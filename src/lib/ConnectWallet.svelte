@@ -15,7 +15,6 @@
 		awaitingApproval = true;
 		isConnected = await connectWallet();
 		awaitingApproval = false;
-        console.log(isConnected);
     }
 </script>
 
