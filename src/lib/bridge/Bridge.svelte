@@ -1,5 +1,4 @@
 <script>
-    import { onMount } from "svelte";
     import Divider from "$lib/shared/Divider.svelte";
     import Button from "$lib/shared/Button.svelte";
     import Card from "../shared/Card.svelte";
