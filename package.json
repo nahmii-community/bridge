@@ -13,5 +13,8 @@
     "gh-pages": "^3.2.3",
     "svelte": "^3.34.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "ethers": "^5.4.7"
+  }
 }
