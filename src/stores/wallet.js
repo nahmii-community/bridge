@@ -53,21 +53,23 @@ export const supportedNetworks = async (chainId) => {
     let networkInfo;
     switch (chainId) {
         case "0x1":
-            networkInfo = { 
-                chainId, 
-                chainName: "Mainnet", 
-                isSupported: true, 
-                companionChainName: "Nahmii", 
+            networkInfo = {
+                chainId,
+                chainName: "Mainnet",
+                isSupported: true,
+                companionChainId: "0x22b",
+                companionChainName: "Nahmii",
                 L2: false
             }
             break;
         case "0x3":
-            networkInfo = { 
-                chainId, 
-                chainName: "Ropsten", 
-                isSupported: true, 
-                companionChainName: "Nahmii Testnet", 
-                L2: false 
+            networkInfo = {
+                chainId,
+                chainName: "Ropsten",
+                isSupported: true,
+                companionChainId: "0x15b1",
+                companionChainName: "Nahmii Testnet",
+                L2: false
             }
             break;
         case "0x22b":
@@ -77,7 +79,8 @@ export const supportedNetworks = async (chainId) => {
                 isSupported: true,
                 rpcUrls: ["https://l2.nahmii.io"],
                 blockExplorerUrls: ["https://explorer.nahmii.io"],
-                companionChainName: "Mainnet", 
+                companionChainId: "0x1",
+                companionChainName: "Mainnet",
                 L2: true
             }
             break;
@@ -88,7 +91,8 @@ export const supportedNetworks = async (chainId) => {
                 isSupported: true,
                 rpcUrls: ["https://l2.testnet.nahmii.io"],
                 blockExplorerUrls: ["https://explorer.testnet.nahmii.io"],
-                companionChainName: "Ropsten", 
+                companionChainId: "0x3",
+                companionChainName: "Ropsten",
                 L2: true
             }
             break;
