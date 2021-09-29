@@ -10,6 +10,7 @@ const supportedNetworkList = [
         chainName: "Mainnet",
         isSupported: true,
         L2: false,
+        rpcUrls: ["https://mainnet.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
         companionChainId: "0x15af",
         companionChainName: "Nahmii"
     },
@@ -18,6 +19,7 @@ const supportedNetworkList = [
         chainName: "Ropsten",
         isSupported: true,
         L2: false,
+        rpcUrls: ["https://ropsten.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
         companionChainId: "0x15b1",
         companionChainName: "Nahmii Testnet"
     },
