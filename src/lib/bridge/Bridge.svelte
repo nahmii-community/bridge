@@ -1,6 +1,7 @@
 <script>
     import { ethers } from "ethers";
     import { onMount, onDestroy } from "svelte";
+    import L1StandardBridgeABI from "$lib/ABI/iNVM_L1StandardBridge.json";
     import Divider from "$lib/shared/Divider.svelte";
     import Button from "$lib/shared/Button.svelte";
     import Card from "../shared/Card.svelte";
@@ -28,6 +29,11 @@
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
     $: deposit = L2 === false ? true : false;
 
+    const updateBalance = async (provider, address) => {
+        const balance = await provider.getBalance(address);
+        return ethers.utils.formatEther(balance);
+    }
+
     const populateData = async (chainId) => {
         let networkDetails = await findSupportedNetwork(chainId);
         if (networkDetails.isSupported) {
@@ -45,13 +51,10 @@
             );
             await wallet.subscribe(async (accounts) => {
                 address = accounts[0];
+                console.log(address);
             });
-            balance = ethers.utils.formatEther(
-                await provider.getBalance(address)
-            );
-            companionBalance = ethers.utils.formatEther(
-                await companionNetworkProvider.getBalance(address)
-            );
+            balance = await updateBalance(provider, address);
+            companionBalance = await updateBalance(companionNetworkProvider, address);
         }
     };
 
