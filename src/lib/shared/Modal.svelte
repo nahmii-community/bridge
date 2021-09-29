@@ -16,7 +16,7 @@
 
 <div transition:fade class="modal-backdrop" on:click={closeModal}>
     <div class="container">
-        <Card class="modal">
+        <Card>
             {#if title}
                 <h1>{title}</h1>
             {/if}
