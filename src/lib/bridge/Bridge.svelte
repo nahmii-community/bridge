@@ -13,6 +13,7 @@
         findSupportedNetwork,
         switchNetwork,
     } from "../../stores/wallet";
+import { stripZeros } from "@ethersproject/bytes";
 
     let networkDetails;
     let activeNetwork;
@@ -63,6 +64,21 @@
         await switchNetwork(companionChainId);
     };
 
+    const formatTokenBalance = (amount) => {
+        if (!amount) {
+            return "-";
+        }
+
+        if (amount.includes(".")) {
+            const parts = amount.split(".");
+            console.log(parts);
+            if (parts[1].length > 2) {
+                return `${parts[0]}.${parts[1].slice(0, 2)}`;
+            }
+            return amount;
+        }
+    }
+
     onMount(async () => {
         if (window.ethereum) {
             const chainId = await window.ethereum.request({
@@ -80,9 +96,9 @@
 <div class="container">
     <Card>
         <BridgeType bind:deposit on:network={flipNetworks} />
-        <From network={activeNetwork} {balance} />
+        <From network={activeNetwork} balance={formatTokenBalance(balance)} />
         <Divider />
-        <To network={companionNetwork} balance={companionBalance} />
+        <To network={companionNetwork} balance={formatTokenBalance(companionBalance)} />
         <Button>{buttonText}</Button>
     </Card>
 </div>
