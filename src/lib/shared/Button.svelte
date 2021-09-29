@@ -1,7 +1,8 @@
 <script>
-    import { createEventDispatcher } from "svelte"; 
+    import { createEventDispatcher } from "svelte";
 
     export let text = "Click me";
+    export let disabled = false;
 
     const dispatch = createEventDispatcher();
 
@@ -11,7 +12,7 @@
 
 </script>
 
-<button on:click={onClick}>
+<button on:click={onClick} {disabled}>
     <slot>{text}</slot>
 </button>
 
@@ -23,5 +24,10 @@
         color: var(--text-color-inverse);
         height: 56px;
         border-style: none;
+        transition: opacity 750ms;
+    }
+
+    button:disabled {
+        opacity: 0.5;
     }
 </style>
