@@ -1,4 +1,5 @@
 <script>
+    import { onDestroy } from "svelte";
     import Button from "$lib/shared/Button.svelte";
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import Modal from "$lib/shared/Modal.svelte";
@@ -12,10 +13,14 @@
     let activeNetwork;
     let isSupported;
 
-    network.subscribe(async (value) => {
+    const unsubscribe = network.subscribe(async (value) => {
         networkDetails = await findSupportedNetwork(value);
         activeNetwork = networkDetails.chainName;
         isSupported = networkDetails.isSupported;
+    });
+
+    onDestroy(() => {
+        unsubscribe();
     });
 </script>
 

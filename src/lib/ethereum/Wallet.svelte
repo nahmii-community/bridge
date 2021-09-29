@@ -1,4 +1,5 @@
 <script>
+    import { onDestroy } from "svelte";
     import Yoda from "$lib/ethereum/yoda.png";
     import { wallet } from "../../stores/wallet";
 
@@ -16,9 +17,13 @@
 
     $: shortAddress = shorten(address);
 
-    wallet.subscribe((value) => {
+    const unsubscribe = wallet.subscribe((value) => {
         address = value[0];
         console.log(address);
+    });
+
+    onDestroy(() => {
+        unsubscribe();
     });
 </script>
 

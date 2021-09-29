@@ -1,6 +1,6 @@
 <script>
     import { ethers } from "ethers";
-    import { onMount } from "svelte";
+    import { onMount, onDestroy } from "svelte";
     import Divider from "$lib/shared/Divider.svelte";
     import Button from "$lib/shared/Button.svelte";
     import Card from "../shared/Card.svelte";
@@ -54,6 +54,15 @@
         }
     };
 
+    const unsubscribe = network.subscribe(async (value) => {
+        console.log(value);
+        await populateData(value);
+    });
+
+    const flipNetworks = async () => {
+        await switchNetwork(companionChainId);
+    };
+
     onMount(async () => {
         if (window.ethereum) {
             const chainId = await window.ethereum.request({
@@ -63,14 +72,9 @@
         }
     });
 
-    network.subscribe(async (value) => {
-        console.log(value);
-        await populateData(value);
+    onDestroy(() => {
+        unsubscribe();
     });
-
-    const flipNetworks = async () => {
-        await switchNetwork(companionChainId);
-    };
 </script>
 
 <div class="container">
