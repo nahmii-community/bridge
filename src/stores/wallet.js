@@ -11,8 +11,7 @@ const supportedNetworkList = [
         isSupported: true,
         L2: false,
         rpcUrls: ["https://mainnet.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
-        companionChainId: "0x15af",
-        companionChainName: "Nahmii"
+        companionChainId: "0x15af"
     },
     {
         chainId: "0x3",
@@ -20,8 +19,7 @@ const supportedNetworkList = [
         isSupported: true,
         L2: false,
         rpcUrls: ["https://ropsten.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
-        companionChainId: "0x15b1",
-        companionChainName: "Nahmii Testnet"
+        companionChainId: "0x15b1"
     },
     {
         chainId: "0x15af",
@@ -29,7 +27,6 @@ const supportedNetworkList = [
         isSupported: true,
         L2: true,
         companionChainId: "0x1",
-        companionChainName: "Mainnet",
         rpcUrls: ["https://l2.nahmii.io"],
         blockExplorerUrls: ["https://explorer.nahmii.io"]
     },
@@ -39,7 +36,6 @@ const supportedNetworkList = [
         isSupported: true,
         L2: true,
         companionChainId: "0x3",
-        companionChainName: "Ropsten",
         rpcUrls: ["https://l2.testnet.nahmii.io"],
         blockExplorerUrls: ["https://explorer.testnet.nahmii.io"]
     }
