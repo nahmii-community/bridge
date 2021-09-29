@@ -60,7 +60,7 @@ export const supportedNetworks = async (chainId) => {
                 chainId,
                 chainName: "Mainnet",
                 isSupported: true,
-                companionChainId: "0x22b",
+                companionChainId: "0x15af",
                 companionChainName: "Nahmii",
                 L2: false
             }
@@ -75,7 +75,7 @@ export const supportedNetworks = async (chainId) => {
                 L2: false
             }
             break;
-        case "0x22b":
+        case "0x15af":
             networkInfo = {
                 chainId,
                 chainName: "Nahmii",
