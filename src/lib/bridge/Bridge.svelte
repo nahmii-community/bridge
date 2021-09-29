@@ -43,8 +43,8 @@
             companionNetworkProvider = new ethers.providers.JsonRpcProvider(
                 rpcUrls[0]
             );
-            await wallet.subscribe(async (value) => {
-                address = value[0];
+            await wallet.subscribe(async (accounts) => {
+                address = accounts[0];
             });
             balance = ethers.utils.formatEther(
                 await provider.getBalance(address)
@@ -55,8 +55,8 @@
         }
     };
 
-    const unsubscribe = network.subscribe(async (value) => {
-        await populateData(value);
+    const unsubscribe = network.subscribe(async (chainId) => {
+        await populateData(chainId);
     });
 
     const flipNetworks = async () => {
