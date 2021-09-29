@@ -2,6 +2,7 @@
     import { ethers } from "ethers";
     import { onMount, onDestroy } from "svelte";
     import L1StandardBridgeABI from "$lib/ABI/iNVM_L1StandardBridge.json";
+    import TokenList from "../../nahmii.tokenlist.json";
     import Divider from "$lib/shared/Divider.svelte";
     import Button from "$lib/shared/Button.svelte";
     import Card from "../shared/Card.svelte";
@@ -15,10 +16,12 @@
         switchNetwork,
     } from "../../stores/wallet";
 
+    let selectedToken;
     let activeNetwork;
     let provider;
     let balance;
     let address;
+    let bridgeAddress;
     let companionNetworkProvider;
     let companionChainId;
     let companionNetwork;
@@ -32,7 +35,7 @@
     const updateBalance = async (provider, address) => {
         const balance = await provider.getBalance(address);
         return ethers.utils.formatEther(balance);
-    }
+    };
 
     const populateData = async (chainId) => {
         let networkDetails = await findSupportedNetwork(chainId);
@@ -51,10 +54,12 @@
             );
             await wallet.subscribe(async (accounts) => {
                 address = accounts[0];
-                console.log(address);
             });
             balance = await updateBalance(provider, address);
-            companionBalance = await updateBalance(companionNetworkProvider, address);
+            companionBalance = await updateBalance(
+                companionNetworkProvider,
+                address
+            );
         }
     };
 
@@ -77,6 +82,26 @@
                 return `${parts[0]}.${parts[1].slice(0, 2)}`;
             }
             return amount;
+        }
+    };
+
+    const getTokenBridge = (selectedToken, chainId, tokenList) => {
+        const filter = {
+            symbol: selectedToken,
+            chainId: parseInt(chainId, 16),
+        };
+        const result = tokenList.filter((token) => {
+            for (const key in filter) {
+                if (token[key] === undefined || token[key] != filter[key]) {
+                    return false;
+                }
+            }
+            return true;
+        });
+        if (result) {
+            return result[0]["extensions"]["nahmiiBridgeAddress"];
+        } else {
+            return false;
         }
     };
 
