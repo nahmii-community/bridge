@@ -11,7 +11,8 @@ const supportedNetworks = [
         isSupported: true,
         L2: false,
         rpcUrls: ["https://mainnet.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
-        companionChainId: "0x15af"
+        companionChainId: "0x15af",
+        standardBridge: "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
     },
     {
         chainId: "0x3",
@@ -19,7 +20,8 @@ const supportedNetworks = [
         isSupported: true,
         L2: false,
         rpcUrls: ["https://ropsten.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
-        companionChainId: "0x15b1"
+        companionChainId: "0x15b1",
+        standardBridge: "0xE1dAA38eA21000804Dea7dd671e3b3c607b17565"
     },
     {
         chainId: "0x15af",
