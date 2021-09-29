@@ -1,8 +1,7 @@
 <script>
-    import dropdown from "./dropdown.png";
     import logo from "./eth.png";
 
-    export let network = "Nahmii";
+    export let network = "Unsupported";
     export let token = "ETH";
     export let balance = 0;
 </script>

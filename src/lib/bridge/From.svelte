@@ -2,9 +2,9 @@
     import dropdown from "./dropdown.png";
     import logo from "./eth.png";
 
-    export let network = "Mainnet";
+    export let network = "Unsupported";
     export let token = "ETH";
-    export let balance = 10;
+    export let balance = 0;
 </script>
 
 <div class="container">
