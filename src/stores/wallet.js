@@ -4,6 +4,46 @@ export const network = writable("");
 export const wallet = writable("0x");
 export const isConnected = writable(false);
 
+const supportedNetworkList = [
+    {
+        chainId: "0x1",
+        chainName: "Mainnet",
+        isSupported: true,
+        L2: false,
+        companionChainId: "0x15af",
+        companionChainName: "Nahmii"
+    },
+    {
+        chainId: "0x3",
+        chainName: "Ropsten",
+        isSupported: true,
+        L2: false,
+        companionChainId: "0x15b1",
+        companionChainName: "Nahmii Testnet"
+    },
+    {
+        chainId: "0x15af",
+        chainName: "Nahmii",
+        isSupported: true,
+        L2: true,
+        companionChainId: "0x1",
+        companionChainName: "Mainnet",
+        rpcUrls: ["https://l2.nahmii.io"],
+        blockExplorerUrls: ["https://explorer.nahmii.io"]
+    },
+    {
+        chainId: "0x15b1",
+        chainName: "Nahmii Testnet",
+        isSupported: true,
+        L2: true,
+        companionChainId: "0x3",
+        companionChainName: "Ropsten",
+        rpcUrls: ["https://l2.testnet.nahmii.io"],
+        blockExplorerUrls: ["https://explorer.testnet.nahmii.io"]
+    }
+]
+
+
 async function handleChainChanged(chainId) {
     network.set(chainId);
 }
@@ -53,55 +93,15 @@ export const connectWallet = async () => {
 };
 
 export const supportedNetworks = async (chainId) => {
-    let networkInfo;
-    switch (chainId) {
-        case "0x1":
-            networkInfo = {
-                chainId,
-                chainName: "Mainnet",
-                isSupported: true,
-                companionChainId: "0x15af",
-                companionChainName: "Nahmii",
-                L2: false
-            }
-            break;
-        case "0x3":
-            networkInfo = {
-                chainId,
-                chainName: "Ropsten",
-                isSupported: true,
-                companionChainId: "0x15b1",
-                companionChainName: "Nahmii Testnet",
-                L2: false
-            }
-            break;
-        case "0x15af":
-            networkInfo = {
-                chainId,
-                chainName: "Nahmii",
-                isSupported: true,
-                rpcUrls: ["https://l2.nahmii.io"],
-                blockExplorerUrls: ["https://explorer.nahmii.io"],
-                companionChainId: "0x1",
-                companionChainName: "Mainnet",
-                L2: true
-            }
-            break;
-        case "0x15b1":
-            networkInfo = {
-                chainId,
-                chainName: "Nahmii Testnet",
-                isSupported: true,
-                rpcUrls: ["https://l2.testnet.nahmii.io"],
-                blockExplorerUrls: ["https://explorer.testnet.nahmii.io"],
-                companionChainId: "0x3",
-                companionChainName: "Ropsten",
-                L2: true
-            }
-            break;
-        default:
-            networkInfo = { chainId, chainName: "Unsupported", isSupported: false }
-            break;
+    let networkInfo = supportedNetworkList.find(val => {
+        return val.chainId == chainId;
+    });
+    if (!networkInfo) {
+        networkInfo = {
+            chainId,
+            chainName: "Unsupported",
+            isSupported: false
+        }
     }
     return networkInfo;
 }
