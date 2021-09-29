@@ -30,12 +30,13 @@ export const getTokenDetails = (selectedToken, chainId, tokenList) => {
     };
     const result = filterTokenList(tokenList, filter);
     if (result) {
-        const { name, symbol, logoURI, address } = result[0];
+        const { name, symbol, logoURI, address, decimals } = result[0];
         return {
             name,
             symbol,
             logoURI,
-            address
+            address,
+            decimals
         };
     } else {
         return false;
