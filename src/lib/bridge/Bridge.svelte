@@ -30,34 +30,40 @@
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
     $: deposit = L2 === false ? true : false;
 
-    onMount(async () => {
-        if (window.ethereum) {
-            provider = new ethers.providers.Web3Provider(window.ethereum);
-            let address;
-            await wallet.subscribe(async (value) => {
-                address = value[0];
-            });
-            balance = ethers.utils.formatEther(
-                await provider.getBalance(address)
-            );
-            console.log(balance);
-        }
-    });
-
-    network.subscribe(async (value) => {
-        networkDetails = await findSupportedNetwork(value);
-        companionNetworkDetails = await findSupportedNetwork(networkDetails.companionChainId);
+    const populateData = async (chainId) => {
+        networkDetails = await findSupportedNetwork(chainId);
+        companionNetworkDetails = await findSupportedNetwork(
+            networkDetails.companionChainId
+        );
         activeNetwork = networkDetails.chainName;
         companionChainId = companionNetworkDetails.chainId;
         companionNetwork = companionNetworkDetails.chainName;
         L2 = networkDetails.L2;
         provider = new ethers.providers.Web3Provider(window.ethereum);
-        companionNetworkProvider = new ethers.providers.JsonRpcProvider(companionNetworkDetails.rpcUrls[0]);
+        companionNetworkProvider = new ethers.providers.JsonRpcProvider(
+            companionNetworkDetails.rpcUrls[0]
+        );
         await wallet.subscribe(async (value) => {
             address = value[0];
         });
         balance = ethers.utils.formatEther(await provider.getBalance(address));
-        companionBalance = ethers.utils.formatEther(await companionNetworkProvider.getBalance(address));
+        companionBalance = ethers.utils.formatEther(
+            await companionNetworkProvider.getBalance(address)
+        );
+    };
+
+    onMount(async () => {
+        if (window.ethereum) {
+            const chainId = await window.ethereum.request({
+                method: "eth_chainId"
+            });
+            await populateData(chainId);
+        }
+    });
+
+    network.subscribe(async (value) => {
+        console.log(value);
+        await populateData(value);
     });
 
     const flipNetworks = async () => {
