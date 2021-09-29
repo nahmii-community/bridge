@@ -10,7 +10,7 @@
     import {
         wallet,
         network,
-        supportedNetworks,
+        findSupportedNetwork,
         switchNetwork,
     } from "../../stores/wallet";
 
@@ -45,8 +45,8 @@
     });
 
     network.subscribe(async (value) => {
-        networkDetails = await supportedNetworks(value);
-        companionNetworkDetails = await supportedNetworks(networkDetails.companionChainId);
+        networkDetails = await findSupportedNetwork(value);
+        companionNetworkDetails = await findSupportedNetwork(networkDetails.companionChainId);
         activeNetwork = networkDetails.chainName;
         companionChainId = companionNetworkDetails.chainId;
         companionNetwork = companionNetworkDetails.chainName;

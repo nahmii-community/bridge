@@ -4,7 +4,7 @@
     import Modal from "$lib/shared/Modal.svelte";
     import {
         network,
-        supportedNetworks,
+        findSupportedNetwork,
         switchNetwork,
     } from "../../stores/wallet";
 
@@ -13,7 +13,7 @@
     let isSupported;
 
     network.subscribe(async (value) => {
-        networkDetails = await supportedNetworks(value);
+        networkDetails = await findSupportedNetwork(value);
         activeNetwork = networkDetails.chainName;
         isSupported = networkDetails.isSupported;
     });

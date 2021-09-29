@@ -4,7 +4,7 @@ export const network = writable("");
 export const wallet = writable("0x");
 export const isConnected = writable(false);
 
-const supportedNetworkList = [
+const supportedNetworks = [
     {
         chainId: "0x1",
         chainName: "Mainnet",
@@ -90,8 +90,8 @@ export const connectWallet = async () => {
     }
 };
 
-export const supportedNetworks = async (chainId) => {
-    let networkInfo = supportedNetworkList.find(val => {
+export const findSupportedNetwork = async (chainId) => {
+    let networkInfo = supportedNetworks.find(val => {
         return val.chainId == chainId;
     });
     if (!networkInfo) {
@@ -116,7 +116,7 @@ export const switchNetwork = async (chainId) => {
             // 4902 - Unrecognized chain error
             if (error.code === 4902) {
                 // Handle adding of chain separately.
-                const { chainName, rpcUrls, blockExplorerUrls } = await supportedNetworks(chainId);
+                const { chainName, rpcUrls, blockExplorerUrls } = await findSupportedNetwork(chainId);
                 await addNetwork(chainId, chainName, rpcUrls, blockExplorerUrls);
             } else {
                 console.error(error);
