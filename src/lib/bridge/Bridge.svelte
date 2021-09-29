@@ -32,24 +32,26 @@
 
     const populateData = async (chainId) => {
         networkDetails = await findSupportedNetwork(chainId);
-        companionNetworkDetails = await findSupportedNetwork(
-            networkDetails.companionChainId
-        );
-        activeNetwork = networkDetails.chainName;
-        companionChainId = companionNetworkDetails.chainId;
-        companionNetwork = companionNetworkDetails.chainName;
-        L2 = networkDetails.L2;
-        provider = new ethers.providers.Web3Provider(window.ethereum);
-        companionNetworkProvider = new ethers.providers.JsonRpcProvider(
-            companionNetworkDetails.rpcUrls[0]
-        );
-        await wallet.subscribe(async (value) => {
-            address = value[0];
-        });
-        balance = ethers.utils.formatEther(await provider.getBalance(address));
-        companionBalance = ethers.utils.formatEther(
-            await companionNetworkProvider.getBalance(address)
-        );
+        if (networkDetails.isSupported) {
+            companionNetworkDetails = await findSupportedNetwork(
+                networkDetails.companionChainId
+            );
+            activeNetwork = networkDetails.chainName;
+            companionChainId = companionNetworkDetails.chainId;
+            companionNetwork = companionNetworkDetails.chainName;
+            L2 = networkDetails.L2;
+            provider = new ethers.providers.Web3Provider(window.ethereum);
+            companionNetworkProvider = new ethers.providers.JsonRpcProvider(
+                companionNetworkDetails.rpcUrls[0]
+            );
+            await wallet.subscribe(async (value) => {
+                address = value[0];
+            });
+            balance = ethers.utils.formatEther(await provider.getBalance(address));
+            companionBalance = ethers.utils.formatEther(
+                await companionNetworkProvider.getBalance(address)
+            );
+        }
     };
 
     onMount(async () => {
