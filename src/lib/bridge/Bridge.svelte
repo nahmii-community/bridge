@@ -85,26 +85,6 @@
         }
     };
 
-    const getTokenBridge = (selectedToken, chainId, tokenList) => {
-        const filter = {
-            symbol: selectedToken,
-            chainId: parseInt(chainId, 16),
-        };
-        const result = tokenList.filter((token) => {
-            for (const key in filter) {
-                if (token[key] === undefined || token[key] != filter[key]) {
-                    return false;
-                }
-            }
-            return true;
-        });
-        if (result) {
-            return result[0]["extensions"]["nahmiiBridgeAddress"];
-        } else {
-            return false;
-        }
-    };
-
     onMount(async () => {
         if (window.ethereum) {
             const chainId = await window.ethereum.request({
