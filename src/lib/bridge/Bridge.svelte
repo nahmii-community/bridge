@@ -14,12 +14,10 @@
         switchNetwork,
     } from "../../stores/wallet";
 
-    let networkDetails;
     let activeNetwork;
     let provider;
     let balance;
     let address;
-    let companionNetworkDetails;
     let companionNetworkProvider;
     let companionChainId;
     let companionNetwork;
@@ -31,23 +29,26 @@
     $: deposit = L2 === false ? true : false;
 
     const populateData = async (chainId) => {
-        networkDetails = await findSupportedNetwork(chainId);
+        let networkDetails = await findSupportedNetwork(chainId);
         if (networkDetails.isSupported) {
-            companionNetworkDetails = await findSupportedNetwork(
-                networkDetails.companionChainId
-            );
-            activeNetwork = networkDetails.chainName;
-            companionChainId = companionNetworkDetails.chainId;
-            companionNetwork = companionNetworkDetails.chainName;
-            L2 = networkDetails.L2;
+            let rpcUrls;
+            ({
+                chainName: activeNetwork,
+                L2,
+                companionChainId,
+            } = networkDetails);
+            ({ chainName: companionNetwork, rpcUrls } =
+                await findSupportedNetwork(companionChainId));
             provider = new ethers.providers.Web3Provider(window.ethereum);
             companionNetworkProvider = new ethers.providers.JsonRpcProvider(
-                companionNetworkDetails.rpcUrls[0]
+                rpcUrls[0]
             );
             await wallet.subscribe(async (value) => {
                 address = value[0];
             });
-            balance = ethers.utils.formatEther(await provider.getBalance(address));
+            balance = ethers.utils.formatEther(
+                await provider.getBalance(address)
+            );
             companionBalance = ethers.utils.formatEther(
                 await companionNetworkProvider.getBalance(address)
             );
@@ -74,12 +75,12 @@
             }
             return amount;
         }
-    }
+    };
 
     onMount(async () => {
         if (window.ethereum) {
             const chainId = await window.ethereum.request({
-                method: "eth_chainId"
+                method: "eth_chainId",
             });
             await populateData(chainId);
         }
@@ -95,7 +96,10 @@
         <BridgeType bind:deposit on:network={flipNetworks} />
         <From network={activeNetwork} balance={formatTokenBalance(balance)} />
         <Divider />
-        <To network={companionNetwork} balance={formatTokenBalance(companionBalance)} />
+        <To
+            network={companionNetwork}
+            balance={formatTokenBalance(companionBalance)}
+        />
         <Button>{buttonText}</Button>
     </Card>
 </div>
