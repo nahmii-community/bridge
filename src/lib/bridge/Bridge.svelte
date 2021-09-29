@@ -13,7 +13,6 @@
         findSupportedNetwork,
         switchNetwork,
     } from "../../stores/wallet";
-import { stripZeros } from "@ethersproject/bytes";
 
     let networkDetails;
     let activeNetwork;
@@ -56,7 +55,6 @@ import { stripZeros } from "@ethersproject/bytes";
     };
 
     const unsubscribe = network.subscribe(async (value) => {
-        console.log(value);
         await populateData(value);
     });
 
@@ -71,7 +69,6 @@ import { stripZeros } from "@ethersproject/bytes";
 
         if (amount.includes(".")) {
             const parts = amount.split(".");
-            console.log(parts);
             if (parts[1].length > 2) {
                 return `${parts[0]}.${parts[1].slice(0, 2)}`;
             }
