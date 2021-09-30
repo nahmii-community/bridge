@@ -6,20 +6,59 @@
 
     const dispatch = createEventDispatcher();
 
+    let filter = "";
+    let tokens = [
+        {
+            symbol: "ETH",
+            name: "Ethereum",
+            logoURI: logo,
+        },
+        {
+            symbol: "NII",
+            name: "Nahmii",
+            logoURI: logo,
+        },
+        {
+            symbol: "HBT",
+            name: "Hubii",
+            logoURI: logo,
+        },
+    ];
+
+    let filteredTokens = [...tokens];
+
     function selectedToken(symbol) {
         dispatch("selectedToken", { symbol });
     }
+
+    const filterTokens = () => {
+        filteredTokens = tokens.filter(({ symbol, name }) => {
+            if (
+                name.toLowerCase().includes(filter.toLowerCase()) ||
+                symbol.toLowerCase().includes(filter.toLowerCase())
+            ) {
+                return true;
+            }
+        });
+    };
 </script>
 
 <Modal on:cancel>
     <GradientTitle>Choose a token</GradientTitle>
     <p class="modal-text">Search for token</p>
-    <input>
+    <input
+        type="text"
+        placeholder="Token name..."
+        bind:value={filter}
+        on:input={filterTokens}
+    />
     <ul class="token-list">
-        <li on:click={() => selectedToken("ETH")}>
-            <img src={logo} alt="Ethereum" />
-            <p>Ethereum</p>
-        </li>
+        {#each filteredTokens as { symbol, name, logoURI }}
+            <li on:click={() => selectedToken(symbol)}>
+                <img src={logoURI} alt={name} />
+                <p>{name}</p>
+            </li>
+        {/each}
     </ul>
 </Modal>
 
