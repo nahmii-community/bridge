@@ -1,7 +1,7 @@
 <script>
     import Card from "$lib/shared/Card.svelte";
     import { createEventDispatcher } from "svelte";
-    import { fade, fly } from "svelte/transition";
+    import { fade } from "svelte/transition";
     import Button from "./Button.svelte";
 
     export let title = "";
@@ -9,12 +9,18 @@
 
     const dispatch = createEventDispatcher();
 
-    function closeModal() {
+    function closeThroughBackdrop(event) {
+        if (event.srcElement.classList.contains("modal-backdrop")) {
+            dispatch("cancel");
+        }
+    }
+
+    function closeThroughButton() {
         dispatch("cancel");
     }
 </script>
 
-<div transition:fade class="modal-backdrop" on:click={closeModal}>
+<div transition:fade class="modal-backdrop" on:click={closeThroughBackdrop}>
     <div class="container">
         <Card>
             {#if title}
@@ -25,7 +31,9 @@
             </div>
             {#if footer}
                 <slot name="footer">
-                    <Button on:click={closeModal}>Close</Button>
+                    <div class="footer">
+                        <Button on:click={closeThroughButton}>Close</Button>
+                    </div>
                 </slot>
             {/if}
         </Card>
@@ -50,6 +58,13 @@
         display: flex;
         max-width: 550px;
         margin: auto;
+        z-index: 999;
+    }
+
+    .footer {
+        margin-top: 0.5em;
+        display: flex;
+        flex-direction: column;
     }
 
     h1 {
