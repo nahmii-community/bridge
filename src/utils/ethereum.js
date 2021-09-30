@@ -6,6 +6,11 @@ import L1StandardBridge from "../lib/ABI/L1StandardBridgeABI.json";
 const DEFAULT_GAS_L1 = 330_000
 const DEFAULT_GAS_L2 = 1_300_000;
 
+export const getBalance = async (address, provider) => {
+    const balance = await provider.getBalance(address);
+    return balance;
+}
+
 export const getERC20Balance = async (targetAddress, tokenAddress, provider) => {
     const contract = new Contract(tokenAddress, ERC20ABI, provider);
     const balance = await contract.balanceOf(targetAddress);
