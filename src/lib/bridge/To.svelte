@@ -1,9 +1,8 @@
 <script>
-    import logo from "./eth.png";
-
     export let network = "Unsupported";
     export let token = "ETH";
     export let balance = 0;
+    export let logo;
 </script>
 
 <div class="container">

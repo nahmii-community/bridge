@@ -1,11 +1,11 @@
 <script>
     import { createEventDispatcher } from "svelte";
     import dropdown from "./dropdown.png";
-    import logo from "./eth.png";
 
     export let network = "Unsupported";
     export let token = "ETH";
     export let balance = 0;
+    export let logo;
 
     const dispatch = createEventDispatcher();
 
