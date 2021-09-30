@@ -1,31 +1,16 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount, onDestroy } from "svelte";
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import Modal from "$lib/shared/Modal.svelte";
     import logo from "./eth.png";
+    import { network, findSupportedNetwork } from "../../stores/wallet";
+    import { getTokens, getTokensForChain } from "../../utils/token";
 
     const dispatch = createEventDispatcher();
 
     let filter = "";
-    let tokens = [
-        {
-            symbol: "ETH",
-            name: "Ethereum",
-            logoURI: logo,
-        },
-        {
-            symbol: "NII",
-            name: "Nahmii",
-            logoURI: logo,
-        },
-        {
-            symbol: "HBT",
-            name: "Hubii",
-            logoURI: logo,
-        },
-    ];
-
-    let filteredTokens = [...tokens];
+    let tokens = [];
+    let filteredTokens = [];
 
     function selectedToken(symbol) {
         dispatch("selectedToken", { symbol });
@@ -41,6 +26,26 @@
             }
         });
     };
+
+    const unsubscribe = network.subscribe(async (chainId) => {
+        if (!(await findSupportedNetwork(chainId)).isSupported) {
+            dispatch("cancel");
+        }
+        const tempList = getTokensForChain(chainId, getTokens());
+        tokens = [
+            {
+                symbol: "ETH",
+                name: "Ethereum",
+                logoURI: logo,
+            },
+            ...tempList,
+        ];
+        filteredTokens = [...tokens];
+    });
+
+    onDestroy(() => {
+        unsubscribe();
+    });
 </script>
 
 <Modal on:cancel>
