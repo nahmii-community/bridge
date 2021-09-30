@@ -1,19 +1,32 @@
 <script>
+    import { createEventDispatcher } from "svelte";
     import dropdown from "./dropdown.png";
     import logo from "./eth.png";
 
     export let network = "Unsupported";
     export let token = "ETH";
     export let balance = 0;
+
+    const dispatch = createEventDispatcher();
+
+    function selectTokenModal() {
+        dispatch("selectToken");
+    }
 </script>
 
 <div class="container">
     <div class="left">
         <p>From <span class="network-name">{network}</span></p>
         <div class="token-details">
-            <div class="token-symbol"><img src={logo} alt="token symbol" /></div>
-            <div class="token-ticker">{token}</div>
-            <div class="token-dropdown"><img src={dropdown} alt="dropdown icon" /></div>
+            <div class="token-hitbox" on:click={selectTokenModal}>
+                <div class="token-symbol">
+                    <img src={logo} alt="token symbol" />
+                </div>
+                <div class="token-ticker">{token}</div>
+                <div class="token-dropdown">
+                    <img src={dropdown} alt="dropdown icon" />
+                </div>
+            </div>
         </div>
     </div>
     <div class="right">
@@ -82,16 +95,22 @@
         margin-top: 0.75em;
     }
 
+    .token-hitbox {
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        cursor: pointer;
+    }
+
     .token-symbol {
         display: flex;
         justify-content: center;
         align-content: center;
-        background-color: rgba(0,0,0,0.05);
+        background-color: rgba(0, 0, 0, 0.05);
         border-radius: 30px;
         height: 32px;
         width: 32px;
     }
-
     .token-symbol img {
         margin: auto;
         height: 24px;
