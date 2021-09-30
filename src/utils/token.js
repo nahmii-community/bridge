@@ -57,3 +57,15 @@ export const getTokenDetails = (selectedToken, chainId, tokenList) => {
         return false;
     }
 }
+
+export const getTokensForChain = (chainId, tokenList) => {
+    const filter = {
+        chainId: parseInt(chainId, 16),
+    };
+    const result = filterTokenList(tokenList, filter);
+    if (result) {
+        return result;
+    } else {
+        return [];
+    }
+}
