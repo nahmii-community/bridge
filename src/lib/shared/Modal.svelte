@@ -57,6 +57,7 @@
     .container {
         display: flex;
         max-width: 550px;
+        min-width: 400px;
         margin: auto;
         z-index: 999;
     }
