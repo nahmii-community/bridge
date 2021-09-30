@@ -48,7 +48,7 @@
     <p class="modal-text">Search for token</p>
     <input
         type="text"
-        placeholder="Token name..."
+        placeholder="Token name or symbol..."
         bind:value={filter}
         on:input={filterTokens}
     />
