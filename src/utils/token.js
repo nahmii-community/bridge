@@ -1,3 +1,18 @@
+import TokenList from "../nahmii.tokenlist.json";
+
+export const getTokens = () => {
+    return TokenList.tokens;
+};
+
+export const getTokenListMetadata = () => {
+    return {
+        name: TokenList.name,
+        keywords: TokenList.keywords,
+        logoURI: TokenList.logoURI,
+        timestamp: TokenList.timestamp,
+    }
+};
+
 export const filterTokenList = (tokenList, filter) => {
     const result = tokenList.filter((token) => {
         for (const key in filter) {
