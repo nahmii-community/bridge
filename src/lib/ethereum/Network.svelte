@@ -1,12 +1,9 @@
 <script>
     import { onDestroy } from "svelte";
-    import Button from "$lib/shared/Button.svelte";
-    import GradientTitle from "$lib/shared/GradientTitle.svelte";
-    import Modal from "$lib/shared/Modal.svelte";
+    import SelectNetwork from "./SelectNetwork.svelte";
     import {
         network,
         findSupportedNetwork,
-        switchNetwork,
     } from "../../stores/wallet";
 
     let networkDetails;
@@ -25,20 +22,7 @@
 </script>
 
 {#if !isSupported}
-    <Modal footer={false}>
-        <GradientTitle>Unsupported network</GradientTitle>
-        <p class="modal-text">Your active network is not supported!</p>
-        <p class="modal-text">Switch to one of the supported networks:</p>
-        <div class="buttons">
-            <Button on:click={() => switchNetwork("0x1")}>Ethereum Mainnet</Button>
-            <div class="spacer"></div>
-            <Button on:click={() => switchNetwork("0x22b")}>Nahmii</Button>
-            <div class="spacer"></div>
-            <Button on:click={() => switchNetwork("0x3")}>Ropsten</Button>
-            <div class="spacer"></div>
-            <Button on:click={() => switchNetwork("0x15b1")}>Nahmii Testnet</Button>
-        </div>
-    </Modal>
+    <SelectNetwork />
 {/if}
 
 <div class="network">
@@ -82,18 +66,5 @@
     .info {
         opacity: 0.6;
         font-size: 12px;
-    }
-
-    .modal-text {
-        text-align: center;
-    }
-
-    .buttons {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .spacer {
-        padding-top: 0.5em;
     }
 </style>
