@@ -1,0 +1,83 @@
+{
+    "name": "Nahmii",
+    "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+    "keywords": [
+        "scaling",
+        "layer2",
+        "infrastructure"
+    ],
+    "timestamp": "2021-09-27T14:56:31.029+00:00",
+    "tokens": [
+        {
+            "chainId": 3,
+            "address": "0x11ca3411f42a7f6c8ca3a1ef5f8045893ff0bba5",
+            "name": "Nahmii USD",
+            "symbol": "NUSD",
+            "decimals": 6,
+            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "extensions": {
+                "optimismBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
+            }
+        },
+        {
+            "chainId": 5553,
+            "address": "0xab151cD390C6b0eB41A4a45E1E372972C3067b1a",
+            "name": "Nahmii USD",
+            "symbol": "NUSD",
+            "decimals": 6,
+            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "extensions": {
+                "optimismBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 3,
+            "address": "0x01D8755f8ea44d90F8f2d6458153853c84abbf32",
+            "name": "Nahmii EURO",
+            "symbol": "NEURO",
+            "decimals": 6,
+            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "extensions": {
+                "optimismBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
+            }
+        },
+        {
+            "chainId": 5553,
+            "address": "0xB59C984a529490fde6698702342b292840743bb8",
+            "name": "Nahmii EURO",
+            "symbol": "NEURO",
+            "decimals": 6,
+            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "extensions": {
+                "optimismBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 3,
+            "address": "0xA2CD104095E6e5569A32B567C8e4D2DB99445D5e",
+            "name": "KniightCoin",
+            "symbol": "KNII",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "extensions": {
+                "optimismBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
+            }
+        },
+        {
+            "chainId": 5553,
+            "address": "0xB68553758df8c253746d3cED96aA1De896F09470",
+            "name": "KniightCoin",
+            "symbol": "KNII",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "extensions": {
+                "optimismBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        }
+    ],
+    "version": {
+        "major": 1,
+        "minor": 0,
+        "patch": 1
+    }
+}
