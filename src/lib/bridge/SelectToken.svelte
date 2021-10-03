@@ -76,7 +76,9 @@
         display: flex;
         margin: 0 0 0.25em 0;
         width: 100%;
-        border: 1px solid #bbb;
+        color: var(--text-color);
+        background-color: var(--text-color-inverse);
+        border: 1px solid var(--text-color-medium-grey);
         border-radius: 12px;
         padding: 1em;
         box-sizing: border-box;
@@ -95,14 +97,14 @@
         align-content: center;
         margin: 0.5em 0;
         padding: 1em;
-        border: 1px solid #bbb;
+        border: 1px solid var(--text-color-medium-grey);
         border-radius: 12px;
         cursor: pointer;
         transition: background-color 750ms;
     }
 
     li:hover {
-        background: rgb(219, 218, 218);
+        background: var(--hover-color);
     }
 
     li > img {

@@ -14,6 +14,7 @@
     --text-color-medium-grey: rgba(0,0,0,0.38);
     --text-color-light-grey: rgba(0,0,0,0.2);
     --card-color: #fff;
+    --hover-color: rgb(219, 218, 218);
     --image-url: url("../static/background.png");
 }
 
@@ -28,6 +29,7 @@
     --text-color-medium-grey: rgba(255,255,255,0.4);
     --text-color-light-grey: rgba(255,255,255,0.3);
     --card-color: #15181f;
+    --hover-color: rgb(70, 70, 70);
 }
 
 body {
