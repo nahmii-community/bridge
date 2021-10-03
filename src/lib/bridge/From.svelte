@@ -66,6 +66,7 @@
         font-size: 20px;
         width: 100%;
         height: 100%;
+        color: var(--text-color);
         background-color: var(--text-color-inverse);
     }
 
