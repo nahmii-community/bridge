@@ -32,3 +32,9 @@ export const depositERC20 = async (L1TokenAddress, L2TokenAddress, bridgeAddress
         "0x");
     return result;
 }
+
+export const getAllowance = async (ownerAddress, spenderAddress, tokenAddress, provider) => {
+    const contract = new Contract(tokenAddress, ERC20ABI, provider);
+    const balance = await contract.allowance(ownerAddress, spenderAddress);
+    return balance;
+}
