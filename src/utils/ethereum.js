@@ -38,3 +38,9 @@ export const getAllowance = async (ownerAddress, spenderAddress, tokenAddress, p
     const balance = await contract.allowance(ownerAddress, spenderAddress);
     return balance;
 }
+
+export const approveAllowance = async (spenderAddress, allowAmount, tokenAddress, provider) => {
+    const contract = new Contract(tokenAddress, ERC20ABI, provider);
+    const success = await contract.approve(spenderAddress, allowAmount);
+    return success;
+}
