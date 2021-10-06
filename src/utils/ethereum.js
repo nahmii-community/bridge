@@ -25,3 +25,10 @@ export const depositETH = async (bridgeAddress, signer, depositAmount) => {
     });
     return result;
 }
+
+export const depositERC20 = async (L1TokenAddress, L2TokenAddress, bridgeAddress, signer, depositAmount) => {
+    const contract = new Contract(bridgeAddress, L1StandardBridge, signer);
+    const result = await contract.depositERC20(L1TokenAddress, L2TokenAddress, depositAmount, DEFAULT_GAS_L2,
+        "0x");
+    return result;
+}
