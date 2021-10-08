@@ -20,6 +20,12 @@
         getTokenDetails,
         getTokenBridge,
     } from "../../utils/token";
+    import {
+        getBalance,
+        getERC20Balance,
+        getAllowance,
+        approveAllowance,
+    } from "../../utils/ethereum";
     import logoETH from "./eth.png";
 
     let isSelectingToken;
@@ -49,19 +55,29 @@
         isSelectingToken = false;
     };
 
-    const getSelectedToken = (event) => {
+    const getSelectedToken = async (event) => {
         console.log(event.detail);
         selectedToken = event.detail.symbol;
         isSelectingToken = false;
         // TODO update bridge address, balances and token symbol
         if (selectedToken == "ETH") {
             selectedTokenLogo = logoETH;
+            balance = await getBalance(address, provider);
+            companionBalance = await getBalance(address, provider);
         } else {
-            selectedTokenLogo = getTokenDetails(
+            const tokenDetails = getTokenDetails(
                 selectedToken,
                 chainId,
                 getTokens()
-            ).logoURI;
+            );
+            const companionTokenDetails = getTokenDetails(
+                selectedToken,
+                companionChainId,
+                getTokens()
+            );
+            selectedTokenLogo = tokenDetails.logoURI;
+            balance = ethers.utils.formatUnits(await getERC20Balance(address, tokenDetails.address, provider), tokenDetails.decimals);
+            companionBalance = ethers.utils.formatUnits(await getERC20Balance(address, companionTokenDetails.address, companionNetworkProvider), tokenDetails.decimals);
         }
     };
 
@@ -118,10 +134,6 @@
             return amount;
         }
     };
-
-    // onMount(async () => {
-    //     await populateData(chainId);
-    // });
 
     onDestroy(() => {
         unsubscribe();
