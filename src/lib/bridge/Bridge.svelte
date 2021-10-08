@@ -1,23 +1,32 @@
 <script>
     import { ethers } from "ethers";
     import { onMount, onDestroy } from "svelte";
-    import L1StandardBridgeABI from "$lib/ABI/iNVM_L1StandardBridge.json";
-    import TokenList from "../../nahmii.tokenlist.json";
     import Divider from "$lib/shared/Divider.svelte";
     import Button from "$lib/shared/Button.svelte";
     import Card from "../shared/Card.svelte";
     import BridgeType from "./BridgeType.svelte";
     import To from "./To.svelte";
     import From from "./From.svelte";
+    import SelectToken from "./SelectToken.svelte";
     import {
         wallet,
         network,
         findSupportedNetwork,
         switchNetwork,
     } from "../../stores/wallet";
+    import {
+        getTokens,
+        getTokensForChain,
+        getTokenDetails,
+        getTokenBridge,
+    } from "../../utils/token";
+    import logoETH from "./eth.png";
 
-    let selectedToken;
+    let isSelectingToken;
+    let selectedToken = "ETH";
+    let selectedTokenLogo = logoETH;
     let activeNetwork;
+    let chainId;
     let provider;
     let balance;
     let address;
@@ -32,13 +41,37 @@
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
     $: deposit = L2 === false ? true : false;
 
+    const selectToken = () => {
+        isSelectingToken = true;
+    };
+
+    const closeSelectToken = (event) => {
+        isSelectingToken = false;
+    };
+
+    const getSelectedToken = (event) => {
+        console.log(event.detail);
+        selectedToken = event.detail.symbol;
+        isSelectingToken = false;
+        // TODO update bridge address, balances and token symbol
+        if (selectedToken == "ETH") {
+            selectedTokenLogo = logoETH;
+        } else {
+            selectedTokenLogo = getTokenDetails(
+                selectedToken,
+                chainId,
+                getTokens()
+            ).logoURI;
+        }
+    };
+
     const updateBalance = async (provider, address) => {
         const balance = await provider.getBalance(address);
         return ethers.utils.formatEther(balance);
     };
 
-    const populateData = async (chainId) => {
-        let networkDetails = await findSupportedNetwork(chainId);
+    const populateData = async (_chainId) => {
+        let networkDetails = await findSupportedNetwork(_chainId);
         if (networkDetails.isSupported) {
             let rpcUrls;
             ({
@@ -63,8 +96,9 @@
         }
     };
 
-    const unsubscribe = network.subscribe(async (chainId) => {
-        await populateData(chainId);
+    const unsubscribe = network.subscribe(async (_chainId) => {
+        chainId = _chainId;
+        await populateData(_chainId);
     });
 
     const flipNetworks = async () => {
@@ -85,28 +119,38 @@
         }
     };
 
-    onMount(async () => {
-        if (window.ethereum) {
-            const chainId = await window.ethereum.request({
-                method: "eth_chainId",
-            });
-            await populateData(chainId);
-        }
-    });
+    // onMount(async () => {
+    //     await populateData(chainId);
+    // });
 
     onDestroy(() => {
         unsubscribe();
     });
 </script>
 
+{#if isSelectingToken}
+    <SelectToken
+        on:cancel={closeSelectToken}
+        on:selectedToken={getSelectedToken}
+    />
+{/if}
+
 <div class="container">
     <Card>
         <BridgeType bind:deposit on:network={flipNetworks} />
-        <From network={activeNetwork} balance={formatTokenBalance(balance)} />
+        <From
+            on:selectToken={selectToken}
+            network={activeNetwork}
+            balance={formatTokenBalance(balance)}
+            token={selectedToken}
+            logo={selectedTokenLogo}
+        />
         <Divider />
         <To
             network={companionNetwork}
             balance={formatTokenBalance(companionBalance)}
+            token={selectedToken}
+            logo={selectedTokenLogo}
         />
         <Button>{buttonText}</Button>
     </Card>
