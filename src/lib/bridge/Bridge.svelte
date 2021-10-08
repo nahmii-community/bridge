@@ -42,6 +42,7 @@
     let companionNetwork;
     let companionBalance;
     let L2;
+    let unsubscribe;
 
     let deposit;
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
@@ -62,8 +63,8 @@
         // TODO update bridge address, balances and token symbol
         if (selectedToken == "ETH") {
             selectedTokenLogo = logoETH;
-            balance = await getBalance(address, provider);
-            companionBalance = await getBalance(address, provider);
+            balance = ethers.utils.formatEther(await getBalance(address, provider));
+            companionBalance = ethers.utils.formatEther(await getBalance(address, companionNetworkProvider));
         } else {
             const tokenDetails = getTokenDetails(
                 selectedToken,
@@ -76,14 +77,19 @@
                 getTokens()
             );
             selectedTokenLogo = tokenDetails.logoURI;
-            balance = ethers.utils.formatUnits(await getERC20Balance(address, tokenDetails.address, provider), tokenDetails.decimals);
-            companionBalance = ethers.utils.formatUnits(await getERC20Balance(address, companionTokenDetails.address, companionNetworkProvider), tokenDetails.decimals);
+            balance = ethers.utils.formatUnits(
+                await getERC20Balance(address, tokenDetails.address, provider),
+                tokenDetails.decimals
+            );
+            companionBalance = ethers.utils.formatUnits(
+                await getERC20Balance(
+                    address,
+                    companionTokenDetails.address,
+                    companionNetworkProvider
+                ),
+                tokenDetails.decimals
+            );
         }
-    };
-
-    const updateBalance = async (provider, address) => {
-        const balance = await provider.getBalance(address);
-        return ethers.utils.formatEther(balance);
     };
 
     const populateData = async (_chainId) => {
@@ -104,24 +110,17 @@
             await wallet.subscribe(async (accounts) => {
                 address = accounts[0];
             });
-            balance = await updateBalance(provider, address);
-            companionBalance = await updateBalance(
-                companionNetworkProvider,
-                address
-            );
+            console.log("token", selectedToken);
+            await getSelectedToken({detail: { symbol: selectedToken}});
         }
     };
-
-    const unsubscribe = network.subscribe(async (_chainId) => {
-        chainId = _chainId;
-        await populateData(_chainId);
-    });
 
     const flipNetworks = async () => {
         await switchNetwork(companionChainId);
     };
 
     const formatTokenBalance = (amount) => {
+        console.log(amount);
         if (!amount) {
             return "-";
         }
@@ -134,6 +133,13 @@
             return amount;
         }
     };
+
+    onMount(() => {
+        unsubscribe = network.subscribe(async (_chainId) => {
+            chainId = _chainId;
+            await populateData(_chainId);
+        });
+    });
 
     onDestroy(() => {
         unsubscribe();
