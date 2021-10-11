@@ -6,11 +6,31 @@
     export let token = "ETH";
     export let balance = 0;
     export let logo;
+    let amount = 0;
 
     const dispatch = createEventDispatcher();
 
     function selectTokenModal() {
         dispatch("selectToken");
+    }
+
+    const onChange = async (event) => {
+        if (event.target.validity.rangeUnderflow || !event.target.value || event.target.value.includes("-")) {
+            amount = 0;
+            event.target.value = 0;
+        } else if (event.target.validity.rangeOverflow) {
+            amount = balance;
+            event.target.value = balance;
+        } else if (event.target.validity.patternMismatch) {
+            // Non numericals used
+            amount = 0;
+            event.target.value = 0;
+        } else {
+            amount = event.target.value;
+        }
+        dispatch("amountChanged", {
+            amountToBridge: amount
+        });
     }
 </script>
 
@@ -31,7 +51,7 @@
     </div>
     <div class="right">
         <p>Balance: {balance} {token}</p>
-        <input type="number" placeholder="Amount" />
+        <input type="number" placeholder="Amount" pattern="^[0-9]*[.]?[0-9]*$" value={amount} min=0 max={balance}  on:input={onChange}>
     </div>
 </div>
 

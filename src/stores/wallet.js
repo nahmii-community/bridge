@@ -172,7 +172,13 @@ export const addAsset = async (address, symbol, decimals, image) => {
                     }
                 }
             });
-            return tokenAdded;
+            if (tokenAdded) {
+                // User added token
+                return tokenAdded;
+            } else {
+                // User didn't add token
+                return tokenAdded;
+            }
         } catch (error) {
             console.log(error);
         }
