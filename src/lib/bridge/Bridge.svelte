@@ -57,14 +57,19 @@
     };
 
     const getSelectedToken = async (event) => {
-        console.log(event.detail);
+        // TODO optimization, check if token is already populated
+        // TODO abstract away token information retrieval
         selectedToken = event.detail.symbol;
         isSelectingToken = false;
         // TODO update bridge address, balances and token symbol
         if (selectedToken == "ETH") {
             selectedTokenLogo = logoETH;
-            balance = ethers.utils.formatEther(await getBalance(address, provider));
-            companionBalance = ethers.utils.formatEther(await getBalance(address, companionNetworkProvider));
+            balance = ethers.utils.formatEther(
+                await getBalance(address, provider)
+            );
+            companionBalance = ethers.utils.formatEther(
+                await getBalance(address, companionNetworkProvider)
+            );
         } else {
             const tokenDetails = getTokenDetails(
                 selectedToken,
@@ -111,7 +116,7 @@
                 address = accounts[0];
             });
             console.log("token", selectedToken);
-            await getSelectedToken({detail: { symbol: selectedToken}});
+            await getSelectedToken({ detail: { symbol: selectedToken } });
         }
     };
 
