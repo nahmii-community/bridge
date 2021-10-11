@@ -154,3 +154,27 @@ export const addNetwork = async (chainId, chainName, rpcUrls, blockExplorerUrls)
         }
     }
 }
+
+export const addAsset = async (address, symbol, decimals, image) => {
+    const provider = window.ethereum;
+    let tokenAdded;
+    if (provider) {
+        try {
+            tokenAdded = await provider.request({
+                method: 'wallet_watchAsset',
+                params: {
+                    type: 'ERC20',
+                    options: {
+                        address,
+                        symbol,
+                        decimals,
+                        image
+                    }
+                }
+            });
+            return tokenAdded;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+};
