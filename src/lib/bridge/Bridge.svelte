@@ -45,7 +45,7 @@
     let L2;
     let unsubscribe;
 
-    let amountToBridge = 0;
+    let amountToBridge = "0";
     let deposit;
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
     $: deposit = L2 === false ? true : false;
@@ -150,6 +150,7 @@
                 const receipt = await tx.wait(1);
                 console.log(receipt);
                 // Update balance
+                await getSelectedToken({ detail: { symbol: selectedToken } });
             } else {
                 const l1Token = getTokenDetails(
                     selectedToken,
@@ -166,14 +167,28 @@
                     chainId,
                     getTokens()
                 );
-                const allowance = await getAllowance(address, tokenBridge, l1Token.address, provider);
-                const requestedAmountToBridge = ethers.utils.parseUnits(amountToBridge, l1Token.decimals);
+                const allowance = await getAllowance(
+                    address,
+                    tokenBridge,
+                    l1Token.address,
+                    provider
+                );
+                const requestedAmountToBridge = ethers.utils.parseUnits(
+                    amountToBridge,
+                    l1Token.decimals
+                );
+
+                console.log("allowance: ", allowance);
+                console.log("requestedAmountToBridge: ", requestedAmountToBridge);
 
                 if (allowance.lt(requestedAmountToBridge)) {
-                    // Increase the allowance by the difference between
-                    // requested amount and allowed amount.
-                    const difference = requestedAmountToBridge.sub(allowance);
-                    const tx = await approveAllowance(tokenBridge, difference, l1Token.address, provider.getSigner(0));
+                    // Increase the allowance by the requested amount.
+                    const tx = await approveAllowance(
+                        tokenBridge,
+                        requestedAmountToBridge,
+                        l1Token.address,
+                        provider.getSigner(0)
+                    );
                     // Indicate an approval is in progress
                     const receipt = await tx.wait(1);
                 }
@@ -188,6 +203,7 @@
                 // Indicate a deposit is in progress
                 const receipt = await tx.wait(1);
                 // Update balance
+                await getSelectedToken({ detail: { symbol: selectedToken } });
             }
             console.log("deposit asset: ", selectedToken);
         }
