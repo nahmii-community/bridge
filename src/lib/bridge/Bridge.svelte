@@ -25,6 +25,7 @@
         getERC20Balance,
         getAllowance,
         approveAllowance,
+        depositETH,
     } from "../../utils/ethereum";
     import logoETH from "./eth.png";
 
@@ -36,14 +37,14 @@
     let provider;
     let balance;
     let address;
-    let bridgeAddress;
     let companionNetworkProvider;
     let companionChainId;
     let companionNetwork;
     let companionBalance;
     let L2;
     let unsubscribe;
-
+    
+    let amountToBridge = 0;
     let deposit;
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
     $: deposit = L2 === false ? true : false;
@@ -97,6 +98,10 @@
         }
     };
 
+    const updateAmountToBridge = async (event) => {
+        amountToBridge = event.detail.amountToBridge;
+    }
+
     const populateData = async (_chainId) => {
         let networkDetails = await findSupportedNetwork(_chainId);
         if (networkDetails.isSupported) {
@@ -122,6 +127,28 @@
 
     const flipNetworks = async () => {
         await switchNetwork(companionChainId);
+    };
+
+    const bridgeAsset = async () => {
+        console.log("bridging");
+        console.log(amountToBridge);
+        if (L2) {
+            // Withdraw
+            console.log("withdraw asset: ", selectedToken);
+        } else {
+            // Deposit
+            if (selectedToken == "ETH") {
+                const standardBridge = (await findSupportedNetwork(chainId)).standardBridge;
+                const tx = await depositETH(standardBridge, provider.getSigner(0), amountToBridge);
+                const receipt = await tx.wait(5);
+                console.log(receipt);
+                // Update balance
+            } else {
+                // Deposit ERC20
+                
+            }
+            console.log("deposit asset: ", selectedToken);
+        }
     };
 
     const formatTokenBalance = (amount) => {
@@ -162,6 +189,7 @@
     <Card>
         <BridgeType bind:deposit on:network={flipNetworks} />
         <From
+            on:amountChanged={updateAmountToBridge}
             on:selectToken={selectToken}
             network={activeNetwork}
             balance={formatTokenBalance(balance)}
@@ -175,7 +203,7 @@
             token={selectedToken}
             logo={selectedTokenLogo}
         />
-        <Button>{buttonText}</Button>
+        <Button on:click={bridgeAsset}>{buttonText}</Button>
     </Card>
 </div>
 
