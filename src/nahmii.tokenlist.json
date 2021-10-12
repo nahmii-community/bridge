@@ -16,7 +16,7 @@
             "decimals": 6,
             "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
             "extensions": {
-                "optimismBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
+                "nahmiiBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
             }
         },
         {
@@ -27,7 +27,7 @@
             "decimals": 6,
             "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
             "extensions": {
-                "optimismBridgeAddress": "0x4200000000000000000000000000000000000010"
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
             }
         },
         {
@@ -38,7 +38,7 @@
             "decimals": 6,
             "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
             "extensions": {
-                "optimismBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
+                "nahmiiBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
             }
         },
         {
@@ -49,7 +49,7 @@
             "decimals": 6,
             "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
             "extensions": {
-                "optimismBridgeAddress": "0x4200000000000000000000000000000000000010"
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
             }
         },
         {
@@ -60,7 +60,7 @@
             "decimals": 18,
             "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
             "extensions": {
-                "optimismBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
+                "nahmiiBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
             }
         },
         {
@@ -71,7 +71,7 @@
             "decimals": 18,
             "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
             "extensions": {
-                "optimismBridgeAddress": "0x4200000000000000000000000000000000000010"
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
             }
         }
     ],

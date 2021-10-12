@@ -26,6 +26,7 @@
         getAllowance,
         approveAllowance,
         depositETH,
+        depositERC20,
     } from "../../utils/ethereum";
     import logoETH from "./eth.png";
 
@@ -43,7 +44,7 @@
     let companionBalance;
     let L2;
     let unsubscribe;
-    
+
     let amountToBridge = 0;
     let deposit;
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
@@ -100,7 +101,7 @@
 
     const updateAmountToBridge = async (event) => {
         amountToBridge = event.detail.amountToBridge;
-    }
+    };
 
     const populateData = async (_chainId) => {
         let networkDetails = await findSupportedNetwork(_chainId);
@@ -138,14 +139,42 @@
         } else {
             // Deposit
             if (selectedToken == "ETH") {
-                const standardBridge = (await findSupportedNetwork(chainId)).standardBridge;
-                const tx = await depositETH(standardBridge, provider.getSigner(0), amountToBridge);
-                const receipt = await tx.wait(5);
+                const standardBridge = (await findSupportedNetwork(chainId))
+                    .standardBridge;
+                const tx = await depositETH(
+                    standardBridge,
+                    provider.getSigner(0),
+                    amountToBridge
+                );
+                const receipt = await tx.wait(1);
                 console.log(receipt);
                 // Update balance
             } else {
                 // Deposit ERC20
-                
+                const l1Token = getTokenDetails(
+                    selectedToken,
+                    chainId,
+                    getTokens()
+                );
+                const l2Token = getTokenDetails(
+                    selectedToken,
+                    companionChainId,
+                    getTokens()
+                );
+                const tokenBridge = getTokenBridge(
+                    selectedToken,
+                    chainId,
+                    getTokens()
+                );
+                const tx = await depositERC20(
+                    l1Token.address,
+                    l2Token.address,
+                    tokenBridge,
+                    provider.getSigner(0),
+                    amountToBridge
+                );
+                const receipt = await tx.wait(1);
+                console.log(receipt);
             }
             console.log("deposit asset: ", selectedToken);
         }
