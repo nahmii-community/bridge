@@ -146,11 +146,11 @@
                     provider.getSigner(0),
                     amountToBridge
                 );
+                // Indicate a deposit is in progress
                 const receipt = await tx.wait(1);
                 console.log(receipt);
                 // Update balance
             } else {
-                // Deposit ERC20
                 const l1Token = getTokenDetails(
                     selectedToken,
                     chainId,
@@ -166,15 +166,28 @@
                     chainId,
                     getTokens()
                 );
+                const allowance = await getAllowance(address, tokenBridge, l1Token.address, provider);
+                const requestedAmountToBridge = ethers.utils.parseUnits(amountToBridge, l1Token.decimals);
+
+                if (allowance.lt(requestedAmountToBridge)) {
+                    // Increase the allowance by the difference between
+                    // requested amount and allowed amount.
+                    const difference = requestedAmountToBridge.sub(allowance);
+                    const tx = await approveAllowance(tokenBridge, difference, l1Token.address, provider.getSigner(0));
+                    // Indicate an approval is in progress
+                    const receipt = await tx.wait(1);
+                }
+
                 const tx = await depositERC20(
                     l1Token.address,
                     l2Token.address,
                     tokenBridge,
                     provider.getSigner(0),
-                    amountToBridge
+                    requestedAmountToBridge
                 );
+                // Indicate a deposit is in progress
                 const receipt = await tx.wait(1);
-                console.log(receipt);
+                // Update balance
             }
             console.log("deposit asset: ", selectedToken);
         }
