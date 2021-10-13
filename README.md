@@ -1,6 +1,6 @@
-# Nahmii Gateway
+# Nahmii Bridge
 
-The Nahmii gateway is an UX/UI to bridge tokens between Nahmii and supported base layer networks. Do note that having an Ethereum provider, like MetaMask (extension or mobile app), available in your browser is required to run this dApp.
+The Nahmii bridge is an UX/UI to bridge tokens between Nahmii L2 networks and supported base layer networks. Do note that having an Ethereum provider, like MetaMask (extension or mobile app), available in your browser is required to run this dApp.
 
 ## Developing
 
