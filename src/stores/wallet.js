@@ -11,6 +11,7 @@ const supportedNetworks = [
         isSupported: true,
         L2: false,
         rpcUrls: ["https://mainnet.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
+        blockExplorerUrls: ["https://etherscan.io"],
         companionChainId: "0x15af",
         standardBridge: "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
     },
@@ -20,6 +21,7 @@ const supportedNetworks = [
         isSupported: true,
         L2: false,
         rpcUrls: ["https://ropsten.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
+        blockExplorerUrls: ["https://ropsten.etherscan.io"],
         companionChainId: "0x15b1",
         standardBridge: "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
     },
