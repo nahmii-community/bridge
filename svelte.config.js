@@ -13,7 +13,7 @@ const config = {
 			fallback: null
 		}),
 		paths: {
-			base: dev ? '' : '/bridge',
+			base: dev ? '' : '',
 		},
 	}
 };
