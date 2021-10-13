@@ -25,7 +25,7 @@ const supportedNetworks = [
     },
     {
         chainId: "0x15af",
-        chainName: "Nahmii",
+        chainName: "Nahmii Mainnet",
         isSupported: true,
         L2: true,
         companionChainId: "0x1",

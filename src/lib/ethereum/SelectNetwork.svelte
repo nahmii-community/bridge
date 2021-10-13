@@ -12,9 +12,9 @@
     <div class="buttons">
         <Button on:click={() => switchNetwork("0x1")}>Ethereum Mainnet</Button>
         <div class="spacer" />
-        <Button on:click={() => switchNetwork("0x15af")}>Nahmii</Button>
+        <Button on:click={() => switchNetwork("0x15af")}>Nahmii Mainnet</Button>
         <div class="spacer" />
-        <Button on:click={() => switchNetwork("0x3")}>Ropsten</Button>
+        <Button on:click={() => switchNetwork("0x3")}>Ropsten Testnet</Button>
         <div class="spacer" />
         <Button on:click={() => switchNetwork("0x15b1")}>Nahmii Testnet</Button>
     </div>
