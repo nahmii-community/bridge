@@ -1,6 +1,7 @@
 <script>
     import { ethers } from "ethers";
     import { onMount, onDestroy } from "svelte";
+    import { toast } from "@zerodevx/svelte-toast";
     import Divider from "$lib/shared/Divider.svelte";
     import Button from "$lib/shared/Button.svelte";
     import Card from "../shared/Card.svelte";
@@ -121,7 +122,6 @@
             await wallet.subscribe(async (accounts) => {
                 address = accounts[0];
             });
-            console.log("token", selectedToken);
             await getSelectedToken({ detail: { symbol: selectedToken } });
         }
     };
@@ -131,13 +131,13 @@
     };
 
     const bridgeAsset = async () => {
-        console.log("bridging");
-        console.log(amountToBridge);
         if (L2) {
             // Withdraw
             console.log("withdraw asset: ", selectedToken);
         } else {
             // Deposit
+            const blockExplorer = (await findSupportedNetwork(chainId))
+                .blockExplorerUrls[0];
             if (selectedToken == "ETH") {
                 const standardBridge = (await findSupportedNetwork(chainId))
                     .standardBridge;
@@ -147,9 +147,12 @@
                     amountToBridge
                 );
                 // Indicate a deposit is in progress
+                toast.push(`<strong>Depositing ${selectedToken}...</strong>
+                    Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.`);
                 const receipt = await tx.wait(1);
-                console.log(receipt);
-                // Update balance
+                // Notify user and update balance
+                toast.push(`<strong>Deposit of ${selectedToken} complete.</strong>
+                    Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.`);
                 await getSelectedToken({ detail: { symbol: selectedToken } });
             } else {
                 const l1Token = getTokenDetails(
@@ -178,9 +181,6 @@
                     l1Token.decimals
                 );
 
-                console.log("allowance: ", allowance);
-                console.log("requestedAmountToBridge: ", requestedAmountToBridge);
-
                 if (allowance.lt(requestedAmountToBridge)) {
                     // Increase the allowance by the requested amount.
                     const tx = await approveAllowance(
@@ -190,7 +190,12 @@
                         provider.getSigner(0)
                     );
                     // Indicate an approval is in progress
+                    toast.push(`<strong>Approval of ${selectedToken} in progress.</strong>
+                        Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.`);
+                    // Indicate an approval has gone through
                     const receipt = await tx.wait(1);
+                    toast.push(`<strong>Approval of ${selectedToken} complete.</strong>
+                        Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.`);
                 }
 
                 const tx = await depositERC20(
@@ -201,16 +206,18 @@
                     requestedAmountToBridge
                 );
                 // Indicate a deposit is in progress
+                toast.push(`<strong>Depositing ${selectedToken}...</strong>
+                    Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.`);
                 const receipt = await tx.wait(1);
-                // Update balance
+                // Notify user and update balance
+                toast.push(`<strong>Deposit of ${selectedToken} complete.</strong>
+                    Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.`);
                 await getSelectedToken({ detail: { symbol: selectedToken } });
             }
-            console.log("deposit asset: ", selectedToken);
         }
     };
 
     const formatTokenBalance = (amount) => {
-        console.log(amount);
         if (!amount) {
             return "-";
         }
