@@ -16,6 +16,12 @@
     --card-color: #fff;
     --hover-color: rgb(219, 218, 218);
     --image-url: url("../static/background.png");
+
+    --toastBackground: rgba(255,255,255,0.9);
+    --toastBorderRadius: 12px;
+    --toastBoxShadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    --toastColor: var(--text-color);
+    --toastPadding: 0.5rem;
 }
 
 
@@ -30,9 +36,16 @@
     --text-color-light-grey: rgba(255,255,255,0.3);
     --card-color: #15181f;
     --hover-color: rgb(70, 70, 70);
+
+    --toastBackground: rgba(0,0,0,0.9);
+    --toastColor: var(--text-color);
 }
 
 body {
     margin: 1em;
     font-size: 16px;
+}
+
+a {
+    color: var(--text-color);
 }

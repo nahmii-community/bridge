@@ -148,11 +148,11 @@
                 );
                 // Indicate a deposit is in progress
                 toast.push(`<strong>Depositing ${selectedToken}...</strong>
-                    Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.`);
+                    <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
                 const receipt = await tx.wait(1);
                 // Notify user and update balance
                 toast.push(`<strong>Deposit of ${selectedToken} complete.</strong>
-                    Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.`);
+                    <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
                 await getSelectedToken({ detail: { symbol: selectedToken } });
             } else {
                 const l1Token = getTokenDetails(
@@ -191,11 +191,11 @@
                     );
                     // Indicate an approval is in progress
                     toast.push(`<strong>Approval of ${selectedToken} in progress.</strong>
-                        Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.`);
+                        <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
                     // Indicate an approval has gone through
                     const receipt = await tx.wait(1);
                     toast.push(`<strong>Approval of ${selectedToken} complete.</strong>
-                        Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.`);
+                        <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
                 }
 
                 const tx = await depositERC20(
@@ -207,11 +207,11 @@
                 );
                 // Indicate a deposit is in progress
                 toast.push(`<strong>Depositing ${selectedToken}...</strong>
-                    Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.`);
+                    <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
                 const receipt = await tx.wait(1);
                 // Notify user and update balance
                 toast.push(`<strong>Deposit of ${selectedToken} complete.</strong>
-                    Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.`);
+                    <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
                 await getSelectedToken({ detail: { symbol: selectedToken } });
             }
         }
