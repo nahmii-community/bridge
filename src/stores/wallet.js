@@ -7,7 +7,7 @@ export const isConnected = writable(false);
 const supportedNetworks = [
     {
         chainId: "0x1",
-        chainName: "Mainnet",
+        chainName: "Ethereum Mainnet",
         isSupported: true,
         L2: false,
         rpcUrls: ["https://mainnet.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
@@ -16,12 +16,12 @@ const supportedNetworks = [
     },
     {
         chainId: "0x3",
-        chainName: "Ropsten",
+        chainName: "Ropsten Testnet",
         isSupported: true,
         L2: false,
         rpcUrls: ["https://ropsten.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
         companionChainId: "0x15b1",
-        standardBridge: "0xE1dAA38eA21000804Dea7dd671e3b3c607b17565"
+        standardBridge: "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
     },
     {
         chainId: "0x15af",
