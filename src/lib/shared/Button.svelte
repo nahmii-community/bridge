@@ -24,10 +24,14 @@
         color: var(--text-color-inverse);
         height: 56px;
         border-style: none;
-        transition: opacity 750ms;
+        transition: opacity 400ms;
+    }
+
+    button:hover {
+        opacity: 0.6;
     }
 
     button:disabled {
-        opacity: 0.5;
+        opacity: 0.4;
     }
 </style>
