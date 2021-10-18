@@ -49,3 +49,19 @@ body {
 a {
     color: var(--text-color);
 }
+
+.ripple {
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    position: fixed;
+    border-radius: 50%;
+    border: 1px solid var(--text-color-inverse);
+}
+
+@keyframes ripple-effect {
+    to {
+        transform: scale(5);
+        opacity: 0.01;
+    }
+}
