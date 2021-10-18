@@ -266,7 +266,7 @@
             token={selectedToken}
             logo={selectedTokenLogo}
         />
-        <Divider />
+        <Divider on:click={flipNetworks} />
         <To
             network={companionNetwork}
             balance={formatTokenBalance(companionBalance)}
