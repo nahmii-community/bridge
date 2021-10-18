@@ -3,13 +3,21 @@
 
     export let text = "Click me";
     export let disabled = false;
+    let timer;
+    let wait = false;
 
     const dispatch = createEventDispatcher();
 
     function onClick() {
-        dispatch('click', {});
+        if (!wait) {
+            wait = true;
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                wait = false;
+            }, 2000);
+            dispatch("click", {});
+        }
     }
-
 </script>
 
 <button on:click={onClick} {disabled}>
