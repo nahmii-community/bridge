@@ -1,4 +1,6 @@
 <script>
+    import numeral from "numeral";
+    numeral.localeData().delimiters.thousands = ' ';
     export let network = "Unsupported";
     export let token = "ETH";
     export let balance = 0;
@@ -14,7 +16,7 @@
         </div>
     </div>
     <div class="right">
-        <p>Balance: {balance} {token}</p>
+        <p>Balance: {numeral(balance).format("0,0.00")} {token}</p>
         <input disabled type="number" value={balance} />
     </div>
 </div>
