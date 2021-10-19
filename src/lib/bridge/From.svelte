@@ -1,5 +1,7 @@
 <script>
     import { createEventDispatcher } from "svelte";
+    import numeral from "numeral";
+    numeral.localeData().delimiters.thousands = ' ';
     import dropdown from "./dropdown.png";
 
     export let network = "Unsupported";
@@ -50,7 +52,7 @@
         </div>
     </div>
     <div class="right">
-        <p>Balance: {balance} {token}</p>
+        <p>Balance: {numeral(balance).format("0,0.00")} {token}</p>
         <input type="number" placeholder="Amount" pattern="^[0-9]*[.]?[0-9]*$" value={amount} min=0 max={balance}  on:input={onChange}>
     </div>
 </div>

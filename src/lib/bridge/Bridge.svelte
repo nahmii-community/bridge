@@ -44,7 +44,8 @@
     let companionNetwork;
     let companionBalance;
     let L2;
-    let unsubscribe;
+    let unsubscribeNetwork;
+    let unsubscribeWallet;
 
     let amountToBridge = "0";
     let deposit;
@@ -232,14 +233,18 @@
     };
 
     onMount(() => {
-        unsubscribe = network.subscribe(async (_chainId) => {
+        unsubscribeNetwork = network.subscribe(async (_chainId) => {
             chainId = _chainId;
             await populateData(_chainId);
+        });
+        unsubscribeWallet = wallet.subscribe(async (_wallet) => {
+            await populateData(chainId);
         });
     });
 
     onDestroy(() => {
-        unsubscribe();
+        unsubscribeNetwork();
+        unsubscribeWallet();
     });
 </script>
 
@@ -261,7 +266,7 @@
             token={selectedToken}
             logo={selectedTokenLogo}
         />
-        <Divider />
+        <Divider on:click={flipNetworks} />
         <To
             network={companionNetwork}
             balance={formatTokenBalance(companionBalance)}

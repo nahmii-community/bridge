@@ -1,13 +1,20 @@
 <script>
+    import { createEventDispatcher } from "svelte";
     import { mode } from "../../stores/darkmode";
     import SmallArrowDown from "./small-arrow-down.png";
     import SmallArrowDownDark from "./small-arrow-down-dark.png";
     
     $: arrowDown = $mode === "dark" ? SmallArrowDownDark : SmallArrowDown;
+
+    const dispatch = createEventDispatcher();
+
+    function onClick() {
+        dispatch("click");
+    }
 </script>
 
 <div class="divider">
-    <img src={arrowDown} alt="Arrow pointing down" />
+    <img on:click={onClick} src={arrowDown} alt="Arrow pointing down" />
 </div>
 
 <style>
@@ -34,5 +41,7 @@
         height: 40px;
         margin: auto;
         z-index: 9;
+        cursor: pointer;
+        transition: opacity 400ms;
     }
 </style>
