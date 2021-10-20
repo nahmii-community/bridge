@@ -50,6 +50,10 @@ a {
     color: var(--text-color);
 }
 
+input {
+    font-family: 'Roboto', sans-serif;
+}
+
 .ripple {
     width: 10px;
     height: 10px;
