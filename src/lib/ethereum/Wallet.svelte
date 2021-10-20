@@ -1,6 +1,5 @@
 <script>
     import { onDestroy } from "svelte";
-    import Yoda from "$lib/ethereum/yoda.png";
     import { wallet } from "../../stores/wallet";
 
     export let address = "0x";
