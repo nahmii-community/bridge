@@ -19,7 +19,6 @@
 
     const unsubscribe = wallet.subscribe((value) => {
         address = value[0];
-        console.log(address);
     });
 
     onDestroy(() => {
