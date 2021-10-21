@@ -47,6 +47,7 @@
     let unsubscribeNetwork;
     let unsubscribeWallet;
 
+    let amountToBridge = "0";
     let deposit;
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
     $: deposit = L2 === false ? true : false;
@@ -267,6 +268,7 @@
         <To
             network={companionNetwork}
             balance={truncateBalance(companionBalance)}
+            balanceAfter={amountToBridge}
             token={selectedToken}
             logo={selectedTokenLogo}
         />
