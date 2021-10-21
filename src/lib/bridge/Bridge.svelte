@@ -133,6 +133,8 @@
         if (L2) {
             // Withdraw
             console.log("withdraw asset: ", selectedToken);
+
+            toast.push(`<strong>Withdrawals are not enabled yet.</strong>`);
         } else {
             // Deposit
             const blockExplorer = (await findSupportedNetwork(chainId))
