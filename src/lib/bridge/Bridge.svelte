@@ -1,5 +1,5 @@
 <script>
-    import { ethers } from "ethers";
+    import { ethers, BigNumber } from "ethers";
     import { onMount, onDestroy } from "svelte";
     import { toast } from "@zerodevx/svelte-toast";
     import Divider from "$lib/shared/Divider.svelte";
@@ -47,7 +47,6 @@
     let unsubscribeNetwork;
     let unsubscribeWallet;
 
-    let amountToBridge = "0";
     let deposit;
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
     $: deposit = L2 === false ? true : false;
@@ -68,12 +67,10 @@
         // TODO update bridge address, balances and token symbol
         if (selectedToken == "ETH") {
             selectedTokenLogo = logoETH;
-            balance = ethers.utils.formatEther(
-                await getBalance(address, provider)
-            );
-            companionBalance = ethers.utils.formatEther(
-                await getBalance(address, companionNetworkProvider)
-            );
+            const tempBalance = await getBalance(address, provider);
+            const tempCompanionBalance = await getBalance(address, companionNetworkProvider);
+            balance = ethers.utils.formatEther(tempBalance);
+            companionBalance = ethers.utils.formatEther(tempCompanionBalance);
         } else {
             const tokenDetails = getTokenDetails(
                 selectedToken,
@@ -218,9 +215,9 @@
         }
     };
 
-    const formatTokenBalance = (amount) => {
+    const truncateBalance = (amount) => {
         if (!amount) {
-            return "-";
+            return "0";
         }
 
         if (amount.includes(".")) {
@@ -262,14 +259,14 @@
             on:amountChanged={updateAmountToBridge}
             on:selectToken={selectToken}
             network={activeNetwork}
-            balance={formatTokenBalance(balance)}
+            balance={truncateBalance(balance)}
             token={selectedToken}
             logo={selectedTokenLogo}
         />
         <Divider on:click={flipNetworks} />
         <To
             network={companionNetwork}
-            balance={formatTokenBalance(companionBalance)}
+            balance={truncateBalance(companionBalance)}
             token={selectedToken}
             logo={selectedTokenLogo}
         />
