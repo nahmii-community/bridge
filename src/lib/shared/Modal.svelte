@@ -57,7 +57,8 @@
     .container {
         display: flex;
         max-width: 550px;
-        min-width: 400px;
+        min-width: 320px;
+        max-height: 550px;
         margin: auto;
         z-index: 999;
     }
@@ -71,5 +72,17 @@
     h1 {
         padding: 1rem;
         margin: 0;
+    }
+
+    @media (min-width: 768px) {
+        .container {
+            min-width: 500px;
+        }
+    }
+
+    @media (min-height: 768px) {
+        .container {
+            max-height: 680px;
+        }
     }
 </style>

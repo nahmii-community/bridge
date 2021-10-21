@@ -57,7 +57,7 @@
         bind:value={filter}
         on:input={filterTokens}
     />
-    <ul class="token-list">
+    <ul class="token-list content">
         {#each filteredTokens as { symbol, name, logoURI }}
             <li on:click={() => selectedToken(symbol)}>
                 <img src={logoURI} alt={name} />
@@ -70,6 +70,12 @@
 <style>
     .modal-text {
         margin: 0 0 0.5em 0;
+    }
+
+    .content {
+        position: relative;
+        overflow: auto;
+        max-height: 250px;
     }
 
     input {
@@ -118,5 +124,11 @@
         align-self: center;
         margin: 0;
         font-weight: 500;
+    }
+
+    @media (min-height: 768px) {
+        .content {
+            max-height: 400px;
+        }
     }
 </style>

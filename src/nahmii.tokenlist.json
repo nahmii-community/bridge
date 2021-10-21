@@ -73,6 +73,226 @@
             "extensions": {
                 "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
             }
+        },
+        {
+            "chainId": 1,
+            "address": "0x7c8155909cd385F120A56eF90728dD50F9CcbE52",
+            "name": "Nahmii",
+            "symbol": "NII",
+            "decimals": 15,
+            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
+            }
+        },
+        {
+            "chainId": 1,
+            "address": "0x852e5427c86a3b46dd25e5fe027bb15f53c4bcb8",
+            "name": "NiiFi",
+            "symbol": "NIIFI",
+            "decimals": 15,
+            "logoURI": "https://assets.coingecko.com/coins/images/16033/thumb/niifi.PNG?1622674467",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
+            }
+        },
+        {
+            "chainId": 1,
+            "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "name": "USD Coin",
+            "symbol": "USDC",
+            "decimals": 6,
+            "logoURI": "https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
+            }
+        },
+        {
+            "chainId": 1,
+            "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "name": "Tether USD",
+            "symbol": "USDT",
+            "decimals": 6,
+            "logoURI": "https://assets.coingecko.com/coins/images/325/thumb/Tether-logo.png?1598003707",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
+            }
+        },
+        {
+            "chainId": 1,
+            "address": "0x8e870d67f660d95d5be530380d0ec0bd388289e1",
+            "name": "Pax Dollar",
+            "symbol": "USDP",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/6013/thumb/Pax_Dollar.png?1629877204",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
+            }
+        },
+        {
+            "chainId": 1,
+            "address": "0xc581b735a1688071a1746c968e0798d642ede491",
+            "name": "Euro Tether",
+            "symbol": "EURT",
+            "decimals": 6,
+            "logoURI": "https://assets.coingecko.com/coins/images/17385/thumb/Tether_full_logo_dm.png?1627537298",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
+            }
+        },
+        {
+            "chainId": 1,
+            "address": "0xdb25f211ab05b1c97d595516f45794528a807ad8",
+            "name": "STASIS EURO",
+            "symbol": "EURS",
+            "decimals": 2,
+            "logoURI": "https://assets.coingecko.com/coins/images/5164/thumb/EURS_300x300.png?1550571779",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
+            }
+        },
+        {
+            "chainId": 1,
+            "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+            "name": "Wrapped Bitcoin",
+            "symbol": "WBTC",
+            "decimals": 8,
+            "logoURI": "https://assets.coingecko.com/coins/images/7598/thumb/wrapped_bitcoin_wbtc.png?1548822744",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
+            }
+        },
+        {
+            "chainId": 1,
+            "address": "0xeb4c2781e4eba804ce9a9803c67d0893436bb27d",
+            "name": "renBTC",
+            "symbol": "RENBTC",
+            "decimals": 8,
+            "logoURI": "https://assets.coingecko.com/coins/images/11370/thumb/Bitcoin.jpg?1628072791",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
+            }
+        },
+        {
+            "chainId": 1,
+            "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+            "name": "Dai",
+            "symbol": "DAI",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/9956/thumb/dai-multi-collateral-mcd.png?1574218774",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
+            }
+        },
+        {
+            "chainId": 5551,
+            "address": "0x595DBA438a1bf109953F945437c1584319515d88",
+            "name": "Nahmii",
+            "symbol": "NII",
+            "decimals": 15,
+            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5551,
+            "address": "0x604efD2Ec4aFC77Ba9827685eCad54C8EdcA041B",
+            "name": "NiiFi",
+            "symbol": "NIIFI",
+            "decimals": 15,
+            "logoURI": "https://assets.coingecko.com/coins/images/16033/thumb/niifi.PNG?1622674467",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5551,
+            "address": "0xBe5c622cBbF7F9c326D70f795890661FeB5BF2e6",
+            "name": "USD Coin",
+            "symbol": "USDC",
+            "decimals": 6,
+            "logoURI": "https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5551,
+            "address": "0x07137d8BDA2923Dfc1fF5b08a2e81E8715056ad3",
+            "name": "Tether USD",
+            "symbol": "USDT",
+            "decimals": 6,
+            "logoURI": "https://assets.coingecko.com/coins/images/325/thumb/Tether-logo.png?1598003707",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5551,
+            "address": "0x72dDa4F7d131035F523728F11FAe0D7ccbA67128",
+            "name": "Pax Dollar",
+            "symbol": "USDP",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/6013/thumb/Pax_Dollar.png?1629877204",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5551,
+            "address": "0x366C4bcbbcA84fb8F64D33978c4b85313f8dd7d7",
+            "name": "Euro Tether",
+            "symbol": "EURT",
+            "decimals": 6,
+            "logoURI": "https://assets.coingecko.com/coins/images/17385/thumb/Tether_full_logo_dm.png?1627537298",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5551,
+            "address": "0xAC92b09965B6AAc33Dd43f3Ce752aD79b74Ddb94",
+            "name": "STASIS EURO",
+            "symbol": "EURS",
+            "decimals": 2,
+            "logoURI": "https://assets.coingecko.com/coins/images/5164/thumb/EURS_300x300.png?1550571779",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5551,
+            "address": "0x4F0Ea1334c97f0556d8A6e839e19770452494fDC",
+            "name": "Wrapped Bitcoin",
+            "symbol": "WBTC",
+            "decimals": 8,
+            "logoURI": "https://assets.coingecko.com/coins/images/7598/thumb/wrapped_bitcoin_wbtc.png?1548822744",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5551,
+            "address": "0x0e14f07BCdCacEC46677DFf02685f049A7c3928C",
+            "name": "renBTC",
+            "symbol": "RENBTC",
+            "decimals": 8,
+            "logoURI": "https://assets.coingecko.com/coins/images/11370/thumb/Bitcoin.jpg?1628072791",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5551,
+            "address": "0xd031a1682399FaD6683FF3c60De8AB5DD3B3D0A3",
+            "name": "Dai",
+            "symbol": "DAI",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/9956/thumb/dai-multi-collateral-mcd.png?1574218774",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
         }
     ],
     "version": {
