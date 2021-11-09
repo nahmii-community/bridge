@@ -28,6 +28,7 @@
         approveAllowance,
         depositETH,
         depositERC20,
+        withdraw,
     } from "../../utils/ethereum";
     import logoETH from "./eth.png";
 
@@ -69,7 +70,10 @@
         if (selectedToken == "ETH") {
             selectedTokenLogo = logoETH;
             const tempBalance = await getBalance(address, provider);
-            const tempCompanionBalance = await getBalance(address, companionNetworkProvider);
+            const tempCompanionBalance = await getBalance(
+                address,
+                companionNetworkProvider
+            );
             balance = ethers.utils.formatEther(tempBalance);
             companionBalance = ethers.utils.formatEther(tempCompanionBalance);
         } else {
@@ -131,10 +135,31 @@
 
     const bridgeAsset = async () => {
         if (L2) {
-            // Withdraw
-            console.log("withdraw asset: ", selectedToken);
+            // Initiate withdrawal
+            let l2Token;
 
-            toast.push(`<strong>Withdrawals are not enabled yet.</strong>`);
+            if (selectedToken == "ETH") {
+                l2Token = { decimals: 18 };
+            } else {
+                l2Token = getTokenDetails(selectedToken, chainId, getTokens());
+            }
+
+            const requestedAmountToBridge = ethers.utils.parseUnits(
+                amountToBridge,
+                l2Token.decimals
+            );
+
+            // TODO: Check allowance
+            // TODO: Increase allowance if necessary
+
+            const withdrawTx = await withdraw(
+                address,
+                provider.getSigner(0),
+                requestedAmountToBridge
+            );
+            console.log(withdrawTx);
+            toast.push(`<strong>Withdrawal initiated</strong>
+                <p>click <a href="${blockExplorer}/txt/${withdrawTx.hash}" target="_blank">here</a> for more details.`);
         } else {
             // Deposit
             const blockExplorer = (await findSupportedNetwork(chainId))

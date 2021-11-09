@@ -35,7 +35,7 @@ export const depositERC20 = async (L1TokenAddress, L2TokenAddress, bridgeAddress
     return result;
 }
 
-export const withdraw = async (L2TokenAddress, withdrawAmount, signer) => {
+export const withdraw = async (L2TokenAddress, signer, withdrawAmount) => {
     const contract = new Contract(L2_STANDARD_BRIDGE, L2StandardBridge, signer);
     const result = await contract.withdraw(L2TokenAddress, withdrawAmount, 0, "0x");
     return result;
