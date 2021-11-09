@@ -1,5 +1,5 @@
 import { parseUnits } from "@ethersproject/units";
-import { Contract } from "ethers";
+import { Contract, BigNumber } from "ethers";
 import ERC20ABI from "../lib/ABI/ERC20ABI.json";
 import L1StandardBridge from "../lib/ABI/L1StandardBridgeABI.json";
 import L2StandardBridge from "../lib/ABI/L2StandardBridgeABI.json";

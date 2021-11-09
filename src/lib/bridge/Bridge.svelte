@@ -32,6 +32,9 @@
     } from "../../utils/ethereum";
     import logoETH from "./eth.png";
 
+    const NVM_ETH = "0x4200000000000000000000000000000000000006";
+    const L2_STANDARD_BRIDGE = "0x4200000000000000000000000000000000000010";
+
     let isSelectingToken;
     let selectedToken = "ETH";
     let selectedTokenLogo = logoETH;
@@ -134,12 +137,20 @@
     };
 
     const bridgeAsset = async () => {
+        const blockExplorer = (await findSupportedNetwork(chainId))
+            .blockExplorerUrls[0];
+
         if (L2) {
-            // Initiate withdrawal
+            // Initiate withdrawal.
             let l2Token;
 
             if (selectedToken == "ETH") {
-                l2Token = { decimals: 18 };
+                l2Token = {
+                    decimals: 18,
+                    address: NVM_ETH,
+                    name: "Ethereum",
+                    symbol: "ETH",
+                };
             } else {
                 l2Token = getTokenDetails(selectedToken, chainId, getTokens());
             }
@@ -149,11 +160,8 @@
                 l2Token.decimals
             );
 
-            // TODO: Check allowance
-            // TODO: Increase allowance if necessary
-
             const withdrawTx = await withdraw(
-                address,
+                l2Token.address,
                 provider.getSigner(0),
                 requestedAmountToBridge
             );
@@ -162,8 +170,6 @@
                 <p>click <a href="${blockExplorer}/txt/${withdrawTx.hash}" target="_blank">here</a> for more details.`);
         } else {
             // Deposit
-            const blockExplorer = (await findSupportedNetwork(chainId))
-                .blockExplorerUrls[0];
             if (selectedToken == "ETH") {
                 const standardBridge = (await findSupportedNetwork(chainId))
                     .standardBridge;
@@ -172,11 +178,11 @@
                     provider.getSigner(0),
                     amountToBridge
                 );
-                // Indicate a deposit is in progress
+                // Indicate a deposit is in progress.
                 toast.push(`<strong>Depositing ${selectedToken}...</strong>
                     <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
                 const receipt = await tx.wait(1);
-                // Notify user and update balance
+                // Notify user and update balance.
                 toast.push(`<strong>Deposit of ${selectedToken} complete.</strong>
                     <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
                 await getSelectedToken({ detail: { symbol: selectedToken } });
@@ -215,10 +221,10 @@
                         l1Token.address,
                         provider.getSigner(0)
                     );
-                    // Indicate an approval is in progress
+                    // Indicate an approval is in progress.
                     toast.push(`<strong>Approval of ${selectedToken} in progress.</strong>
                         <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
-                    // Indicate an approval has gone through
+                    // Indicate an approval has gone through.
                     const receipt = await tx.wait(1);
                     toast.push(`<strong>Approval of ${selectedToken} complete.</strong>
                         <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
@@ -231,11 +237,11 @@
                     provider.getSigner(0),
                     requestedAmountToBridge
                 );
-                // Indicate a deposit is in progress
+                // Indicate a deposit is in progress.
                 toast.push(`<strong>Depositing ${selectedToken}...</strong>
                     <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
                 const receipt = await tx.wait(1);
-                // Notify user and update balance
+                // Notify user and update balance.
                 toast.push(`<strong>Deposit of ${selectedToken} complete.</strong>
                     <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
                 await getSelectedToken({ detail: { symbol: selectedToken } });
