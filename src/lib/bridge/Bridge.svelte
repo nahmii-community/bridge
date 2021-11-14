@@ -269,6 +269,7 @@
     onMount(() => {
         unsubscribeNetwork = network.subscribe(async (_chainId) => {
             chainId = _chainId;
+            selectedToken = "ETH";
             await populateData(_chainId);
         });
         unsubscribeWallet = wallet.subscribe(async (_wallet) => {
