@@ -38,6 +38,8 @@
     let isSelectingToken;
     let selectedToken = "ETH";
     let selectedTokenLogo = logoETH;
+    let selectedTokenAddress;
+    let selectedTokenDecimals;
     let activeNetwork;
     let chainId;
     let provider;
@@ -91,6 +93,8 @@
                 getTokens()
             );
             selectedTokenLogo = tokenDetails.logoURI;
+            selectedTokenAddress = tokenDetails.address;
+            selectedTokenDecimals = tokenDetails.decimals;
             balance = ethers.utils.formatUnits(
                 await getERC20Balance(address, tokenDetails.address, provider),
                 tokenDetails.decimals
@@ -165,7 +169,6 @@
                 provider.getSigner(0),
                 requestedAmountToBridge
             );
-            console.log(withdrawTx);
             toast.push(`<strong>Withdrawal initiated</strong>
                 <p>click <a href="${blockExplorer}/txt/${withdrawTx.hash}" target="_blank">here</a> for more details.`);
         } else {
@@ -296,6 +299,8 @@
             balance={truncateBalance(balance)}
             token={selectedToken}
             logo={selectedTokenLogo}
+            address={selectedTokenAddress}
+            decimals={selectedTokenDecimals}
         />
         <Divider on:click={flipNetworks} />
         <To
