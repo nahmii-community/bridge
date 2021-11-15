@@ -58,6 +58,7 @@ async function handleAccountsChanged(accounts) {
 
     if (accounts.length === 0) {
         // User has not connected any account or MetaMask is locked.
+        isConnected.set(false);
     } else if (accounts[0] !== currentAccount) {
         wallet.set(accounts);
     }
