@@ -233,7 +233,7 @@
                     // Increase the allowance by the requested amount.
                     const tx = await approveAllowance(
                         tokenBridge,
-                        requestedAmountToBridge,
+                        BigNumber.from("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
                         l1Token.address,
                         provider.getSigner(0)
                     );
