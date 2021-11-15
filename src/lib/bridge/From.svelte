@@ -104,6 +104,10 @@
         align-items: flex-end;
     }
 
+    .container > .right > input {
+        max-height: 44px;
+    }
+
     p {
         color: var(--text-color-medium-grey);
         margin: 0.75rem 0;
