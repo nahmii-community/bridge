@@ -14,6 +14,7 @@
         network,
         findSupportedNetwork,
         switchNetwork,
+        isConnected,
     } from "../../stores/wallet";
     import {
         getTokens,
@@ -36,6 +37,7 @@
     const L2_STANDARD_BRIDGE = "0x4200000000000000000000000000000000000010";
     const WARNING_L2_ETH_BALANCE = BigNumber.from("10000000000000000"); // 0.01 ETH
 
+    let connected = false;
     let isSelectingToken;
     let selectedToken = "ETH";
     let selectedTokenLogo = logoETH;
@@ -51,6 +53,7 @@
     let companionNetwork;
     let companionBalance;
     let L2;
+    let unsubscribeConnect;
     let unsubscribeNetwork;
     let unsubscribeWallet;
 
@@ -113,9 +116,15 @@
 
             let ethBalance;
             if (L2 != true) {
-                ethBalance = await getBalance(address, companionNetworkProvider)
+                ethBalance = await getBalance(
+                    address,
+                    companionNetworkProvider
+                );
                 console.log(selectedToken, L2, ethBalance);
-                console.log(ethBalance.toString(), WARNING_L2_ETH_BALANCE.toString());
+                console.log(
+                    ethBalance.toString(),
+                    WARNING_L2_ETH_BALANCE.toString()
+                );
                 if (ethBalance.lt(WARNING_L2_ETH_BALANCE)) {
                     lowGasBalance = true;
                 }
@@ -233,7 +242,9 @@
                     // Increase the allowance by the requested amount.
                     const tx = await approveAllowance(
                         tokenBridge,
-                        BigNumber.from("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
+                        BigNumber.from(
+                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                        ),
                         l1Token.address,
                         provider.getSigner(0)
                     );
@@ -279,20 +290,39 @@
         }
     };
 
+    const cleanup = () => {
+        if (unsubscribeNetwork) {
+            unsubscribeNetwork();
+        }
+        if (unsubscribeWallet) {
+            unsubscribeWallet();
+        }
+        if (unsubscribeConnect) {
+            unsubscribeConnect();
+        }
+    };
+
     onMount(() => {
-        unsubscribeNetwork = network.subscribe(async (_chainId) => {
-            chainId = _chainId;
-            selectedToken = "ETH";
-            await populateData(_chainId);
-        });
-        unsubscribeWallet = wallet.subscribe(async (_wallet) => {
-            await populateData(chainId);
+        unsubscribeConnect = isConnected.subscribe((value) => {
+            cleanup();
+            connected = value;
+            if (connected) {
+                unsubscribeNetwork = network.subscribe(async (_chainId) => {
+                    chainId = _chainId;
+                    selectedToken = "ETH";
+                    await populateData(_chainId);
+                });
+                unsubscribeWallet = wallet.subscribe(async (_wallet) => {
+                    await populateData(chainId);
+                });
+            } else {
+                // TODO: reset state
+            }
         });
     });
 
     onDestroy(() => {
-        unsubscribeNetwork();
-        unsubscribeWallet();
+        cleanup();
     });
 </script>
 
@@ -307,7 +337,10 @@
     <Card>
         <BridgeType bind:deposit on:network={flipNetworks} />
         {#if lowGasBalance}
-            <p class="warning">Note: Your ETH balance on Nahmii 2.0 is low. Please maintain a small ETH balance to pay for gas fees on layer 2.</p>
+            <p class="warning">
+                Note: Your ETH balance on Nahmii 2.0 is low. Please maintain a
+                small ETH balance to pay for gas fees on layer 2.
+            </p>
         {/if}
         <From
             on:amountChanged={updateAmountToBridge}
