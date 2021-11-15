@@ -307,7 +307,7 @@
     <Card>
         <BridgeType bind:deposit on:network={flipNetworks} />
         {#if lowGasBalance}
-            <p class="warning">Note: Your ETH balance on Nahmii is low. Please keep in mind that you require ETH to pay gas fees!</p>
+            <p class="warning">Note: Your ETH balance on Nahmii 2.0 is low. Please maintain a small ETH balance to pay for gas fees on layer 2.</p>
         {/if}
         <From
             on:amountChanged={updateAmountToBridge}
