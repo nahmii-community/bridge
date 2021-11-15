@@ -12,6 +12,7 @@
         networkDetails = await findSupportedNetwork(value);
         activeNetwork = networkDetails.chainName;
         isSupported = networkDetails.isSupported;
+        isSelectingNetwork = false;
     });
 
     const openNetworkModal = () => {
@@ -36,7 +37,9 @@
         title="Supported Networks"
         subtext=""
         message="Select one of the supported networks to add it to your wallet and switch to it:"
+        closeable=true
         on:cancel={closeNetworkModal}
+        on:close={closeNetworkModal}
     />
 {/if}
 

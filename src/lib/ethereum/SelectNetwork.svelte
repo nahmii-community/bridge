@@ -1,4 +1,5 @@
 <script>
+    import { createEventDispatcher } from "svelte";
     import Button from "$lib/shared/Button.svelte";
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import Modal from "$lib/shared/Modal.svelte";
@@ -7,6 +8,16 @@
     export let title = "Unsupported network";
     export let subtext = "Your active network is not supported!";
     export let message = "Switch to one of the supported networks:";
+    export let closeable = false;
+
+    const dispatch = createEventDispatcher();
+
+    const onNetworkClick = async (chainId) => {
+        await switchNetwork(chainId);
+        if (closeable) {
+            dispatch("close");
+        }
+    }
 </script>
 
 <Modal footer={false} on:cancel>
@@ -14,13 +25,13 @@
     <p class="modal-text">{subtext}</p>
     <p class="modal-text">{message}</p>
     <div class="buttons">
-        <Button on:click={() => switchNetwork("0x1")}>Ethereum Mainnet</Button>
+        <Button on:click={() => onNetworkClick("0x1")}>Ethereum Mainnet</Button>
         <div class="spacer" />
-        <Button on:click={() => switchNetwork("0x15af")}>Nahmii Mainnet</Button>
+        <Button on:click={() => onNetworkClick("0x15af")}>Nahmii Mainnet</Button>
         <div class="spacer" />
-        <Button on:click={() => switchNetwork("0x3")}>Ropsten Testnet</Button>
+        <Button on:click={() => onNetworkClick("0x3")}>Ropsten Testnet</Button>
         <div class="spacer" />
-        <Button on:click={() => switchNetwork("0x15b1")}>Nahmii Testnet</Button>
+        <Button on:click={() => onNetworkClick("0x15b1")}>Nahmii Testnet</Button>
     </div>
 </Modal>
 
