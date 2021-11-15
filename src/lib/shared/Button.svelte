@@ -3,6 +3,9 @@
 
     export let text = "Click me";
     export let disabled = false;
+    export let height;
+    export let margin;
+    export let padding;
     let timer;
     let wait = false;
 
@@ -31,7 +34,13 @@
     }
 </script>
 
-<button on:click={onClick} {disabled}>
+<button
+    on:click={onClick}
+    {disabled}
+    style="{height ? `height: ${height};` : ''}
+    {margin ? `margin: ${margin};` : ''}
+    {padding ? `padding: ${padding};` : ''}"
+>
     <slot>{text}</slot>
 </button>
 
