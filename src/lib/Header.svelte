@@ -4,8 +4,7 @@
     import Network from "./ethereum/Network.svelte";
     import Wallet from "./ethereum/Wallet.svelte";
     import Button from "./shared/Button.svelte";
-    import { connectWallet } from "../stores/wallet";
-    import { isConnected } from "../stores/wallet";
+    import { connectWallet, isConnected } from "../stores/wallet";
 
     let awaitingApproval = false;
     let connected = false;
