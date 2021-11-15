@@ -34,6 +34,7 @@
 
     const NVM_ETH = "0x4200000000000000000000000000000000000006";
     const L2_STANDARD_BRIDGE = "0x4200000000000000000000000000000000000010";
+    const WARNING_L2_ETH_BALANCE = BigNumber.from("10000000000000000"); // 0.01 ETH
 
     let isSelectingToken;
     let selectedToken = "ETH";
@@ -55,6 +56,7 @@
 
     let amountToBridge = "0";
     let deposit;
+    let lowGasBalance = false;
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
     $: deposit = L2 === false ? true : false;
 
@@ -71,6 +73,7 @@
         // TODO abstract away token information retrieval
         selectedToken = event.detail.symbol;
         isSelectingToken = false;
+        lowGasBalance = false;
         // TODO update bridge address, balances and token symbol
         if (selectedToken == "ETH") {
             selectedTokenLogo = logoETH;
@@ -107,6 +110,16 @@
                 ),
                 tokenDetails.decimals
             );
+
+            let ethBalance;
+            if (L2 != true) {
+                ethBalance = await getBalance(address, companionNetworkProvider)
+                console.log(selectedToken, L2, ethBalance);
+                console.log(ethBalance.toString(), WARNING_L2_ETH_BALANCE.toString());
+                if (ethBalance.lt(WARNING_L2_ETH_BALANCE)) {
+                    lowGasBalance = true;
+                }
+            }
         }
     };
 
@@ -293,6 +306,9 @@
 <div class="container">
     <Card>
         <BridgeType bind:deposit on:network={flipNetworks} />
+        {#if lowGasBalance}
+            <p class="warning">Note: Your ETH balance on Nahmii is low. Please keep in mind that you require ETH to pay gas fees!</p>
+        {/if}
         <From
             on:amountChanged={updateAmountToBridge}
             on:selectToken={selectToken}
@@ -321,5 +337,12 @@
         max-width: 550px;
         margin: auto;
         justify-content: center;
+    }
+
+    .warning {
+        background-color: var(--warningBackground);
+        margin: 0.3em 0;
+        padding: 0.8em;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
 </style>

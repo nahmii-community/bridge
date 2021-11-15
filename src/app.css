@@ -22,6 +22,8 @@
     --toastBoxShadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     --toastColor: var(--text-color);
     --toastPadding: 0.5rem;
+
+    --warningBackground: #ffbb33;
 }
 
 
@@ -39,6 +41,8 @@
 
     --toastBackground: rgba(0,0,0,0.9);
     --toastColor: var(--text-color);
+
+    --warningBackground: #FF8800;
 }
 
 body {
