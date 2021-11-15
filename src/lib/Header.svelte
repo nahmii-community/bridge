@@ -3,13 +3,22 @@
     import DarkModeToggle from "./darkmode/DarkModeToggle.svelte";
     import Network from "./ethereum/Network.svelte";
     import Wallet from "./ethereum/Wallet.svelte";
+    import Button from "./shared/Button.svelte";
+    import { connectWallet } from "../stores/wallet";
     import { isConnected } from "../stores/wallet";
 
-    let connected = true;
+    let awaitingApproval = false;
+    let connected = false;
 
-    isConnected.subscribe(value => {
+    isConnected.subscribe((value) => {
         connected = value;
-    })
+    });
+
+    async function connect() {
+        awaitingApproval = true;
+        connected = await connectWallet();
+        awaitingApproval = false;
+    }
 </script>
 
 <header>
@@ -22,16 +31,26 @@
 
         <div class="corner">
             <DarkModeToggle />
+            {#if !connected}
+                <Button
+                    on:click={connect}
+                    disabled={awaitingApproval}
+                    height="3em"
+                    padding="0 1em"
+                    margin="0 0 0 1em"
+                    >CONNECT WALLET
+                </Button>
+            {/if}
         </div>
     </nav>
 
     {#if connected}
-    <div class="network-wallet">
-        <hr class="divider" />
-        <Network />
-        <hr />
-        <Wallet />
-    </div>
+        <div class="network-wallet">
+            <hr class="divider" />
+            <Network />
+            <hr />
+            <Wallet />
+        </div>
     {/if}
 </header>
 
@@ -64,7 +83,6 @@
     .corner {
         display: flex;
         align-self: center;
-        width: 3em;
         height: 3em;
     }
 
