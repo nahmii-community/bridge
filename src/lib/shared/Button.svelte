@@ -3,9 +3,9 @@
 
     export let text = "Click me";
     export let disabled = false;
-    export let height;
-    export let margin;
-    export let padding;
+    export let height = "";
+    export let margin = "";
+    export let padding = "";
     let timer;
     let wait = false;
 
