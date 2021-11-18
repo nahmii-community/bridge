@@ -38,6 +38,7 @@
     const WARNING_L2_ETH_BALANCE = BigNumber.from("10000000000000000"); // 0.01 ETH
 
     let connected = false;
+    let disabled = true;
     let isSelectingToken;
     let selectedToken = "ETH";
     let selectedTokenLogo = logoETH;
@@ -134,6 +135,11 @@
 
     const updateAmountToBridge = async (event) => {
         amountToBridge = event.detail.amountToBridge;
+        if (Number(amountToBridge) > 0) {
+            disabled = false;
+        } else {
+            disabled = true;
+        }
     };
 
     const populateData = async (_chainId) => {
@@ -360,7 +366,7 @@
             token={selectedToken}
             logo={selectedTokenLogo}
         />
-        <Button on:click={bridgeAsset}>{buttonText}</Button>
+        <Button on:click={bridgeAsset} {disabled}>{buttonText}</Button>
     </Card>
 </div>
 
