@@ -23,7 +23,7 @@
 <header>
     <nav>
         <div class="corner">
-            <a href="https://nahmii.io">
+            <a href="/">
                 <img src={logo} alt="Nahmii" />
             </a>
         </div>
