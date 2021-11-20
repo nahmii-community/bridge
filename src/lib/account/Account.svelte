@@ -35,4 +35,10 @@
         margin: auto;
         justify-content: center;
     }
+
+    p {
+        font-weight: 500;
+        font-size: 1.2em;
+        margin: 0.5em 0;
+    }
 </style>
