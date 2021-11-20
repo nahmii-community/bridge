@@ -138,11 +138,7 @@
                     address,
                     companionNetworkProvider
                 );
-                console.log(selectedToken, L2, ethBalance);
-                console.log(
-                    ethBalance.toString(),
-                    WARNING_L2_ETH_BALANCE.toString()
-                );
+
                 if (ethBalance.lt(WARNING_L2_ETH_BALANCE)) {
                     lowGasBalance = true;
                 }
@@ -269,7 +265,6 @@
             l1Token.address,
             provider
         );
-        console.log(`Updated allowance: ${allowance.toString()}`);
 
         toast.push(`<strong>${finishedMessage}</strong>
                         <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
