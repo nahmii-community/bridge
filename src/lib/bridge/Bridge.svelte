@@ -33,9 +33,14 @@
     } from "../../utils/ethereum";
     import logoETH from "./eth.png";
 
+    // TODO move constants to separate util file
     const NVM_ETH = "0x4200000000000000000000000000000000000006";
     const L2_STANDARD_BRIDGE = "0x4200000000000000000000000000000000000010";
     const WARNING_L2_ETH_BALANCE = BigNumber.from("10000000000000000"); // 0.01 ETH
+    const MAX_APPROVAL_AMOUNT = BigNumber.from(
+        "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    ); // Unlimited approval
+    const ZERO = BigNumber.from("0");
 
     let connected = false;
     let disabled = true;
@@ -58,7 +63,14 @@
     let unsubscribeNetwork;
     let unsubscribeWallet;
 
+    let allowance = 0;
     let amountToBridge = "0";
+    let tokenBridge;
+    let l1Token;
+    let blockExplorer;
+
+    let isApproved = true;
+    let resetApproval = false;
     let deposit;
     let lowGasBalance = false;
     $: buttonText = deposit === true ? "DEPOSIT" : "WITHDRAW";
@@ -78,6 +90,10 @@
         selectedToken = event.detail.symbol;
         isSelectingToken = false;
         lowGasBalance = false;
+        isApproved = true;
+        resetApproval = false;
+        tokenBridge;
+        l1Token;
         // TODO update bridge address, balances and token symbol
         if (selectedToken == "ETH") {
             selectedTokenLogo = logoETH;
@@ -88,6 +104,7 @@
             );
             balance = ethers.utils.formatEther(tempBalance);
             companionBalance = ethers.utils.formatEther(tempCompanionBalance);
+            allowance = 0;
         } else {
             const tokenDetails = getTokenDetails(
                 selectedToken,
@@ -129,14 +146,69 @@
                 if (ethBalance.lt(WARNING_L2_ETH_BALANCE)) {
                     lowGasBalance = true;
                 }
+
+                // TODO get allowance
+                l1Token = getTokenDetails(selectedToken, chainId, getTokens());
+
+                tokenBridge = getTokenBridge(
+                    selectedToken,
+                    chainId,
+                    getTokens()
+                );
+
+                allowance = await getAllowance(
+                    address,
+                    tokenBridge,
+                    l1Token.address,
+                    provider
+                );
+
+                if (allowance.eq(MAX_APPROVAL_AMOUNT)) {
+                    // allow deposit
+                    isApproved = true;
+                    resetApproval = false;
+                } else if (allowance.eq(ZERO)) {
+                    // set unlimited approval
+                    isApproved = false;
+                } else if (allowance.lt(BigNumber.from(amountToBridge))) {
+                    // reset approval to zero
+                    resetApproval = true;
+                }
             }
         }
     };
 
     const updateAmountToBridge = async (event) => {
         amountToBridge = event.detail.amountToBridge;
+        isApproved = true;
+        resetApproval = false;
         if (Number(amountToBridge) > 0) {
             disabled = false;
+
+            if (selectedToken != "ETH" && L2 != true) {
+                // Check if allowance is ok
+                const requestedAmountToBridge = ethers.utils.parseUnits(
+                    amountToBridge,
+                    l1Token.decimals
+                );
+
+                if (
+                    allowance.eq(MAX_APPROVAL_AMOUNT) ||
+                    allowance.gt(BigNumber.from(requestedAmountToBridge))
+                ) {
+                    // allow deposit
+                    isApproved = true;
+                    resetApproval = false;
+                } else if (allowance.eq(ZERO)) {
+                    // set unlimited approval
+                    isApproved = false;
+                } else if (
+                    allowance.lt(BigNumber.from(requestedAmountToBridge))
+                ) {
+                    // reset approval to zero
+                    resetApproval = true;
+                }
+            }
         } else {
             disabled = true;
         }
@@ -151,12 +223,17 @@
                 L2,
                 companionChainId,
             } = networkDetails);
+
             ({ chainName: companionNetwork, rpcUrls } =
                 await findSupportedNetwork(companionChainId));
+
             provider = new ethers.providers.Web3Provider(window.ethereum);
+
             companionNetworkProvider = new ethers.providers.JsonRpcProvider(
                 rpcUrls[0]
             );
+
+            blockExplorer = networkDetails.blockExplorerUrls[0];
             await wallet.subscribe(async (accounts) => {
                 address = accounts[0];
             });
@@ -168,10 +245,60 @@
         await switchNetwork(companionChainId);
     };
 
-    const bridgeAsset = async () => {
-        const blockExplorer = (await findSupportedNetwork(chainId))
-            .blockExplorerUrls[0];
+    const approve = async (
+        amountToApprove,
+        inProgressMessage,
+        finishedMessage
+    ) => {
+        const tx = await approveAllowance(
+            tokenBridge,
+            BigNumber.from(amountToApprove),
+            l1Token.address,
+            provider.getSigner(0)
+        );
+        // Indicate an approval is in progress.
+        toast.push(`<strong>${inProgressMessage}</strong>
+                        <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
+        // Indicate an approval has gone through.
+        const receipt = await tx.wait(1);
 
+        // Update allowance
+        allowance = await getAllowance(
+            address,
+            tokenBridge,
+            l1Token.address,
+            provider
+        );
+        console.log(`Updated allowance: ${allowance.toString()}`);
+
+        toast.push(`<strong>${finishedMessage}</strong>
+                        <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
+    };
+
+    const doApproval = async () => {
+        disabled = true;
+        await approve(
+            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            `Approval of ${selectedToken} in progress.`,
+            `Approval of ${selectedToken} complete.`
+        );
+        disabled = false;
+        isApproved = true;
+    };
+
+    const doResetApproval = async () => {
+        disabled = true;
+        await approve(
+            "0",
+            `Resetting approval for ${selectedToken} in progress.`,
+            `Resetting approval for ${selectedToken} complete.`
+        );
+        disabled = false;
+        isApproved = false;
+        resetApproval = false;
+    };
+
+    const bridgeAsset = async () => {
         if (L2) {
             // Initiate withdrawal.
             let l2Token;
@@ -218,50 +345,16 @@
                     <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
                 await getSelectedToken({ detail: { symbol: selectedToken } });
             } else {
-                const l1Token = getTokenDetails(
-                    selectedToken,
-                    chainId,
-                    getTokens()
-                );
                 const l2Token = getTokenDetails(
                     selectedToken,
                     companionChainId,
                     getTokens()
                 );
-                const tokenBridge = getTokenBridge(
-                    selectedToken,
-                    chainId,
-                    getTokens()
-                );
-                const allowance = await getAllowance(
-                    address,
-                    tokenBridge,
-                    l1Token.address,
-                    provider
-                );
+
                 const requestedAmountToBridge = ethers.utils.parseUnits(
                     amountToBridge,
                     l1Token.decimals
                 );
-
-                if (allowance.lt(requestedAmountToBridge)) {
-                    // Increase the allowance by the requested amount.
-                    const tx = await approveAllowance(
-                        tokenBridge,
-                        BigNumber.from(
-                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-                        ),
-                        l1Token.address,
-                        provider.getSigner(0)
-                    );
-                    // Indicate an approval is in progress.
-                    toast.push(`<strong>Approval of ${selectedToken} in progress.</strong>
-                        <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
-                    // Indicate an approval has gone through.
-                    const receipt = await tx.wait(1);
-                    toast.push(`<strong>Approval of ${selectedToken} complete.</strong>
-                        <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
-                }
 
                 const tx = await depositERC20(
                     l1Token.address,
@@ -366,7 +459,14 @@
             token={selectedToken}
             logo={selectedTokenLogo}
         />
-        <Button on:click={bridgeAsset} {disabled}>{buttonText}</Button>
+        {#if resetApproval}
+            <Button on:click={doResetApproval} {disabled}>RESET APPROVAL</Button
+            >
+        {:else if !isApproved}
+            <Button on:click={doApproval} {disabled}>APPROVE</Button>
+        {:else}
+            <Button on:click={bridgeAsset} {disabled}>{buttonText}</Button>
+        {/if}
     </Card>
 </div>
 
