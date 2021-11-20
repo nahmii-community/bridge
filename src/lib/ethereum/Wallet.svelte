@@ -1,19 +1,11 @@
 <script>
+    import { shorten } from "$lib/../utils/format";
     import { goto } from "$app/navigation";
     import { onDestroy } from "svelte";
     import { wallet } from "../../stores/wallet";
 
     export let address = "0x";
     let shortAddress;
-
-    function shorten(address) {
-        let shortAddress = "";
-        return shortAddress.concat(
-            address.slice(0, 7),
-            "...",
-            address.slice(-5)
-        );
-    }
 
     $: shortAddress = shorten(address);
 
