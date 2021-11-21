@@ -5,25 +5,41 @@
     export let transactionType = "transaction";
 </script>
 
-{#if transactions.length != 0}
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Hash</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {#each transactions as transaction}
+<div class="container">
+    {#if transactions.length != 0}
+        <table>
+            <thead>
                 <tr>
-                    <td>{transaction.timestamp}</td>
-                    <td>{shorten(transaction.hash)}</td>
-                    <td>{transaction.status}</td>
+                    <th>Date</th>
+                    <th>Hash</th>
+                    <th>Status</th>
                 </tr>
-            {/each}
-        </tbody>
-    </table>
-{:else}
-    No recent {transactionType}
-{/if}
+            </thead>
+            <tbody>
+                {#each transactions as transaction}
+                    <tr>
+                        <td>{transaction.timestamp}</td>
+                        <td>{shorten(transaction.hash)}</td>
+                        <td>{transaction.status}</td>
+                    </tr>
+                {/each}
+            </tbody>
+        </table>
+    {:else}
+        No recent {transactionType}
+    {/if}
+</div>
+
+<style>
+    .container {
+        margin-bottom: 1em;
+    }
+
+    .container:last-of-type {
+        margin-bottom: 0;
+    }
+
+    th {
+        text-align: left;
+    }
+</style>
