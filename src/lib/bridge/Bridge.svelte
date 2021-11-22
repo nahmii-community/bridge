@@ -2,6 +2,12 @@
     import { ethers, BigNumber } from "ethers";
     import { onMount, onDestroy } from "svelte";
     import { toast } from "@zerodevx/svelte-toast";
+    import {
+        MAX_APPROVAL_AMOUNT,
+        NVM_ETH,
+        WARNING_L2_ETH_BALANCE,
+        ZERO,
+    } from "$lib/../utils/constants";
     import Divider from "$lib/shared/Divider.svelte";
     import Button from "$lib/shared/Button.svelte";
     import Card from "../shared/Card.svelte";
@@ -32,15 +38,6 @@
         withdraw,
     } from "../../utils/ethereum";
     import logoETH from "./eth.png";
-
-    // TODO move constants to separate util file
-    const NVM_ETH = "0x4200000000000000000000000000000000000006";
-    const L2_STANDARD_BRIDGE = "0x4200000000000000000000000000000000000010";
-    const WARNING_L2_ETH_BALANCE = BigNumber.from("10000000000000000"); // 0.01 ETH
-    const MAX_APPROVAL_AMOUNT = BigNumber.from(
-        "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-    ); // Unlimited approval
-    const ZERO = BigNumber.from("0");
 
     let connected = false;
     let disabled = true;
@@ -319,8 +316,15 @@
                 provider.getSigner(0),
                 requestedAmountToBridge
             );
+
+            await withdrawTx.wait();
+
+            // TODO store withdrawal metadata in localStorage
+            // TODO update UX to display challenge period active
+
             toast.push(`<strong>Withdrawal initiated</strong>
                 <p>click <a href="${blockExplorer}/txt/${withdrawTx.hash}" target="_blank">here</a> for more details.`);
+            await getSelectedToken({ detail: { symbol: selectedToken } });
         } else {
             // Deposit
             if (selectedToken == "ETH") {
@@ -331,10 +335,15 @@
                     provider.getSigner(0),
                     amountToBridge
                 );
+                console.log(`tx:}`, tx);
                 // Indicate a deposit is in progress.
                 toast.push(`<strong>Depositing ${selectedToken}...</strong>
                     <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
                 const receipt = await tx.wait(1);
+                console.log(`receipt:`, receipt);
+
+                // TODO store deposit metadata in localStorage
+
                 // Notify user and update balance.
                 toast.push(`<strong>Deposit of ${selectedToken} complete.</strong>
                     <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
@@ -358,10 +367,15 @@
                     provider.getSigner(0),
                     requestedAmountToBridge
                 );
+                console.log(`tx:}`, tx);
                 // Indicate a deposit is in progress.
                 toast.push(`<strong>Depositing ${selectedToken}...</strong>
                     <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
                 const receipt = await tx.wait(1);
+                console.log(`receipt:`, receipt);
+
+                // TODO store deposit metadata in localStorage
+
                 // Notify user and update balance.
                 toast.push(`<strong>Deposit of ${selectedToken} complete.</strong>
                     <p>Click <a href="${blockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
