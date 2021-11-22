@@ -1,5 +1,5 @@
 <script>
-    import { shorten } from "$lib/../utils/format";
+    import { shorten, timestampToDateTime } from "$lib/../utils/format";
 
     export let transactions = [];
     export let transactionType = "transaction";
@@ -18,7 +18,7 @@
             <tbody>
                 {#each transactions as transaction}
                     <tr>
-                        <td>{transaction.timestamp}</td>
+                        <td>{timestampToDateTime(transaction.timestamp)}</td>
                         <td>{shorten(transaction.hash)}</td>
                         <td>{transaction.status}</td>
                     </tr>
