@@ -22,7 +22,7 @@
     <Card>
         <GradientTitle marginTop="1em" marginBottom="0.5em">Nahmii Bridge</GradientTitle>
         <p>
-            Welcome to the entrance of the most powerful Ethereum scaling solution, paving the way for unprecedented Blockchain based user experiences. Wield its power with responsibility. 
+            This is the gateway to the world's most powerful Ethereum scaling solution, Nahmii.  Welcome to the future of blockchain! 
         </p>
         <img src={arrowIcon} alt="Arrow pointing down" />
         <Button on:click={connect} disabled={awaitingApproval}>CONNECT WALLET</Button>
