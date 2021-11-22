@@ -26,5 +26,5 @@ export const shorten = (input, start = 7, end = 5) => {
 export const timestampToDateTime = (seconds) => {
     let date = new Date(0);
     date.setSeconds(seconds, 0);
-    return new Intl.DateTimeFormat('default', { dateStyle: "long", timeStyle: "long" }).format(date);
+    return new Intl.DateTimeFormat('default', { dateStyle: "short", timeStyle: "short" }).format(date);
 }
