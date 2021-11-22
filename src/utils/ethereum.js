@@ -1,12 +1,9 @@
 import { parseUnits } from "@ethersproject/units";
 import { Contract, BigNumber } from "ethers";
+import { DEFAULT_GAS_L1, DEFAULT_GAS_L2, L2_STANDARD_BRIDGE } from "./constants";
 import ERC20ABI from "../lib/ABI/ERC20ABI.json";
 import L1StandardBridge from "../lib/ABI/L1StandardBridgeABI.json";
 import L2StandardBridge from "../lib/ABI/L2StandardBridgeABI.json";
-
-const DEFAULT_GAS_L1 = 330_000
-const DEFAULT_GAS_L2 = 1_300_000;
-const L2_STANDARD_BRIDGE = "0x4200000000000000000000000000000000000010";
 
 export const getBalance = async (address, provider) => {
     const balance = await provider.getBalance(address);
