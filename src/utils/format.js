@@ -16,3 +16,15 @@ export const shorten = (input, start = 7, end = 5) => {
         input.slice(-Math.abs(end))
     );
 }
+
+/**
+ * Formats a timestamp into a locale based datetime.
+ * 
+ * @param {number} seconds The number of seconds from unix time since the timestamp has been generated.
+ * @returns A string containing the formatted timestamp.
+ */
+export const timestampToDateTime = (seconds) => {
+    let date = new Date(0);
+    date.setSeconds(seconds, 0);
+    return new Intl.DateTimeFormat('default', { dateStyle: "long", timeStyle: "long" }).format(date);
+}
