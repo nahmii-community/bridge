@@ -6,6 +6,7 @@
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import { mode } from "$lib/../stores/darkmode";
     import { wallet, network, isConnected } from "$lib/../stores/wallet";
+    import { getTransactions } from "$lib/../utils/storage";
     import SmallArrowLeft from "./small-arrow-left.png";
     import SmallArrowLeftDark from "./small-arrow-left-dark.png";
 
@@ -23,6 +24,12 @@
 
     let withdrawals = [];
     let deposits = [];
+
+    const populateData = () => {
+        if (address && chainId) {
+            ({ deposits, withdrawals } = getTransactions(chainId, address[0]));
+        }
+    };
 
     const cleanup = () => {
         if (unsubscribeNetwork) {
@@ -43,10 +50,11 @@
             if (connected) {
                 unsubscribeNetwork = network.subscribe(async (_chainId) => {
                     chainId = _chainId;
+                    populateData();
                 });
                 unsubscribeWallet = wallet.subscribe(async (_wallet) => {
                     address = _wallet;
-                    // TODO fetch deposits and withdrawals from localStorage for active account
+                    populateData();
                 });
             } else {
                 withdrawals = [];
