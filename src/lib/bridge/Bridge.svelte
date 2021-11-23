@@ -137,7 +137,7 @@
                     companionNetworkProvider
                 );
 
-                if (ethBalance.lt(WARNING_L2_ETH_BALANCE)) {
+                if (ethBalance.lt(BigNumber.from(WARNING_L2_ETH_BALANCE))) {
                     lowGasBalance = true;
                 }
 
@@ -157,11 +157,11 @@
                     provider
                 );
 
-                if (allowance.eq(MAX_APPROVAL_AMOUNT)) {
+                if (allowance.eq(BigNumber.from(MAX_APPROVAL_AMOUNT))) {
                     // allow deposit
                     isApproved = true;
                     resetApproval = false;
-                } else if (allowance.eq(ZERO)) {
+                } else if (allowance.eq(BigNumber.from(ZERO))) {
                     // set unlimited approval
                     isApproved = false;
                 } else if (allowance.lt(BigNumber.from(amountToBridge))) {
@@ -187,13 +187,13 @@
                 );
 
                 if (
-                    allowance.eq(MAX_APPROVAL_AMOUNT) ||
+                    allowance.eq(BigNumber.from(MAX_APPROVAL_AMOUNT)) ||
                     allowance.gt(BigNumber.from(requestedAmountToBridge))
                 ) {
                     // allow deposit
                     isApproved = true;
                     resetApproval = false;
-                } else if (allowance.eq(ZERO)) {
+                } else if (allowance.eq(BigNumber.from(ZERO))) {
                     // set unlimited approval
                     isApproved = false;
                 } else if (
