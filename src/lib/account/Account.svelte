@@ -5,47 +5,85 @@
     import TransactionTable from "$lib/account/TransactionTable.svelte";
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import { mode } from "$lib/../stores/darkmode";
-    import { wallet } from "$lib/../stores/wallet";
+    import { wallet, network, isConnected } from "$lib/../stores/wallet";
     import SmallArrowLeft from "./small-arrow-left.png";
     import SmallArrowLeftDark from "./small-arrow-left-dark.png";
-    
+
+    let connected = false;
+    let chainId;
     let address;
+    let unsubscribeConnect;
+    let unsubscribeNetwork;
     let unsubscribeWallet;
     $: arrowLeft = $mode === "dark" ? SmallArrowLeftDark : SmallArrowLeft;
 
     const returnToBridge = () => {
         goto("/bridge");
-    }
+    };
 
     let withdrawals = [];
     let deposits = [];
 
+    const cleanup = () => {
+        if (unsubscribeNetwork) {
+            unsubscribeNetwork();
+        }
+        if (unsubscribeWallet) {
+            unsubscribeWallet();
+        }
+        if (unsubscribeConnect) {
+            unsubscribeConnect();
+        }
+    };
+
     onMount(() => {
-        unsubscribeWallet = wallet.subscribe(async (accounts) => {
-            address = accounts[0];
-            console.log(address);
-            // TODO fetch deposits and withdrawals from localStorage for active account
+        unsubscribeConnect = isConnected.subscribe((value) => {
+            cleanup();
+            connected = value;
+            if (connected) {
+                unsubscribeNetwork = network.subscribe(async (_chainId) => {
+                    chainId = _chainId;
+                });
+                unsubscribeWallet = wallet.subscribe(async (_wallet) => {
+                    address = _wallet;
+                    // TODO fetch deposits and withdrawals from localStorage for active account
+                });
+            } else {
+                withdrawals = [];
+                deposits = [];
+            }
         });
     });
 
     onDestroy(() => {
-        unsubscribeWallet();
+        cleanup();
     });
 </script>
 
 <div class="container">
     <Card>
-        <img on:click={returnToBridge} src={arrowLeft} alt="Arrow pointing left. Navigate back button." />
+        <img
+            on:click={returnToBridge}
+            src={arrowLeft}
+            alt="Arrow pointing left. Navigate back button."
+        />
         <GradientTitle marginTop="0">Account History</GradientTitle>
 
-        <p>Recent Withdrawals</p>
-        <TransactionTable
-            transactions={withdrawals}
-            transactionType="withdrawals"
-        />
+        {#if connected}
+            <p>Recent Withdrawals</p>
+            <TransactionTable
+                transactions={withdrawals}
+                transactionType="withdrawals"
+            />
 
-        <p>Recent Deposits</p>
-        <TransactionTable transactions={deposits} transactionType="deposits" />
+            <p>Recent Deposits</p>
+            <TransactionTable
+                transactions={deposits}
+                transactionType="deposits"
+            />
+        {:else}
+            <p class="center">Please connect a wallet.</p>
+        {/if}
     </Card>
 </div>
 
@@ -55,6 +93,10 @@
         max-width: 550px;
         margin: auto;
         justify-content: center;
+    }
+
+    .center {
+        text-align: center;
     }
 
     p {
