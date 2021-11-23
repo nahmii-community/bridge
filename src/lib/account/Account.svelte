@@ -1,13 +1,16 @@
 <script>
     import { goto } from "$app/navigation";
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import Card from "$lib/shared/Card.svelte";
     import TransactionTable from "$lib/account/TransactionTable.svelte";
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import { mode } from "$lib/../stores/darkmode";
+    import { wallet } from "$lib/../stores/wallet";
     import SmallArrowLeft from "./small-arrow-left.png";
     import SmallArrowLeftDark from "./small-arrow-left-dark.png";
     
+    let address;
+    let unsubscribeWallet;
     $: arrowLeft = $mode === "dark" ? SmallArrowLeftDark : SmallArrowLeft;
 
     const returnToBridge = () => {
@@ -18,8 +21,15 @@
     let deposits = [];
 
     onMount(() => {
-        // TODO Check active account
-        // TODO fetch deposits and withdrawals from localStorage for active account
+        unsubscribeWallet = wallet.subscribe(async (accounts) => {
+            address = accounts[0];
+            console.log(address);
+            // TODO fetch deposits and withdrawals from localStorage for active account
+        });
+    });
+
+    onDestroy(() => {
+        unsubscribeWallet();
     });
 </script>
 
