@@ -10,6 +10,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Token</th>
                     <th>Date</th>
                     <th>Hash</th>
                     <th>Status</th>
@@ -18,6 +19,7 @@
             <tbody>
                 {#each transactions as transaction}
                     <tr>
+                        <td>{transaction.token}</td>
                         <td>{timestampToDateTime(transaction.timestamp)}</td>
                         <td>{shorten(transaction.hash, 4, 3)}</td>
                         <td>{transaction.status}</td>
