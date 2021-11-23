@@ -37,6 +37,7 @@
         depositERC20,
         withdraw,
     } from "../../utils/ethereum";
+    import { storeTransaction } from "../../utils/storage";
     import logoETH from "./eth.png";
 
     let connected = false;
@@ -343,6 +344,17 @@
                 console.log(`receipt:`, receipt);
 
                 // TODO store deposit metadata in localStorage
+                storeTransaction(
+                    chainId,
+                    address,
+                    selectedToken,
+                    {
+                        hash: tx.hash,
+                        timestamp: tx.timestamp,
+                    },
+                    "complete",
+                    "deposits"
+                );
 
                 // Notify user and update balance.
                 toast.push(`<strong>Deposit of ${selectedToken} complete.</strong>
@@ -375,6 +387,17 @@
                 console.log(`receipt:`, receipt);
 
                 // TODO store deposit metadata in localStorage
+                storeTransaction(
+                    chainId,
+                    address,
+                    selectedToken,
+                    {
+                        hash: tx.hash,
+                        timestamp: tx.timestamp,
+                    },
+                    "complete",
+                    "deposits"
+                );
 
                 // Notify user and update balance.
                 toast.push(`<strong>Deposit of ${selectedToken} complete.</strong>
