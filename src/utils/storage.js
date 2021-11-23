@@ -1,17 +1,27 @@
 import { sismember, set, get } from "lockr";
+import { L1L2_NETWORKS } from "./constants";
+
+const findUmbrellaNetwork = (network) => {
+    for (let n in L1L2_NETWORKS) {
+        if (L1L2_NETWORKS[n].includes(network.toLowerCase())) {
+            return n;
+        }
+    }
+}
 
 export const getTransactions = (chainId, wallet) => {
+    const umbrellaNetwork = findUmbrellaNetwork(chainId);
     const networks = get(wallet.toLowerCase(), null);
     let deposits = [];
     let withdrawals = [];
 
-    if (networks && networks.hasOwnProperty(chainId)) {
-        const network = networks[chainId];
+    if (networks && networks.hasOwnProperty(umbrellaNetwork)) {
+        const network = networks[umbrellaNetwork];
         if (network.deposits) {
-            deposits = networks[chainId].deposits;
+            deposits = networks[umbrellaNetwork].deposits;
         }
         if (network.withdrawals) {
-            withdrawals = networks[chainId].withdrawals;
+            withdrawals = networks[umbrellaNetwork].withdrawals;
         }
     }
 
@@ -22,10 +32,11 @@ export const getTransactions = (chainId, wallet) => {
 }
 
 export const storeTransaction = (chainId, wallet, token, transaction, status, type) => {
-    const networks = get(wallet.toLowerCase(), null);
-    
-    if (networks && networks.hasOwnProperty(chainId)) {
-        const network = networks[chainId];
+    const umbrellaNetwork = findUmbrellaNetwork(chainId);
+    const networks = get(wallet.toLowerCase(), {});
+
+    if (networks && networks.hasOwnProperty(umbrellaNetwork)) {
+        const network = networks[umbrellaNetwork];
         if (network.hasOwnProperty(type)) {
             network[type].push({
                 hash: transaction.hash,
@@ -35,17 +46,18 @@ export const storeTransaction = (chainId, wallet, token, transaction, status, ty
             });
         }
     } else {
-        networks[chainId] = {
+        networks[umbrellaNetwork] = {
             withdrawals: [],
             deposits: [],
         };
-        networks[chainId][type].push({
+        
+        networks[umbrellaNetwork][type].push({
             hash: transaction.hash,
             status,
             timestamp: transaction.timestamp,
             token
         });
     }
-    
+
     set(wallet.toLowerCase(), networks);
 }
