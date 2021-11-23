@@ -9,6 +9,23 @@ const findUmbrellaNetwork = (network) => {
     }
 }
 
+export const getTransaction = (chainId, wallet, type, propName, propValue) => {
+    const umbrellaNetwork = findUmbrellaNetwork(chainId);
+    const networks = get(wallet.toLowerCase(), null);
+
+    if (networks && networks.hasOwnProperty(umbrellaNetwork)) {
+        const network = networks[umbrellaNetwork];
+        if (network[type]) {
+            for (const tx of network[type]) {
+                if (tx[propName].toLowerCase() == propValue.toLowerCase()) {
+                    console.log(tx);
+                    return tx;
+                }
+            }
+        }
+    }
+}
+
 export const getTransactions = (chainId, wallet) => {
     const umbrellaNetwork = findUmbrellaNetwork(chainId);
     const networks = get(wallet.toLowerCase(), null);
@@ -50,7 +67,7 @@ export const storeTransaction = (chainId, wallet, token, transaction, status, ty
             withdrawals: [],
             deposits: [],
         };
-        
+
         networks[umbrellaNetwork][type].push({
             hash: transaction.hash,
             status,
