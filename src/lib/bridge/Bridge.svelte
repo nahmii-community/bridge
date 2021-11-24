@@ -321,22 +321,25 @@
             const receipt = await tx.wait(1);
 
             // store withdrawal metadata in localStorage
-            const timestamp = (await provider.getBlock(receipt.blockNumber)).timestamp;
-                storeTransaction(
-                    chainId,
-                    address,
-                    selectedToken,
-                    {
-                        hash: receipt.transactionHash,
-                        timestamp,
-                    },
-                    "in progress",
-                    "withdrawals"
-                );
-            // TODO update UX to display challenge period active
+            const timestamp = (await provider.getBlock(receipt.blockNumber))
+                .timestamp;
+            storeTransaction(
+                chainId,
+                address,
+                selectedToken,
+                {
+                    hash: receipt.transactionHash,
+                    timestamp,
+                },
+                "in progress",
+                "withdrawals"
+            );
 
             toast.push(`<strong>Withdrawal initiated</strong>
-                <p>click <a href="${blockExplorer}/txt/${tx.hash}" target="_blank">here</a> for more details.`);
+                <p>click <a href="${blockExplorer}/txt/${
+                tx.hash
+            }" target="_blank">here</a> for more details.</p>
+                <p>Withdrawal progress can be tracked on the <a href=${"/account"}>account page</a>.</p>`);
             await getSelectedToken({ detail: { symbol: selectedToken } });
         } else {
             // Deposit
@@ -356,7 +359,8 @@
                 console.log(`receipt:`, receipt);
 
                 // store deposit metadata in localStorage
-                const timestamp = (await provider.getBlock(receipt.blockNumber)).timestamp;
+                const timestamp = (await provider.getBlock(receipt.blockNumber))
+                    .timestamp;
                 storeTransaction(
                     chainId,
                     address,
@@ -400,7 +404,8 @@
                 console.log(`receipt:`, receipt);
 
                 // store deposit metadata in localStorage
-                const timestamp = (await provider.getBlock(receipt.blockNumber)).timestamp;
+                const timestamp = (await provider.getBlock(receipt.blockNumber))
+                    .timestamp;
                 storeTransaction(
                     chainId,
                     address,
