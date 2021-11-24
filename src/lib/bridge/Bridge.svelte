@@ -320,7 +320,19 @@
 
             await withdrawTx.wait();
 
-            // TODO store withdrawal metadata in localStorage
+            // store withdrawal metadata in localStorage
+            const timestamp = (await provider.getBlock(receipt.blockNumber)).timestamp;
+                storeTransaction(
+                    chainId,
+                    address,
+                    selectedToken,
+                    {
+                        hash: receipt.transactionHash,
+                        timestamp,
+                    },
+                    "challenge period",
+                    "withdrawals"
+                );
             // TODO update UX to display challenge period active
 
             toast.push(`<strong>Withdrawal initiated</strong>
@@ -343,14 +355,15 @@
                 const receipt = await tx.wait(1);
                 console.log(`receipt:`, receipt);
 
-                // TODO store deposit metadata in localStorage
+                // store deposit metadata in localStorage
+                const timestamp = (await provider.getBlock(receipt.blockNumber)).timestamp;
                 storeTransaction(
                     chainId,
                     address,
                     selectedToken,
                     {
-                        hash: tx.hash,
-                        timestamp: tx.timestamp,
+                        hash: receipt.transactionHash,
+                        timestamp,
                     },
                     "complete",
                     "deposits"
@@ -386,14 +399,15 @@
                 const receipt = await tx.wait(1);
                 console.log(`receipt:`, receipt);
 
-                // TODO store deposit metadata in localStorage
+                // store deposit metadata in localStorage
+                const timestamp = (await provider.getBlock(receipt.blockNumber)).timestamp;
                 storeTransaction(
                     chainId,
                     address,
                     selectedToken,
                     {
-                        hash: tx.hash,
-                        timestamp: tx.timestamp,
+                        hash: receipt.transactionHash,
+                        timestamp,
                     },
                     "complete",
                     "deposits"
