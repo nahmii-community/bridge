@@ -1,0 +1,1 @@
+const n=(t,e=7,s=5)=>"".concat(t.slice(0,e),"...",t.slice(-Math.abs(s))),o=t=>{let e=new Date(0);return e.setSeconds(t,0),new Intl.DateTimeFormat("default",{dateStyle:"short",timeStyle:"short"}).format(e)};export{n as s,o as t};
