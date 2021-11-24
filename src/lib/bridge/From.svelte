@@ -1,23 +1,34 @@
 <script>
     import { createEventDispatcher } from "svelte";
     import numeral from "numeral";
-    numeral.localeData().delimiters.thousands = ' ';
+    numeral.localeData().delimiters.thousands = " ";
     import dropdown from "./dropdown.png";
+    import { addAsset } from "../../stores/wallet";
 
     export let network = "Unsupported";
     export let token = "ETH";
     export let balance = 0;
     export let logo;
+    export let address;
+    export let decimals;
     let amount = 0;
 
     const dispatch = createEventDispatcher();
+
+    const addAssetToWallet = async () => {
+        await addAsset(address, token, decimals, logo);
+    };
 
     function selectTokenModal() {
         dispatch("selectToken");
     }
 
     const onChange = async (event) => {
-        if (event.target.validity.rangeUnderflow || !event.target.value || event.target.value.includes("-")) {
+        if (
+            event.target.validity.rangeUnderflow ||
+            !event.target.value ||
+            event.target.value.includes("-")
+        ) {
             amount = 0;
             event.target.value = 0;
         } else if (event.target.validity.rangeOverflow) {
@@ -31,9 +42,9 @@
             amount = event.target.value;
         }
         dispatch("amountChanged", {
-            amountToBridge: amount
+            amountToBridge: amount,
         });
-    }
+    };
 </script>
 
 <div class="container">
@@ -50,10 +61,27 @@
                 </div>
             </div>
         </div>
+        {#if token !== "ETH"}
+            <div
+                class="token-hitbox"
+                style="margin-top: 0.5em;"
+                on:click={addAssetToWallet}
+            >
+                <div class="token-add">add to wallet</div>
+            </div>
+        {/if}
     </div>
     <div class="right">
         <p>Balance: {numeral(balance).format("0,0.00")} {token}</p>
-        <input type="number" placeholder="Amount" pattern="^[0-9]*[.]?[0-9]*$" value={amount} min=0 max={balance}  on:input={onChange}>
+        <input
+            type="number"
+            placeholder="Amount"
+            pattern="^[0-9]*[.]?[0-9]*$"
+            value={amount}
+            min="0"
+            max={balance}
+            on:input={onChange}
+        />
     </div>
 </div>
 
@@ -74,6 +102,10 @@
 
     .right {
         align-items: flex-end;
+    }
+
+    .container > .right > input {
+        max-height: 44px;
     }
 
     p {
@@ -153,5 +185,17 @@
         margin-top: auto;
         margin-bottom: auto;
         padding-bottom: 2px;
+    }
+
+    .token-add {
+        display: flex;
+        padding: 0.5em;
+        font-size: 0.8em;
+        cursor: pointer;
+        transition: background-color 750ms;
+    }
+
+    .token-add:hover {
+        background: var(--hover-color);
     }
 </style>

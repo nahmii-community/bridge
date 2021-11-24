@@ -1,10 +1,9 @@
 import { parseUnits } from "@ethersproject/units";
 import { Contract } from "ethers";
+import { DEFAULT_GAS_L1, DEFAULT_GAS_L2, L2_STANDARD_BRIDGE } from "./constants";
 import ERC20ABI from "../lib/ABI/ERC20ABI.json";
 import L1StandardBridge from "../lib/ABI/L1StandardBridgeABI.json";
-
-const DEFAULT_GAS_L1 = 330_000
-const DEFAULT_GAS_L2 = 1_300_000;
+import L2StandardBridge from "../lib/ABI/L2StandardBridgeABI.json";
 
 export const getBalance = async (address, provider) => {
     const balance = await provider.getBalance(address);
@@ -30,6 +29,12 @@ export const depositERC20 = async (L1TokenAddress, L2TokenAddress, bridgeAddress
     const contract = new Contract(bridgeAddress, L1StandardBridge, signer);
     const result = await contract.depositERC20(L1TokenAddress, L2TokenAddress, depositAmount, DEFAULT_GAS_L2,
         "0x");
+    return result;
+}
+
+export const withdraw = async (L2TokenAddress, signer, withdrawAmount) => {
+    const contract = new Contract(L2_STANDARD_BRIDGE, L2StandardBridge, signer);
+    const result = await contract.withdraw(L2TokenAddress, withdrawAmount, 0, "0x");
     return result;
 }
 

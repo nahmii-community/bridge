@@ -1,50 +1,9 @@
 import { writable } from "svelte/store";
+import { SUPPORTED_NETWORKS } from "../utils/constants";
 
 export const network = writable("");
 export const wallet = writable("0x");
 export const isConnected = writable(false);
-
-const supportedNetworks = [
-    {
-        chainId: "0x1",
-        chainName: "Ethereum Mainnet",
-        isSupported: true,
-        L2: false,
-        rpcUrls: ["https://mainnet.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
-        blockExplorerUrls: ["https://etherscan.io"],
-        companionChainId: "0x15af",
-        standardBridge: "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd"
-    },
-    {
-        chainId: "0x3",
-        chainName: "Ropsten Testnet",
-        isSupported: true,
-        L2: false,
-        rpcUrls: ["https://ropsten.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
-        blockExplorerUrls: ["https://ropsten.etherscan.io"],
-        companionChainId: "0x15b1",
-        standardBridge: "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
-    },
-    {
-        chainId: "0x15af",
-        chainName: "Nahmii Mainnet",
-        isSupported: true,
-        L2: true,
-        companionChainId: "0x1",
-        rpcUrls: ["https://l2.nahmii.io"],
-        blockExplorerUrls: ["https://explorer.nahmii.io"]
-    },
-    {
-        chainId: "0x15b1",
-        chainName: "Nahmii Testnet",
-        isSupported: true,
-        L2: true,
-        companionChainId: "0x3",
-        rpcUrls: ["https://l2.testnet.nahmii.io"],
-        blockExplorerUrls: ["https://explorer.testnet.nahmii.io"]
-    }
-]
-
 
 async function handleChainChanged(chainId) {
     network.set(chainId);
@@ -58,6 +17,7 @@ async function handleAccountsChanged(accounts) {
 
     if (accounts.length === 0) {
         // User has not connected any account or MetaMask is locked.
+        isConnected.set(false);
     } else if (accounts[0] !== currentAccount) {
         wallet.set(accounts);
     }
@@ -95,7 +55,7 @@ export const connectWallet = async () => {
 };
 
 export const findSupportedNetwork = async (chainId) => {
-    let networkInfo = supportedNetworks.find(val => {
+    let networkInfo = SUPPORTED_NETWORKS.find(val => {
         return val.chainId == chainId;
     });
     if (!networkInfo) {

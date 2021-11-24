@@ -1,20 +1,27 @@
 <script>
     import { onDestroy } from "svelte";
     import SelectNetwork from "./SelectNetwork.svelte";
-    import {
-        network,
-        findSupportedNetwork,
-    } from "../../stores/wallet";
+    import { network, findSupportedNetwork } from "../../stores/wallet";
 
     let networkDetails;
     let activeNetwork;
     let isSupported;
+    let isSelectingNetwork;
 
     const unsubscribe = network.subscribe(async (value) => {
         networkDetails = await findSupportedNetwork(value);
         activeNetwork = networkDetails.chainName;
         isSupported = networkDetails.isSupported;
+        isSelectingNetwork = false;
     });
+
+    const openNetworkModal = () => {
+        isSelectingNetwork = true;
+    };
+
+    const closeNetworkModal = () => {
+        isSelectingNetwork = false;
+    };
 
     onDestroy(() => {
         unsubscribe();
@@ -25,7 +32,18 @@
     <SelectNetwork />
 {/if}
 
-<div class="network">
+{#if isSelectingNetwork}
+    <SelectNetwork
+        title="Supported Networks"
+        subtext=""
+        message="Select one of the supported networks to add it to your wallet and switch to it:"
+        closeable=true
+        on:cancel={closeNetworkModal}
+        on:close={closeNetworkModal}
+    />
+{/if}
+
+<div class="network" on:click={openNetworkModal}>
     <p class="network-text network-name">{activeNetwork}</p>
     <p class="network-text info">Network</p>
 </div>
@@ -37,6 +55,7 @@
         padding: 0.5em;
         align-items: flex-end;
         justify-content: center;
+        cursor: pointer;
     }
 
     .network-text {

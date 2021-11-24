@@ -1,37 +1,68 @@
 <script>
+    import { goto } from "$app/navigation";
     import logo from "./nahmii-logo.png";
     import DarkModeToggle from "./darkmode/DarkModeToggle.svelte";
     import Network from "./ethereum/Network.svelte";
     import Wallet from "./ethereum/Wallet.svelte";
-    import { isConnected } from "../stores/wallet";
+    import Button from "./shared/Button.svelte";
+    import { connectWallet, isConnected } from "../stores/wallet";
 
-    let connected = true;
+    let awaitingApproval = false;
+    let connected = false;
 
-    isConnected.subscribe(value => {
+    isConnected.subscribe((value) => {
         connected = value;
-    })
+    });
+
+    async function connect() {
+        awaitingApproval = true;
+        connected = await connectWallet();
+        awaitingApproval = false;
+    }
+
+    const goToAccount = () => {
+        goto("/account");
+    };
 </script>
 
 <header>
     <nav>
         <div class="corner">
-            <a href="https://nahmii.io">
+            <a href="/">
                 <img src={logo} alt="Nahmii" />
             </a>
         </div>
 
         <div class="corner">
             <DarkModeToggle />
+            {#if !connected}
+                <Button
+                    on:click={connect}
+                    disabled={awaitingApproval}
+                    height="3em"
+                    padding="0 1em"
+                    margin="0 0 0 1em"
+                    >CONNECT WALLET
+                </Button>
+            {:else}
+                <Button
+                    on:click={goToAccount}
+                    height="3em"
+                    padding="0 1em"
+                    margin="0 0 0 1em"
+                    >ACCOUNT
+                </Button>
+            {/if}
         </div>
     </nav>
 
     {#if connected}
-    <div class="network-wallet">
-        <hr class="divider" />
-        <Network />
-        <hr />
-        <Wallet />
-    </div>
+        <div class="network-wallet">
+            <hr class="divider" />
+            <Network />
+            <hr />
+            <Wallet />
+        </div>
     {/if}
 </header>
 
@@ -64,7 +95,6 @@
     .corner {
         display: flex;
         align-self: center;
-        width: 3em;
         height: 3em;
     }
 
@@ -83,6 +113,7 @@
     }
 
     hr {
+        opacity: 0.24;
         height: 3em;
         margin: 0 1em;
     }
