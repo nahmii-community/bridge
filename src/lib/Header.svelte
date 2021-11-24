@@ -1,4 +1,5 @@
 <script>
+    import { goto } from "$app/navigation";
     import logo from "./nahmii-logo.png";
     import DarkModeToggle from "./darkmode/DarkModeToggle.svelte";
     import Network from "./ethereum/Network.svelte";
@@ -18,6 +19,10 @@
         connected = await connectWallet();
         awaitingApproval = false;
     }
+
+    const goToAccount = () => {
+        goto("/account");
+    };
 </script>
 
 <header>
@@ -38,6 +43,14 @@
                     padding="0 1em"
                     margin="0 0 0 1em"
                     >CONNECT WALLET
+                </Button>
+            {:else}
+                <Button
+                    on:click={goToAccount}
+                    height="3em"
+                    padding="0 1em"
+                    margin="0 0 0 1em"
+                    >ACCOUNT
                 </Button>
             {/if}
         </div>
@@ -100,6 +113,7 @@
     }
 
     hr {
+        opacity: 0.24;
         height: 3em;
         margin: 0 1em;
     }
