@@ -1,9 +1,9 @@
 import { sismember, set, get } from "lockr";
 import { L1L2_NETWORKS } from "./constants";
 
-const findUmbrellaNetwork = (network) => {
+const findUmbrellaNetwork = (chainId) => {
     for (let n in L1L2_NETWORKS) {
-        if (L1L2_NETWORKS[n].includes(network.toLowerCase())) {
+        if (L1L2_NETWORKS[n].includes(chainId.toLowerCase())) {
             return n;
         }
     }
