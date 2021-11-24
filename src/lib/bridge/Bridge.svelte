@@ -1,6 +1,7 @@
 <script>
     import { ethers, BigNumber } from "ethers";
     import { onMount, onDestroy } from "svelte";
+    import { goto } from "$app/navigation";
     import { toast } from "@zerodevx/svelte-toast";
     import {
         MAX_APPROVAL_AMOUNT,
@@ -341,6 +342,7 @@
             }" target="_blank">here</a> for more details.</p>
                 <p>Withdrawal progress can be tracked on the <a href=${"/account"}>account page</a>.</p>`);
             await getSelectedToken({ detail: { symbol: selectedToken } });
+            goto("/account");
         } else {
             // Deposit
             if (selectedToken == "ETH") {
