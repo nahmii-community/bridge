@@ -356,6 +356,7 @@
                 console.log(`tx:}`, tx);
                 // Indicate a deposit is in progress.
                 toast.push(`<strong>Depositing ${selectedToken}...</strong>
+                    <p>Please wait until the deposit is finalized. A new message will appear.</p>
                     <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
                 const receipt = await tx.wait(1);
                 console.log(`receipt:`, receipt);
@@ -401,6 +402,7 @@
                 console.log(`tx:}`, tx);
                 // Indicate a deposit is in progress.
                 toast.push(`<strong>Depositing ${selectedToken}...</strong>
+                    <p>Please wait until the deposit is finalized. A new message will appear.</p>
                     <p>Click <a href="${blockExplorer}/tx/${tx.hash}" target="_blank">here</a> for more details.</p>`);
                 const receipt = await tx.wait(1);
                 console.log(`receipt:`, receipt);
