@@ -55,12 +55,13 @@ export const storeTransaction = (chainId, wallet, token, transaction, status, ty
     if (networks && networks.hasOwnProperty(umbrellaNetwork)) {
         const network = networks[umbrellaNetwork];
         if (network.hasOwnProperty(type)) {
-            network[type].push({
+            // Prepend new transaction
+            network[type] = [{
                 hash: transaction.hash,
                 status,
                 timestamp: transaction.timestamp,
                 token
-            });
+            }, ...network[type]];
         }
     } else {
         networks[umbrellaNetwork] = {
