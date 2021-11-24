@@ -330,7 +330,7 @@
                         hash: receipt.transactionHash,
                         timestamp,
                     },
-                    "challenge period",
+                    "in progress",
                     "withdrawals"
                 );
             // TODO update UX to display challenge period active
