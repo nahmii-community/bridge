@@ -312,13 +312,13 @@
                 l2Token.decimals
             );
 
-            const withdrawTx = await withdraw(
+            const tx = await withdraw(
                 l2Token.address,
                 provider.getSigner(0),
                 requestedAmountToBridge
             );
 
-            await withdrawTx.wait();
+            const receipt = await tx.wait(1);
 
             // store withdrawal metadata in localStorage
             const timestamp = (await provider.getBlock(receipt.blockNumber)).timestamp;
@@ -336,7 +336,7 @@
             // TODO update UX to display challenge period active
 
             toast.push(`<strong>Withdrawal initiated</strong>
-                <p>click <a href="${blockExplorer}/txt/${withdrawTx.hash}" target="_blank">here</a> for more details.`);
+                <p>click <a href="${blockExplorer}/txt/${tx.hash}" target="_blank">here</a> for more details.`);
             await getSelectedToken({ detail: { symbol: selectedToken } });
         } else {
             // Deposit
