@@ -6,7 +6,7 @@
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import { mode } from "$lib/../stores/darkmode";
     import { wallet, network, isConnected } from "$lib/../stores/wallet";
-    import { getTransactions } from "$lib/../utils/storage";
+    import { getTransactions, getTransaction } from "$lib/../utils/storage";
     import SmallArrowLeft from "./small-arrow-left.png";
     import SmallArrowLeftDark from "./small-arrow-left-dark.png";
 
@@ -25,9 +25,16 @@
     let withdrawals = [];
     let deposits = [];
 
+    const sortByTimestamp = (a, b) => {
+        return b.timestamp - a.timestamp;
+    }
+
     const populateData = () => {
         if (address && chainId) {
+            // console.log(getTransaction(chainId, address[0], "deposits", "hash", "0x094f5ac10f4cd202b8ae0e45661cd2c39d0513b1b4f3e546593bfc20b498b876"));
             ({ deposits, withdrawals } = getTransactions(chainId, address[0]));
+            deposits.sort(sortByTimestamp);
+            withdrawals.sort(sortByTimestamp);
         }
     };
 
