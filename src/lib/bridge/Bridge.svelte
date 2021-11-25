@@ -337,7 +337,7 @@
             );
 
             toast.push(`<strong>Withdrawal initiated</strong>
-                <p>click <a href="${blockExplorer}/txt/${
+                <p>click <a href="${blockExplorer}/tx/${
                 tx.hash
             }" target="_blank">here</a> for more details.</p>
                 <p>Withdrawal progress can be tracked on the <a href=${"/account"}>account page</a>.</p>`);
