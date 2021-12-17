@@ -1,3 +1,5 @@
+@import url('./utils.css');
+
 :root {
     position: absolute;
     height: 100vh;
@@ -54,8 +56,29 @@ a {
     color: var(--text-color);
 }
 
+
 input {
     font-family: 'Roboto', sans-serif;
+}
+
+
+
+input:focus {
+  border-color:  #ff44c9;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.025), 0 0 2px #00b8fa;
+}
+
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .ripple {
