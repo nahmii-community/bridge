@@ -1,6 +1,29 @@
 {
-  "name": "bridge",
+  "name": "@nahmii/bridge",
   "version": "0.0.1",
+  "description": "The Nahmii gateway, for bridging assets between L1 <-> L2.",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nahmii-community/bridge.git"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "blockchain",
+    "crypto",
+    "ethereum",
+    "nahmii",
+    "smart contracts",
+    "SDK",
+    "bridge",
+    "layer 2"
+  ],
+  "bugs": {
+    "url": "https://github.com/nahmii-community/bridge/issues"
+  },
+  "homepage": "https://github.com/nahmii-community/bridge#readme",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "rm -rf build && svelte-kit build && touch build/.nojekyll",
