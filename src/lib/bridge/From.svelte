@@ -1,4 +1,5 @@
 <script>
+  import { ethers, utils, BigNumber } from "ethers";
   import { createEventDispatcher } from "svelte";
   import numeral from "numeral";
   numeral.localeData().delimiters.thousands = " ";
@@ -48,8 +49,27 @@
     });
   };
 
-  const handleMax =() => {
-    amount = balance
+  const handleMax = async () => {
+    if (token === "ETH") {
+      const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+      //get eth gas price
+      const gasPrice = await userProvider.getGasPrice();
+      // convert to right format
+      const tempBal = (balance * 10 ** 18).toString();
+      const transformedBal = BigNumber.from(tempBal.toString());
+      //get diff btw balance and eth
+      const diff = transformedBal.sub(gasPrice);
+      const tempAmt = utils.formatEther(diff);
+      const amt = numeral(tempAmt).format("0,0.0000000000");
+      amount = amt;
+      return dispatch("amountChanged", {
+        amountToBridge: amount,
+      });
+    }
+    amount = balance;
+    return dispatch("amountChanged", {
+      amountToBridge: amount,
+    });
   };
 </script>
 
@@ -89,17 +109,20 @@
       on:input={onChange}
       style="padding-right: 3.2rem;"
     />
-    <div class="absolute btn-div">  
-    <Button on:click={handleMax} height="2.5rem" >Max </Button>
+    <div class="absolute btn-div">
+      <Button
+        on:click={handleMax}
+        disabled={balance > 0 ? false : true}
+        height="2.5rem">Max</Button
+      >
     </div>
   </div>
 </div>
 
 <style>
-
   .btn-div {
-      top:51%;
-      right:0.1rem;
+    top: 51%;
+    right: 0.1rem;
   }
   .container {
     display: flex;
