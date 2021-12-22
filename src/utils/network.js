@@ -43,6 +43,7 @@ export const getFraudProofWindow = (chainId) => {
 }
 
 /**
+ * Finds a networks metadata based on a given networks chain ID.
  * 
  * @param {string} chainId Hexadecimal representation of the chain ID for a given network to find all metadata for.
  * @returns All metadata for a given network if the network is available, 
