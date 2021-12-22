@@ -28,6 +28,26 @@ export const getFraudProofWindow = (chainId) => {
 }
 
 /**
+ * 
+ * @param {string} chainId Hexadecimal string of the chain to find all metadata for.
+ * @returns All metadata for a given network if the network is available, 
+ *          else return an array stating the network is unsupported.
+ */
+export const findSupportedNetwork = async (chainId) => {
+    let networkInfo = SUPPORTED_NETWORKS.find(val => {
+        return val.chainId == chainId;
+    });
+    if (!networkInfo) {
+        networkInfo = {
+            chainId,
+            chainName: "Unsupported",
+            isSupported: false
+        }
+    }
+    return networkInfo;
+}
+
+/**
  * Finds the companion network for a given network.
  * 
  * @param {string} chainId Hexadecimal string of the chain to find the companion chain for.
