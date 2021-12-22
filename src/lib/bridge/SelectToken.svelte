@@ -3,7 +3,8 @@
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import Modal from "$lib/shared/Modal.svelte";
     import logo from "./eth.png";
-    import { network, findSupportedNetwork } from "../../stores/wallet";
+    import { network } from "../../stores/wallet";
+    import { findSupportedNetwork } from "../../utils/network";
     import { getTokens, getTokensForChain } from "../../utils/token";
 
     const dispatch = createEventDispatcher();

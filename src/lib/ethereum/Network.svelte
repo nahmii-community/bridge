@@ -1,7 +1,8 @@
 <script>
     import { onDestroy } from "svelte";
     import SelectNetwork from "./SelectNetwork.svelte";
-    import { network, findSupportedNetwork } from "../../stores/wallet";
+    import { network } from "../../stores/wallet";
+    import { findSupportedNetwork } from "../../utils/network";
 
     let networkDetails;
     let activeNetwork;
