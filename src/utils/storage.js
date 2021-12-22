@@ -1,13 +1,5 @@
 import { sismember, set, get } from "lockr";
-import { L1L2_NETWORKS } from "./constants";
-
-const findUmbrellaNetwork = (chainId) => {
-    for (let n in L1L2_NETWORKS) {
-        if (L1L2_NETWORKS[n].includes(chainId.toLowerCase())) {
-            return n;
-        }
-    }
-}
+import { findUmbrellaNetwork } from "./network";
 
 export const getTransaction = (chainId, wallet, type, propName, propValue) => {
     const umbrellaNetwork = findUmbrellaNetwork(chainId);
