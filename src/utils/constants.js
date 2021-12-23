@@ -20,6 +20,7 @@ export const SUPPORTED_NETWORKS = [
         blockExplorerUrls: ["https://etherscan.io"],
         companionChainId: "0x15af",
         standardBridge: "0x2fCE9b92a64c1DDf14a1A9E5Ec6D4e4C7C9F4Fdd",
+        crossDomainMessenger: "0x01dF38E20738c58aF8141504aa6C88013d3D6C5A",
         fraudProofWindow: 604800
     },
     {
@@ -31,6 +32,7 @@ export const SUPPORTED_NETWORKS = [
         blockExplorerUrls: ["https://ropsten.etherscan.io"],
         companionChainId: "0x15b1",
         standardBridge: "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc",
+        crossDomainMessenger: "0x5401Ba2f9123f4019be76fca1D0B765Fd00138De",
         fraudProofWindow: 360
     },
     {
