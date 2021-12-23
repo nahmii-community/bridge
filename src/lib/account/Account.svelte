@@ -82,12 +82,14 @@
             <TransactionTable
                 transactions={withdrawals}
                 transactionType="withdrawals"
+                {chainId}
             />
 
             <p>Recent Deposits</p>
             <TransactionTable
                 transactions={deposits}
                 transactionType="deposits"
+                {chainId}
             />
         {:else}
             <p class="center">Please connect a wallet.</p>
