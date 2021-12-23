@@ -7,12 +7,14 @@
     import { mode } from "$lib/../stores/darkmode";
     import { wallet, network, isConnected } from "$lib/../stores/wallet";
     import { getTransactions } from "$lib/../utils/storage";
+    import { getFraudProofWindow } from "$lib/../utils/network";
     import SmallArrowLeft from "./small-arrow-left.png";
     import SmallArrowLeftDark from "./small-arrow-left-dark.png";
 
     let connected = false;
     let chainId;
     let address;
+    let fraudProofWindow;
     let unsubscribeConnect;
     let unsubscribeNetwork;
     let unsubscribeWallet;
@@ -28,6 +30,7 @@
     const populateData = () => {
         if (address && chainId) {
             ({ deposits, withdrawals } = getTransactions(chainId, address[0]));
+            fraudProofWindow = getFraudProofWindow(chainId);            
         }
     };
 
@@ -82,14 +85,13 @@
             <TransactionTable
                 transactions={withdrawals}
                 transactionType="withdrawals"
-                {chainId}
+                {fraudProofWindow}
             />
 
             <p>Recent Deposits</p>
             <TransactionTable
                 transactions={deposits}
                 transactionType="deposits"
-                {chainId}
             />
         {:else}
             <p class="center">Please connect a wallet.</p>
