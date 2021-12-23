@@ -1,8 +1,24 @@
 <script>
+    import Button from "$lib/shared/Button.svelte";
     import { shorten, timestampToDateTime } from "$lib/../utils/format";
 
     export let transactions = [];
     export let transactionType = "transaction";
+    export let fraudProofWindow = 0;
+
+    const hasFraudProofWindowPassed = (transaction) => {
+        // Calculate the time when the fraud proof window is over for a given transaction.
+        // Unix time in seconds.
+        const fraudProofWindowOver = transaction.timestamp + fraudProofWindow;
+        // Current Unix time converted from ms to seconds.
+        const currentTime = Date.now() / 1000;
+
+        return (currentTime > fraudProofWindowOver ? true : false);
+    }
+
+    const claimFunds = async () => {
+        // TODO: Finalize withdrawal
+    }
 </script>
 
 <div class="container">
@@ -22,7 +38,11 @@
                         <td>{transaction.token}</td>
                         <td>{timestampToDateTime(transaction.timestamp)}</td>
                         <td>{shorten(transaction.hash, 4, 3)}</td>
-                        <td>{transaction.status}</td>
+                        {#if transactionType == "withdrawals" && hasFraudProofWindowPassed(transaction)}
+                            <td><Button on:click={claimFunds}>Claimable</Button></td>
+                        {:else}
+                            <td>{transaction.status}</td>
+                        {/if}
                     </tr>
                 {/each}
             </tbody>
