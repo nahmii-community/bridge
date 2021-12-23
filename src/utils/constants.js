@@ -31,7 +31,7 @@ export const SUPPORTED_NETWORKS = [
         blockExplorerUrls: ["https://ropsten.etherscan.io"],
         companionChainId: "0x15b1",
         standardBridge: "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc",
-        fraudProofWindow: 604800
+        fraudProofWindow: 360
     },
     {
         chainId: "0x15af",
@@ -51,6 +51,6 @@ export const SUPPORTED_NETWORKS = [
         companionChainId: "0x3",
         rpcUrls: ["https://l2.testnet.nahmii.io"],
         blockExplorerUrls: ["https://explorer.testnet.nahmii.io"],
-        fraudProofWindow: 604800
+        fraudProofWindow: 360
     }
 ]
