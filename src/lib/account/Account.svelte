@@ -107,6 +107,7 @@
         {#if connected}
             <p>Recent Withdrawals</p>
             <TransactionTable
+                blockExplorer={l2BlockExplorer}
                 transactions={withdrawals}
                 transactionType="withdrawals"
                 {fraudProofWindow}
@@ -114,6 +115,7 @@
 
             <p>Recent Deposits</p>
             <TransactionTable
+                blockExplorer={l1BlockExplorer}
                 transactions={deposits}
                 transactionType="deposits"
             />

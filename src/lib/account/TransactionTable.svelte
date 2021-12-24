@@ -6,6 +6,7 @@
     export let transactions = [];
     export let transactionType = "transaction";
     export let fraudProofWindow = 0;
+    export let blockExplorer;
 
     const hasFraudProofWindowPassed = (transaction) => {
         // Calculate the time when the fraud proof window is over for a given transaction.
@@ -50,7 +51,11 @@
                     <tr>
                         <td>{transaction.token}</td>
                         <td>{timestampToDateTime(transaction.timestamp)}</td>
+                        {#if blockExplorer}
+                        <td><a href="{blockExplorer}/tx/{transaction.hash}" target="_blank">{shorten(transaction.hash, 4, 3)}</a></td>
+                        {:else}
                         <td>{shorten(transaction.hash, 4, 3)}</td>
+                        {/if}
                         {#if transactionType == "withdrawals" && hasFraudProofWindowPassed(transaction)}
                             <td><Button height="32px" on:click={claimFunds(transaction)}>Claimable</Button></td>
                         {:else}
