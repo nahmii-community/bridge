@@ -48,7 +48,7 @@
                         {:else}
                         <td>{shorten(transaction.hash, 4, 3)}</td>
                         {/if}
-                        {#if transactionType == "withdrawals" && hasFraudProofWindowPassed(transaction)}
+                        {#if transactionType == "withdrawals" && transaction.status == "in progress" && hasFraudProofWindowPassed(transaction)}
                             <td><Button height="32px" on:click={onClaim(transaction)}>Claimable</Button></td>
                         {:else}
                             <td>{transaction.status}</td>
