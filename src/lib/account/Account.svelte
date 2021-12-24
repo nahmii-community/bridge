@@ -1,5 +1,6 @@
 <script>
     import { ethers } from "ethers";
+    import { finalizeWithdrawal } from "@nahmii/sdk";
     import { goto } from "$app/navigation";
     import { onDestroy, onMount } from "svelte";
     import Card from "$lib/shared/Card.svelte";
@@ -93,6 +94,26 @@
     onDestroy(() => {
         cleanup();
     });
+
+    const claimFunds = async (event) => {
+        const hash = event.detail.transaction.hash;
+        // TODO: Block claim button(s) when relay is active.
+        // TODO: Handle withdrawal finalization transaction callback.
+        const result = await finalizeWithdrawal(
+            hash,
+            l1NetworkDetails.crossDomainMessenger,
+            l1Provider,
+            l2Provider,
+            l1Provider.getSigner(),
+            5,
+            1,
+            null
+        );
+        // TODO: Handle results. 
+        // Disable claim button for a transaction if message has already been sent.
+        // Update status for finished claim.
+        console.log(result);
+    }
 </script>
 
 <div class="container">
@@ -107,6 +128,7 @@
         {#if connected}
             <p>Recent Withdrawals</p>
             <TransactionTable
+                on:claimFunds={claimFunds}
                 blockExplorer={l2BlockExplorer}
                 transactions={withdrawals}
                 transactionType="withdrawals"
