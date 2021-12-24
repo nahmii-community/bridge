@@ -99,9 +99,7 @@
     });
 
     const claimFunds = async (event) => {
-        console.log(event);
         const { hash, timestamp, token } = event.detail.transaction;
-        console.log(hash);
         blocked = true;
         // TODO: Handle transaction in a more asynchronous way.
         let transaction;
@@ -116,7 +114,6 @@
             (tx) => { transaction = tx; }
         );
         let receipt;
-        console.log(messageResult)
         if (transaction || messageResult.success == 0) {
             // Indicate a withdrawal is in progress.
             toast.push(`<strong>Withdrawing ${token}...</strong>
