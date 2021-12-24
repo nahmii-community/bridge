@@ -101,3 +101,40 @@ export const storeTransaction = (chainId, wallet, token, transaction, status, ty
 
     set(wallet.toLowerCase(), networks);
 }
+
+/**
+ * Updates a users transaction in local storage under a given wallet for a given network.
+ * 
+ * @param {string} chainId Hexadecimal string representation of the chain ID for a given network.
+ * @param {string} wallet Address to update the transaction for.
+ * @param {string} token Symbol/ticker for the token to update a transaction for.
+ * @param {object} transaction Object containing the hash and timestamp for a transaction.
+ * @param {string} status Status for a given transaction. Can be `in progress`, `claimable`, `failed` or `complete`.
+ * @param {string} type Transaction type. Can be `deposits` or `withdrawals`.
+ */
+export const updateTransaction = (chainId, wallet, token, transaction, status, type) => {
+    const umbrellaNetwork = findUmbrellaNetwork(chainId);
+    const networks = get(wallet.toLowerCase(), {});
+
+    if (networks && networks.hasOwnProperty(umbrellaNetwork)) {
+        const network = networks[umbrellaNetwork];
+        if (network.hasOwnProperty(type)) {
+            // Find transaction
+            const transactions = network[type].map((tx) => {
+                if (tx.hash == transaction.hash) {
+                    return {
+                        hash: transaction.hash,
+                        status,
+                        timestamp: transaction.timestamp,
+                        token
+                    }
+                } else {
+                    return tx;
+                }
+            })
+            network[type] = transactions;
+            set(wallet.toLowerCase(), networks);
+        }
+    }
+
+}
