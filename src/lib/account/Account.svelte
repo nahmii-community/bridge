@@ -103,35 +103,51 @@
         const { hash, timestamp, token } = event.detail.transaction;
         console.log(hash);
         blocked = true;
-        // TODO: Block claim button(s) when relay is active.
-        // TODO: Handle withdrawal finalization transaction callback.
+        // TODO: Handle transaction in a more asynchronous way.
         let transaction;
-        const result = await finalizeWithdrawal(
+        const [messageResult, ...rest] = await finalizeWithdrawal(
             hash,
             l1NetworkDetails.crossDomainMessenger,
             l1Provider,
             l2Provider,
             l1Provider.getSigner(),
             5,
-            1,
-            (tx) => {
-                transaction = tx;
-            }
+            0,
+            (tx) => { transaction = tx; }
         );
-        console.log(result);
-        updateTransaction(chainId, address[0], token, { hash, timestamp }, "complete", "withdrawals");
-        ({ deposits, withdrawals } = getTransactions(chainId, address[0]));
-        console.log(transaction);
+        let receipt;
+        console.log(messageResult)
+        if (transaction || messageResult.success == 0) {
+            // Indicate a withdrawal is in progress.
+            toast.push(`<strong>Withdrawing ${token}...</strong>
+                <p>Please wait until the withdrawal is finalized. A new message will appear.</p>
+                <p>Click <a href="${l1BlockExplorer}/tx/${transaction.hash}" target="_blank">here</a> for more details.</p>`);
+            // Wait until the transaction has been mined.
+            receipt = await transaction.wait(3);
+            // Update the transaction and update state.
+            updateTransaction(chainId, address[0], token, { hash, timestamp }, "complete", "withdrawals");
+            ({ deposits, withdrawals } = getTransactions(chainId, address[0]));
+            // Notify user of withdrawal completion.
+            toast.push(`<strong>Withdrawal of ${token} complete.</strong>
+                <p>Click <a href="${l1BlockExplorer}/tx/${receipt.transactionHash}" target="_blank">here</a> for more details.</p>`);
+        } else if (messageResult.success == 1) {
+            toast.push(`<strong>Withdrawal was already sent</strong>`)
+            updateTransaction(chainId, address[0], token, { hash, timestamp }, "complete", "withdrawals");
+            ({  deposits, withdrawals } = getTransactions(chainId, address[0]));
+        } else if (messageResult.success == 2) {
+            toast.push(`<strong>Withdrawal failed.</strong>`)
+        } else {
+            toast.push(`<strong>Withdrawal request not sent.</strong>`)
+        }
         blocked = false;
-        // TODO: Handle results. 
-        // Disable claim button for a transaction if message has already been sent.
-        // Update status for finished claim.
     }
 </script>
 
 {#if blocked}
     <Modal footer={false}>
-        Transaction in progress...
+        <strong>Withdrawal in progress...</strong>
+        <p>Processing the transaction can take a couple of minutes.</p>
+        <p>A couple of messages will show up in the top corner to keep you informed on the progress.</p>
     </Modal>
 {/if}
 

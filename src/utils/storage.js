@@ -136,5 +136,4 @@ export const updateTransaction = (chainId, wallet, token, transaction, status, t
             set(wallet.toLowerCase(), networks);
         }
     }
-
 }
