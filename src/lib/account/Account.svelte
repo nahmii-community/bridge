@@ -1,13 +1,14 @@
 <script>
+    import { ethers } from "ethers";
     import { goto } from "$app/navigation";
     import { onDestroy, onMount } from "svelte";
     import Card from "$lib/shared/Card.svelte";
     import TransactionTable from "$lib/account/TransactionTable.svelte";
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import { mode } from "$lib/../stores/darkmode";
-    import { wallet, network, isConnected } from "$lib/../stores/wallet";
+    import { wallet, network, isConnected, switchNetwork } from "$lib/../stores/wallet";
     import { getTransactions } from "$lib/../utils/storage";
-    import { getFraudProofWindow } from "$lib/../utils/network";
+    import { findCompanionNetwork, findSupportedNetwork, getFraudProofWindow } from "$lib/../utils/network";
     import SmallArrowLeft from "./small-arrow-left.png";
     import SmallArrowLeftDark from "./small-arrow-left-dark.png";
 
@@ -15,6 +16,12 @@
     let chainId;
     let address;
     let fraudProofWindow;
+    let l1Provider;
+    let l2Provider;
+    let l1BlockExplorer;
+    let l2BlockExplorer;
+    let l1NetworkDetails;
+    let l2NetworkDetails;
     let unsubscribeConnect;
     let unsubscribeNetwork;
     let unsubscribeWallet;
@@ -27,10 +34,27 @@
     let withdrawals = [];
     let deposits = [];
 
-    const populateData = () => {
+    const populateData = async () => {
         if (address && chainId) {
-            ({ deposits, withdrawals } = getTransactions(chainId, address[0]));
-            fraudProofWindow = getFraudProofWindow(chainId);            
+            const networkDetails = await findSupportedNetwork(chainId);
+            // Enforcing the user to use a L1 in this component makes
+            // reasoning about the RPC providers a lot easier.
+            if (networkDetails.isSupported && networkDetails.L2) {
+                await switchNetwork(networkDetails.companionChainId);
+            } else if (networkDetails.isSupported && !networkDetails.L2) {
+                ({ deposits, withdrawals } = getTransactions(chainId, address[0]));
+                fraudProofWindow = getFraudProofWindow(chainId);
+                l2NetworkDetails = await findCompanionNetwork(chainId);
+
+                l1Provider = new ethers.providers.Web3Provider(window.ethereum);
+                l2Provider = new ethers.providers.JsonRpcProvider(
+                    l2NetworkDetails.rpcUrls[0]
+                );
+
+                l1NetworkDetails = networkDetails;
+                l1BlockExplorer = networkDetails.blockExplorerUrls[0];
+                l2BlockExplorer = l2NetworkDetails.blockExplorerUrls[0];
+            }
         }
     };
 
@@ -53,11 +77,11 @@
             if (connected) {
                 unsubscribeNetwork = network.subscribe(async (_chainId) => {
                     chainId = _chainId;
-                    populateData();
+                    await populateData();
                 });
                 unsubscribeWallet = wallet.subscribe(async (_wallet) => {
                     address = _wallet;
-                    populateData();
+                    await populateData();
                 });
             } else {
                 withdrawals = [];
