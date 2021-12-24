@@ -1,8 +1,30 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+    import Button from "$lib/shared/Button.svelte";
     import { shorten, timestampToDateTime } from "$lib/../utils/format";
 
     export let transactions = [];
     export let transactionType = "transaction";
+    export let fraudProofWindow = 0;
+    export let blockExplorer;
+
+    const dispatch = createEventDispatcher();
+
+    const hasFraudProofWindowPassed = (transaction) => {
+        // Calculate the time when the fraud proof window is over for a given transaction.
+        // Unix time in seconds.
+        const fraudProofWindowOver = transaction.timestamp + fraudProofWindow;
+        // Current Unix time converted from ms to seconds.
+        const currentTime = Date.now() / 1000;
+
+        return (currentTime > fraudProofWindowOver ? true : false);
+    }
+
+    const onClaim = async (transaction) => {
+        dispatch("claimFunds", {
+            transaction
+        });
+    }
 </script>
 
 <div class="container">
@@ -21,8 +43,16 @@
                     <tr>
                         <td>{transaction.token}</td>
                         <td>{timestampToDateTime(transaction.timestamp)}</td>
+                        {#if blockExplorer}
+                        <td><a href="{blockExplorer}/tx/{transaction.hash}" target="_blank">{shorten(transaction.hash, 4, 3)}</a></td>
+                        {:else}
                         <td>{shorten(transaction.hash, 4, 3)}</td>
-                        <td>{transaction.status}</td>
+                        {/if}
+                        {#if transactionType == "withdrawals" && transaction.status == "in progress" && hasFraudProofWindowPassed(transaction)}
+                            <td><Button height="32px" on:click={onClaim(transaction)}>Claimable</Button></td>
+                        {:else}
+                            <td>{transaction.status}</td>
+                        {/if}
                     </tr>
                 {/each}
             </tbody>

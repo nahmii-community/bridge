@@ -19,10 +19,10 @@
     import {
         wallet,
         network,
-        findSupportedNetwork,
         switchNetwork,
         isConnected,
     } from "../../stores/wallet";
+    import { findSupportedNetwork } from "../../utils/network";
     import {
         getTokens,
         getTokensForChain,

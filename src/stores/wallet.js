@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { SUPPORTED_NETWORKS } from "../utils/constants";
+import { findSupportedNetwork } from "../utils/network";
 
 export const network = writable("");
 export const wallet = writable("0x");
@@ -53,20 +53,6 @@ export const connectWallet = async () => {
         return false;
     }
 };
-
-export const findSupportedNetwork = async (chainId) => {
-    let networkInfo = SUPPORTED_NETWORKS.find(val => {
-        return val.chainId == chainId;
-    });
-    if (!networkInfo) {
-        networkInfo = {
-            chainId,
-            chainName: "Unsupported",
-            isSupported: false
-        }
-    }
-    return networkInfo;
-}
 
 export const switchNetwork = async (chainId) => {
     const provider = window.ethereum;
