@@ -1,5 +1,5 @@
 <script>
-    import { relayL2ToL1Messages } from "@nahmii/sdk";
+    import { createEventDispatcher } from "svelte";
     import Button from "$lib/shared/Button.svelte";
     import { shorten, timestampToDateTime } from "$lib/../utils/format";
 
@@ -7,6 +7,8 @@
     export let transactionType = "transaction";
     export let fraudProofWindow = 0;
     export let blockExplorer;
+
+    const dispatch = createEventDispatcher();
 
     const hasFraudProofWindowPassed = (transaction) => {
         // Calculate the time when the fraud proof window is over for a given transaction.
@@ -18,20 +20,10 @@
         return (currentTime > fraudProofWindowOver ? true : false);
     }
 
-    const claimFunds = async (transaction) => {
-        // TODO: Finalize withdrawal.
-        // TODO: Block claim button when relay is active.
-        // TODO: Handle withdrawal finalization transaction callback.
-        // const result = await relayL2ToL1Messages(
-        //     transaction.hash,
-        //     crossDomainMessengerAddress,
-        //     l1RpcProvider,
-        //     l2RpcProvider,
-        //     l1Signer,
-        //     5,
-        //     1,
-        //     null
-        // );
+    const onClaim = async (transaction) => {
+        dispatch("claimFunds", {
+            transaction
+        });
     }
 </script>
 
@@ -57,7 +49,7 @@
                         <td>{shorten(transaction.hash, 4, 3)}</td>
                         {/if}
                         {#if transactionType == "withdrawals" && hasFraudProofWindowPassed(transaction)}
-                            <td><Button height="32px" on:click={claimFunds(transaction)}>Claimable</Button></td>
+                            <td><Button height="32px" on:click={onClaim(transaction)}>Claimable</Button></td>
                         {:else}
                             <td>{transaction.status}</td>
                         {/if}
