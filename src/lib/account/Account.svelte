@@ -1,6 +1,7 @@
 <script>
     import { ethers } from "ethers";
     import { finalizeWithdrawal } from "@nahmii/sdk";
+    import { toast } from "@zerodevx/svelte-toast";
     import { goto } from "$app/navigation";
     import { onDestroy, onMount } from "svelte";
     import Card from "$lib/shared/Card.svelte";
@@ -8,12 +9,14 @@
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import { mode } from "$lib/../stores/darkmode";
     import { wallet, network, isConnected, switchNetwork } from "$lib/../stores/wallet";
-    import { getTransactions } from "$lib/../utils/storage";
+    import { getTransactions, updateTransaction } from "$lib/../utils/storage";
     import { findCompanionNetwork, findSupportedNetwork, getFraudProofWindow } from "$lib/../utils/network";
     import SmallArrowLeft from "./small-arrow-left.png";
     import SmallArrowLeftDark from "./small-arrow-left-dark.png";
+    import Modal from "$lib/shared/Modal.svelte";
 
     let connected = false;
+    let blocked = false;
     let chainId;
     let address;
     let fraudProofWindow;
@@ -96,9 +99,13 @@
     });
 
     const claimFunds = async (event) => {
-        const hash = event.detail.transaction.hash;
+        console.log(event);
+        const { hash, timestamp, token } = event.detail.transaction;
+        console.log(hash);
+        blocked = true;
         // TODO: Block claim button(s) when relay is active.
         // TODO: Handle withdrawal finalization transaction callback.
+        let transaction;
         const result = await finalizeWithdrawal(
             hash,
             l1NetworkDetails.crossDomainMessenger,
@@ -107,14 +114,26 @@
             l1Provider.getSigner(),
             5,
             1,
-            null
+            (tx) => {
+                transaction = tx;
+            }
         );
+        console.log(result);
+        updateTransaction(chainId, address[0], token, { hash, timestamp }, "complete", "withdrawals");
+        ({ deposits, withdrawals } = getTransactions(chainId, address[0]));
+        console.log(transaction);
+        blocked = false;
         // TODO: Handle results. 
         // Disable claim button for a transaction if message has already been sent.
         // Update status for finished claim.
-        console.log(result);
     }
 </script>
+
+{#if blocked}
+    <Modal footer={false}>
+        Transaction in progress...
+    </Modal>
+{/if}
 
 <div class="container">
     <Card>
