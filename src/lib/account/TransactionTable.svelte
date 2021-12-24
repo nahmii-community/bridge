@@ -1,4 +1,5 @@
 <script>
+    import { relayL2ToL1Messages } from "@nahmii/sdk";
     import Button from "$lib/shared/Button.svelte";
     import { shorten, timestampToDateTime } from "$lib/../utils/format";
 
@@ -16,8 +17,20 @@
         return (currentTime > fraudProofWindowOver ? true : false);
     }
 
-    const claimFunds = async () => {
-        // TODO: Finalize withdrawal
+    const claimFunds = async (transaction) => {
+        // TODO: Finalize withdrawal.
+        // TODO: Block claim button when relay is active.
+        // TODO: Handle withdrawal finalization transaction callback.
+        // const result = await relayL2ToL1Messages(
+        //     transaction.hash,
+        //     crossDomainMessengerAddress,
+        //     l1RpcProvider,
+        //     l2RpcProvider,
+        //     l1Signer,
+        //     5,
+        //     1,
+        //     null
+        // );
     }
 </script>
 
@@ -39,7 +52,7 @@
                         <td>{timestampToDateTime(transaction.timestamp)}</td>
                         <td>{shorten(transaction.hash, 4, 3)}</td>
                         {#if transactionType == "withdrawals" && hasFraudProofWindowPassed(transaction)}
-                            <td><Button on:click={claimFunds}>Claimable</Button></td>
+                            <td><Button height="32px" on:click={claimFunds(transaction)}>Claimable</Button></td>
                         {:else}
                             <td>{transaction.status}</td>
                         {/if}
