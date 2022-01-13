@@ -1,5 +1,6 @@
 <script>
     import { ethers, BigNumber } from "ethers";
+    import { initiateWithdrawal } from "@nahmii/sdk";
     import { onMount, onDestroy } from "svelte";
     import { goto } from "$app/navigation";
     import { toast } from "@zerodevx/svelte-toast";
@@ -313,11 +314,12 @@
                 l2Token.decimals
             );
 
-            const tx = await withdraw(
+            const tx = await initiateWithdrawal(
                 l2Token.address,
-                provider.getSigner(0),
-                requestedAmountToBridge
-            );
+                requestedAmountToBridge,
+                provider,
+                provider.getSigner(0)
+            )
 
             const receipt = await tx.wait(1);
 
