@@ -399,8 +399,9 @@
                     l1Token.address,
                     l2Token.address,
                     tokenBridge,
-                    provider.getSigner(0),
-                    requestedAmountToBridge
+                    requestedAmountToBridge,
+                    provider,
+                    provider.getSigner(0)
                 );
                 console.log(`tx:}`, tx);
                 // Indicate a deposit is in progress.
