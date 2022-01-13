@@ -1,6 +1,6 @@
 <script>
     import { ethers, BigNumber } from "ethers";
-    import { initiateWithdrawal } from "@nahmii/sdk";
+    import { depositERC20, depositETH, initiateWithdrawal } from "@nahmii/sdk";
     import { onMount, onDestroy } from "svelte";
     import { goto } from "$app/navigation";
     import { toast } from "@zerodevx/svelte-toast";
@@ -35,9 +35,6 @@
         getERC20Balance,
         getAllowance,
         approveAllowance,
-        depositETH,
-        depositERC20,
-        withdraw,
     } from "../../utils/ethereum";
     import { storeTransaction } from "../../utils/storage";
     import logoETH from "./eth.png";
@@ -350,10 +347,14 @@
             if (selectedToken == "ETH") {
                 const standardBridge = (await findSupportedNetwork(chainId))
                     .standardBridge;
+
+                const requestedAmountToBridge = ethers.utils.parseUnits(amountToBridge);
+
                 const tx = await depositETH(
                     standardBridge,
-                    provider.getSigner(0),
-                    amountToBridge
+                    requestedAmountToBridge,
+                    provider,
+                    provider.getSigner(0)
                 );
                 console.log(`tx:}`, tx);
                 // Indicate a deposit is in progress.
