@@ -155,7 +155,7 @@
                     l1Token.address,
                     provider
                 );
-
+                
                 if (allowance.eq(BigNumber.from(MAX_APPROVAL_AMOUNT))) {
                     // allow deposit
                     isApproved = true;
@@ -163,7 +163,7 @@
                 } else if (allowance.eq(BigNumber.from(ZERO))) {
                     // set unlimited approval
                     isApproved = false;
-                } else if (allowance.lt(BigNumber.from(amountToBridge))) {
+                } else if (allowance.lt(ethers.utils.parseUnits(amountToBridge))) {
                     // reset approval to zero
                     resetApproval = true;
                 }
