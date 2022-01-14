@@ -1,5 +1,6 @@
 <script>
     import { ethers, BigNumber } from "ethers";
+    import { depositERC20, depositETH, initiateWithdrawal } from "@nahmii/sdk";
     import { onMount, onDestroy } from "svelte";
     import { goto } from "$app/navigation";
     import { toast } from "@zerodevx/svelte-toast";
@@ -34,9 +35,6 @@
         getERC20Balance,
         getAllowance,
         approveAllowance,
-        depositETH,
-        depositERC20,
-        withdraw,
     } from "../../utils/ethereum";
     import { storeTransaction } from "../../utils/storage";
     import logoETH from "./eth.png";
@@ -157,7 +155,7 @@
                     l1Token.address,
                     provider
                 );
-
+                
                 if (allowance.eq(BigNumber.from(MAX_APPROVAL_AMOUNT))) {
                     // allow deposit
                     isApproved = true;
@@ -165,7 +163,7 @@
                 } else if (allowance.eq(BigNumber.from(ZERO))) {
                     // set unlimited approval
                     isApproved = false;
-                } else if (allowance.lt(BigNumber.from(amountToBridge))) {
+                } else if (allowance.lt(ethers.utils.parseUnits(amountToBridge))) {
                     // reset approval to zero
                     resetApproval = true;
                 }
@@ -313,11 +311,12 @@
                 l2Token.decimals
             );
 
-            const tx = await withdraw(
+            const tx = await initiateWithdrawal(
                 l2Token.address,
-                provider.getSigner(0),
-                requestedAmountToBridge
-            );
+                requestedAmountToBridge,
+                provider,
+                provider.getSigner(0)
+            )
 
             const receipt = await tx.wait(1);
 
@@ -348,10 +347,14 @@
             if (selectedToken == "ETH") {
                 const standardBridge = (await findSupportedNetwork(chainId))
                     .standardBridge;
+
+                const requestedAmountToBridge = ethers.utils.parseUnits(amountToBridge);
+
                 const tx = await depositETH(
                     standardBridge,
-                    provider.getSigner(0),
-                    amountToBridge
+                    requestedAmountToBridge,
+                    provider,
+                    provider.getSigner(0)
                 );
                 console.log(`tx:}`, tx);
                 // Indicate a deposit is in progress.
@@ -396,8 +399,9 @@
                     l1Token.address,
                     l2Token.address,
                     tokenBridge,
-                    provider.getSigner(0),
-                    requestedAmountToBridge
+                    requestedAmountToBridge,
+                    provider,
+                    provider.getSigner(0)
                 );
                 console.log(`tx:}`, tx);
                 // Indicate a deposit is in progress.
