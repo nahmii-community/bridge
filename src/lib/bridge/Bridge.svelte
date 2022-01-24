@@ -5,6 +5,7 @@
     import { goto } from "$app/navigation";
     import { toast } from "@zerodevx/svelte-toast";
     import {
+        DEPOSIT_ETH_GAS_LIMIT,
         MAX_APPROVAL_AMOUNT,
         NVM_ETH,
         WARNING_L2_ETH_BALANCE,
@@ -349,6 +350,10 @@
                     .standardBridge;
 
                 const requestedAmountToBridge = ethers.utils.parseUnits(amountToBridge);
+                const gasPrice = await provider.getGasPrice();
+                const baseGasCost = gasPrice.mul(BigNumber.from(DEPOSIT_ETH_GAS_LIMIT));
+                // TODO subtract base gas cost from requested amount.
+                // TODO test whether base gas cost is enough, adjust where necessary.
 
                 const tx = await depositETH(
                     standardBridge,
@@ -434,6 +439,11 @@
         }
     };
 
+    const getGasPrices = async () => {
+        console.log(await provider.getGasPrice());
+        console.log(await provider.getFeeData());
+    }
+
     const truncateBalance = (amount) => {
         if (!amount) {
             return "0";
@@ -518,6 +528,8 @@
             token={selectedToken}
             logo={selectedTokenLogo}
         />
+        <Button on:click={getGasPrices}>GET GAS PRICES</Button>
+
         {#if resetApproval}
             <Button on:click={doResetApproval} {disabled}>RESET APPROVAL</Button
             >
