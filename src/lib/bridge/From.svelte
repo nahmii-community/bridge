@@ -124,6 +124,18 @@
         background-color: var(--text-color-inverse);
     }
 
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0.2em;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
     ::placeholder {
         color: var(--text-color-light-grey);
         opacity: 1;
