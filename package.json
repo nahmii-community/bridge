@@ -31,7 +31,7 @@
     "preview": "svelte-kit preview"
   },
   "devDependencies": {
-    "@nahmii/sdk": "^0.0.2",
+    "@nahmii/sdk": "^0.0.3",
     "@sveltejs/adapter-static": "^1.0.0-next.20",
     "@sveltejs/kit": "next",
     "@zerodevx/svelte-toast": "^0.6.1",
