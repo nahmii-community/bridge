@@ -47,16 +47,6 @@
         margin: 0.5em 0;
     }
 
-    input {
-        border: 0;
-        display: block;
-        text-align: right;
-        font-size: 20px;
-        width: 100%;
-        height: 100%;
-        background-color: var(--text-color-inverse);
-    }
-
     ::placeholder {
         color: var(--text-color-light-grey);
         opacity: 1;
