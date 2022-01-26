@@ -514,7 +514,6 @@
         <To
             network={companionNetwork}
             balance={truncateBalance(companionBalance)}
-            balanceAfter={amountToBridge}
             token={selectedToken}
             logo={selectedTokenLogo}
         />
