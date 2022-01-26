@@ -4,7 +4,6 @@
     export let network = "Unsupported";
     export let token = "ETH";
     export let balance = "0";
-    export let balanceAfter = "0";
     export let logo;
 </script>
 
@@ -20,7 +19,6 @@
     </div>
     <div class="right">
         <p>Balance: {numeral(balance).format("0,0.00")} {token}</p>
-        <input disabled type="number" value={balanceAfter} />
     </div>
 </div>
 
@@ -47,16 +45,6 @@
     p {
         color: var(--text-color-medium-grey);
         margin: 0.5em 0;
-    }
-
-    input {
-        border: 0;
-        display: block;
-        text-align: right;
-        font-size: 20px;
-        width: 100%;
-        height: 100%;
-        background-color: var(--text-color-inverse);
     }
 
     ::placeholder {
