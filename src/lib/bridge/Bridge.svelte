@@ -39,6 +39,7 @@
     } from "../../utils/ethereum";
     import { storeTransaction } from "../../utils/storage";
     import logoETH from "./eth.png";
+import { base } from "$app/paths";
 
     let connected = false;
     let disabled = true;
@@ -350,10 +351,24 @@
                     .standardBridge;
 
                 const requestedAmountToBridge = ethers.utils.parseUnits(amountToBridge);
-                const gasPrice = await provider.getGasPrice();
+
+                const {gasPrice, maxFeePerGas, maxPriorityFeePerGas} = await provider.getFeeData();
+                const maxFee = maxFeePerGas.mul(BigNumber.from(DEPOSIT_ETH_GAS_LIMIT));
                 const baseGasCost = gasPrice.mul(BigNumber.from(DEPOSIT_ETH_GAS_LIMIT));
-                // TODO subtract base gas cost from requested amount.
-                // TODO test whether base gas cost is enough, adjust where necessary.
+                const basePlusPriority = baseGasCost.add(maxPriorityFeePerGas);
+
+                if (requestedAmountToBridge.sub(maxFee).lt(0)) {
+                    console.log("Balance might be too low!");
+                    if (requestedAmountToBridge.sub(basePlusPriority).gt(0)) {
+                        console.log("Gas cost can be covered.");
+                        // Subtract base gas cost plus priority fee from requested amount to bridge.
+                        requestedAmountToBridge = requestedAmountToBridge.sub(basePlusPriority);
+                    } else {
+                        console.log("Gas cost cannot be covered.");
+                        // Warn user/block deposit
+                        return;
+                    }
+                }
 
                 const tx = await depositETH(
                     standardBridge,
@@ -440,8 +455,31 @@
     };
 
     const getGasPrices = async () => {
-        console.log(await provider.getGasPrice());
-        console.log(await provider.getFeeData());
+        let requestedAmountToBridge = BigNumber.from("89395674950750000");                
+        const {gasPrice, maxFeePerGas, maxPriorityFeePerGas} = await provider.getFeeData();
+        const maxFee = maxFeePerGas.mul(BigNumber.from(DEPOSIT_ETH_GAS_LIMIT));
+        const baseGasCost = gasPrice.mul(BigNumber.from(DEPOSIT_ETH_GAS_LIMIT));
+        const basePlusPriority = baseGasCost.add(maxPriorityFeePerGas);
+        let finalRequestedAmountToBridge;
+        console.log(maxFee.toString());
+        console.log(baseGasCost.toString());
+        console.log(basePlusPriority.toString());
+
+        console.log(requestedAmountToBridge.toString());
+        if (requestedAmountToBridge.sub(maxFee).lt(0)) {
+            console.log("Balance might be too low!");
+            if (requestedAmountToBridge.sub(basePlusPriority).gt(0)) {
+                console.log("Gas cost can be covered.");
+                // Subtract base gas cost from requested amount to bridge
+                requestedAmountToBridge = requestedAmountToBridge.sub(basePlusPriority);
+            } else {
+                console.log("Gas cost cannot be covered.");
+                // Warn user/block deposit
+                return;
+            }
+        }
+        console.log(requestedAmountToBridge.toString());
+
     }
 
     const truncateBalance = (amount) => {
