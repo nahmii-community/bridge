@@ -82,17 +82,15 @@
     </div>
     <div class="right">
         <p>Balance: {numeral(balance).format("0,0.00")} {token} <Button text="MAX" height="24px" on:click={setMaxValue}></Button></p>
-        <div class="token-details">
-            <input
-                type="number"
-                placeholder="Amount"
-                pattern="^[0-9]*[.]?[0-9]*$"
-                value={amount}
-                min="0"
-                max={balance}
-                on:input={onChange}
-            />
-        </div>
+        <input
+            type="number"
+            placeholder="Amount"
+            pattern="^[0-9]*[.]?[0-9]*$"
+            value={amount}
+            min="0"
+            max={balance}
+            on:input={onChange}
+        />
     </div>
 </div>
 
