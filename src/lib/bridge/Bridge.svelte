@@ -358,17 +358,14 @@
                 const requestedAmountPlusMaxFee = requestedAmountToBridge.add(maxFee);
 
                 if (userETHBalance.sub(requestedAmountPlusMaxFee).lt(0)) {
-                    console.log("Balance might be too low!");
                     // Define a safe minimum fee to subtract from the requested amount to bridge if
-                    // a user has a relatively low balance versus what they want to deposit.
+                    // a user has a relatively low remaining balance versus what they want to deposit and the gas cost.
                     // Due to constantly changing network conditions, keep a small safe margin.
                     const basePlusPriority = gasPrice.add(maxPriorityFeePerGas).mul(BigNumber.from(DEPOSIT_ETH_GAS_LIMIT));
-                    // Gas fee inclusive
+                    // Make the gas fee inclusive.
                     requestedAmountToBridge = requestedAmountToBridge.sub(basePlusPriority);
                     const requestedAmountPlusFee = requestedAmountToBridge.add(basePlusPriority);
-                    if (userETHBalance.sub(requestedAmountPlusFee).gte(0)) {
-                        console.log("Gas cost can be covered.");
-                    } else {
+                    if (userETHBalance.sub(requestedAmountPlusFee).lt(0)) {
                         console.log("Gas cost cannot be covered.");
                         // Warn user/block deposit
                         return;
