@@ -75,6 +75,7 @@
     $: deposit = L2 === false ? true : false;
 
     const selectToken = () => {
+        amountToBridge = "0";
         isSelectingToken = true;
     };
 
@@ -231,6 +232,7 @@
             blockExplorer = networkDetails.blockExplorerUrls[0];
             await wallet.subscribe(async (accounts) => {
                 address = accounts[0];
+                amountToBridge = "0";
             });
             await getSelectedToken({ detail: { symbol: selectedToken } });
         }

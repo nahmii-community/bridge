@@ -1,5 +1,5 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import numeral from "numeral";
     numeral.localeData().delimiters.thousands = " ";
     import dropdown from "./dropdown.png";
@@ -12,7 +12,12 @@
     export let logo;
     export let address;
     export let decimals;
+    let priorBalance = 0;
     let amount = 0;
+
+    $: if (balance != priorBalance) {
+        amount = 0;
+    }
 
     const dispatch = createEventDispatcher();
 
@@ -54,6 +59,10 @@
             amountToBridge: amount,
         });
     }
+
+    onMount(async () => {
+        priorBalance = balance;
+    });
 </script>
 
 <div class="container">
