@@ -4,6 +4,7 @@
     numeral.localeData().delimiters.thousands = " ";
     import dropdown from "./dropdown.png";
     import { addAsset } from "../../stores/wallet";
+    import Button from "$lib/shared/Button.svelte";
 
     export let network = "Unsupported";
     export let token = "ETH";
@@ -45,6 +46,13 @@
             amountToBridge: amount,
         });
     };
+
+    const setMaxValue = async () => {
+        amount = balance;
+        dispatch("amountChanged", {
+            amountToBridge: amount,
+        });
+    }
 </script>
 
 <div class="container">
@@ -72,16 +80,18 @@
         {/if}
     </div>
     <div class="right">
-        <p>Balance: {numeral(balance).format("0,0.00")} {token}</p>
-        <input
-            type="number"
-            placeholder="Amount"
-            pattern="^[0-9]*[.]?[0-9]*$"
-            value={amount}
-            min="0"
-            max={balance}
-            on:input={onChange}
-        />
+        <p>Balance: {numeral(balance).format("0,0.00")} {token} <Button text="MAX" height="24px" on:click={setMaxValue}></Button></p>
+        <div class="token-details">
+            <input
+                type="number"
+                placeholder="Amount"
+                pattern="^[0-9]*[.]?[0-9]*$"
+                value={amount}
+                min="0"
+                max={balance}
+                on:input={onChange}
+            />
+        </div>
     </div>
 </div>
 
