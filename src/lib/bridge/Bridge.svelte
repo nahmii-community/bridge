@@ -92,6 +92,7 @@
         resetApproval = false;
         tokenBridge;
         l1Token;
+        amountToBridge = "0";
         // TODO update bridge address, balances and token symbol
         if (selectedToken == "ETH") {
             selectedTokenLogo = logoETH;

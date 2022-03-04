@@ -21,6 +21,7 @@
     };
 
     function selectTokenModal() {
+        amount = 0;
         dispatch("selectToken");
     }
 
