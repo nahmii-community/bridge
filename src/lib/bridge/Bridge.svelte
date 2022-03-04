@@ -459,37 +459,6 @@
         }
     };
 
-    const getGasPrices = async () => {
-        let requestedAmountToBridge = BigNumber.from("824000004620000");                
-        const {gasPrice, maxFeePerGas, maxPriorityFeePerGas} = await provider.getFeeData();
-        const maxFee = maxFeePerGas.mul(BigNumber.from(DEPOSIT_ETH_GAS_LIMIT));
-        const baseGasCost = gasPrice.mul(BigNumber.from(DEPOSIT_ETH_GAS_LIMIT));
-        const basePlusPriority = baseGasCost.add(maxPriorityFeePerGas);
-        const userETHBalance = ethers.utils.parseEther(balance);
-        console.log("balance: ", userETHBalance.toString())
-        console.log(maxFee.toString());
-        console.log(baseGasCost.toString());
-        console.log(basePlusPriority.toString());
-
-        console.log(requestedAmountToBridge.toString());
-        if (requestedAmountToBridge.sub(maxFee).lt(0)) {
-            console.log("Balance might be too low!");
-            console.log("MaxFee remained:", requestedAmountToBridge.sub(maxFee).toString())
-            console.log("Base+Prio remained:", requestedAmountToBridge.sub(basePlusPriority).toString())
-            if (requestedAmountToBridge.sub(basePlusPriority).gt(0)) {
-                console.log("Gas cost can be covered.");
-                // Subtract base gas cost from requested amount to bridge
-                requestedAmountToBridge = requestedAmountToBridge.sub(basePlusPriority);
-            } else {
-                console.log("Gas cost cannot be covered.");
-                // Warn user/block deposit
-                return;
-            }
-        }
-        console.log(requestedAmountToBridge.toString());
-
-    }
-
     const truncateBalance = (amount) => {
         if (!amount) {
             return "0";
@@ -574,7 +543,6 @@
             token={selectedToken}
             logo={selectedTokenLogo}
         />
-        <Button on:click={getGasPrices}>GET GAS PRICES</Button>
 
         {#if resetApproval}
             <Button on:click={doResetApproval} {disabled}>RESET APPROVAL</Button
