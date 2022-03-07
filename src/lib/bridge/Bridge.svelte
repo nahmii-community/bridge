@@ -62,7 +62,7 @@
     let unsubscribeWallet;
 
     let allowance = 0;
-    let amountToBridge = "0";
+    let amountToBridge = ZERO;
     let tokenBridge;
     let l1Token;
     let blockExplorer;
@@ -75,7 +75,7 @@
     $: deposit = L2 === false ? true : false;
 
     const selectToken = () => {
-        amountToBridge = "0";
+        amountToBridge = ZERO;
         isSelectingToken = true;
     };
 
@@ -93,7 +93,7 @@
         resetApproval = false;
         tokenBridge;
         l1Token;
-        amountToBridge = "0";
+        amountToBridge = ZERO;
         // TODO update bridge address, balances and token symbol
         if (selectedToken == "ETH") {
             selectedTokenLogo = logoETH;
@@ -232,7 +232,7 @@
             blockExplorer = networkDetails.blockExplorerUrls[0];
             await wallet.subscribe(async (accounts) => {
                 address = accounts[0];
-                amountToBridge = "0";
+                amountToBridge = ZERO;
             });
             await getSelectedToken({ detail: { symbol: selectedToken } });
         }
@@ -285,7 +285,7 @@
     const doResetApproval = async () => {
         disabled = true;
         await approve(
-            "0",
+            ZERO,
             `Resetting approval for ${selectedToken} in progress.`,
             `Resetting approval for ${selectedToken} complete.`
         );
@@ -461,7 +461,7 @@
 
     const truncateBalance = (amount) => {
         if (!amount) {
-            return "0";
+            return ZERO;
         }
 
         if (amount.includes(".")) {
