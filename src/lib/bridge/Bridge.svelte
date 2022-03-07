@@ -27,7 +27,6 @@
     import { findSupportedNetwork } from "../../utils/network";
     import {
         getTokens,
-        getTokensForChain,
         getTokenDetails,
         getTokenBridge,
     } from "../../utils/token";
@@ -79,7 +78,7 @@
         isSelectingToken = true;
     };
 
-    const closeSelectToken = (event) => {
+    const closeSelectToken = () => {
         isSelectingToken = false;
     };
 
