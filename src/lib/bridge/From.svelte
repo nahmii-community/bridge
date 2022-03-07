@@ -1,9 +1,10 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import numeral from "numeral";
     numeral.localeData().delimiters.thousands = " ";
     import dropdown from "./dropdown.png";
     import { addAsset } from "../../stores/wallet";
+    import Button from "$lib/shared/Button.svelte";
 
     export let network = "Unsupported";
     export let token = "ETH";
@@ -11,7 +12,12 @@
     export let logo;
     export let address;
     export let decimals;
+    let priorBalance = 0;
     let amount = 0;
+
+    $: if (balance != priorBalance) {
+        amount = 0;
+    }
 
     const dispatch = createEventDispatcher();
 
@@ -20,6 +26,7 @@
     };
 
     function selectTokenModal() {
+        amount = 0;
         dispatch("selectToken");
     }
 
@@ -45,6 +52,17 @@
             amountToBridge: amount,
         });
     };
+
+    const setMaxValue = async () => {
+        amount = balance;
+        dispatch("amountChanged", {
+            amountToBridge: amount,
+        });
+    }
+
+    onMount(async () => {
+        priorBalance = balance;
+    });
 </script>
 
 <div class="container">
@@ -72,7 +90,7 @@
         {/if}
     </div>
     <div class="right">
-        <p>Balance: {numeral(balance).format("0,0.00")} {token}</p>
+        <p>Balance: {numeral(balance).format("0,0.00")} {token} <Button text="MAX" height="24px" on:click={setMaxValue}></Button></p>
         <input
             type="number"
             placeholder="Amount"

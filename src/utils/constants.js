@@ -1,3 +1,5 @@
+export const DEPOSIT_ETH_GAS_LIMIT = "330000";
+export const DEPOSIT_ERC20_GAS_LIMIT = "375000";
 export const L1L2_NETWORKS = {
     mainnet: ["0x1", "0x15af"],
     testnet: ["0x3", "0x15b1"]

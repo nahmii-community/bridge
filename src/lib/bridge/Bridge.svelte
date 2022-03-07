@@ -5,6 +5,7 @@
     import { goto } from "$app/navigation";
     import { toast } from "@zerodevx/svelte-toast";
     import {
+        DEPOSIT_ETH_GAS_LIMIT,
         MAX_APPROVAL_AMOUNT,
         NVM_ETH,
         WARNING_L2_ETH_BALANCE,
@@ -26,7 +27,6 @@
     import { findSupportedNetwork } from "../../utils/network";
     import {
         getTokens,
-        getTokensForChain,
         getTokenDetails,
         getTokenBridge,
     } from "../../utils/token";
@@ -61,7 +61,7 @@
     let unsubscribeWallet;
 
     let allowance = 0;
-    let amountToBridge = "0";
+    let amountToBridge = ZERO;
     let tokenBridge;
     let l1Token;
     let blockExplorer;
@@ -74,10 +74,11 @@
     $: deposit = L2 === false ? true : false;
 
     const selectToken = () => {
+        amountToBridge = ZERO;
         isSelectingToken = true;
     };
 
-    const closeSelectToken = (event) => {
+    const closeSelectToken = () => {
         isSelectingToken = false;
     };
 
@@ -91,6 +92,7 @@
         resetApproval = false;
         tokenBridge;
         l1Token;
+        amountToBridge = ZERO;
         // TODO update bridge address, balances and token symbol
         if (selectedToken == "ETH") {
             selectedTokenLogo = logoETH;
@@ -229,6 +231,7 @@
             blockExplorer = networkDetails.blockExplorerUrls[0];
             await wallet.subscribe(async (accounts) => {
                 address = accounts[0];
+                amountToBridge = ZERO;
             });
             await getSelectedToken({ detail: { symbol: selectedToken } });
         }
@@ -281,7 +284,7 @@
     const doResetApproval = async () => {
         disabled = true;
         await approve(
-            "0",
+            ZERO,
             `Resetting approval for ${selectedToken} in progress.`,
             `Resetting approval for ${selectedToken} complete.`
         );
@@ -348,7 +351,28 @@
                 const standardBridge = (await findSupportedNetwork(chainId))
                     .standardBridge;
 
-                const requestedAmountToBridge = ethers.utils.parseUnits(amountToBridge);
+                let requestedAmountToBridge = ethers.utils.parseUnits(amountToBridge);
+
+                const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData();
+                // This is the maximum possible fee for the current network conditions.
+                const maxFee = maxFeePerGas.mul(BigNumber.from(DEPOSIT_ETH_GAS_LIMIT));
+                const userETHBalance = ethers.utils.parseEther(balance);
+                const requestedAmountPlusMaxFee = requestedAmountToBridge.add(maxFee);
+
+                if (userETHBalance.sub(requestedAmountPlusMaxFee).lt(0)) {
+                    // Define a safe minimum fee to subtract from the requested amount to bridge if
+                    // a user has a relatively low remaining balance versus what they want to deposit and the gas cost.
+                    // Due to constantly changing network conditions, keep a small safe margin.
+                    const basePlusPriority = gasPrice.add(maxPriorityFeePerGas).mul(BigNumber.from(DEPOSIT_ETH_GAS_LIMIT));
+                    // Make the gas fee inclusive.
+                    requestedAmountToBridge = requestedAmountToBridge.sub(basePlusPriority);
+                    const requestedAmountPlusFee = requestedAmountToBridge.add(basePlusPriority);
+                    if (userETHBalance.sub(requestedAmountPlusFee).lt(0)) {
+                        console.log("Gas cost cannot be covered.");
+                        // Warn user/block deposit
+                        return;
+                    }
+                }
 
                 const tx = await depositETH(
                     standardBridge,
@@ -436,7 +460,7 @@
 
     const truncateBalance = (amount) => {
         if (!amount) {
-            return "0";
+            return ZERO;
         }
 
         if (amount.includes(".")) {
@@ -517,6 +541,7 @@
             token={selectedToken}
             logo={selectedTokenLogo}
         />
+
         {#if resetApproval}
             <Button on:click={doResetApproval} {disabled}>RESET APPROVAL</Button
             >
