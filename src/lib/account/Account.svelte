@@ -131,7 +131,7 @@
                 return true;
             }
         });
-        // TODO: Trigger UI update on localstorage change.
+        await populateData();
     }
 
     const claimFunds = async (event) => {
