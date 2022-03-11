@@ -9,11 +9,14 @@
     import GradientTitle from "$lib/shared/GradientTitle.svelte";
     import { mode } from "$lib/../stores/darkmode";
     import { wallet, network, isConnected, switchNetwork } from "$lib/../stores/wallet";
-    import { getTransactions, updateTransaction } from "$lib/../utils/storage";
+    import { getTransactions, storeTransaction, updateTransaction } from "$lib/../utils/storage";
     import { findCompanionNetwork, findSupportedNetwork, getFraudProofWindow } from "$lib/../utils/network";
     import SmallArrowLeft from "./small-arrow-left.png";
     import SmallArrowLeftDark from "./small-arrow-left-dark.png";
     import Modal from "$lib/shared/Modal.svelte";
+    import Button from "$lib/shared/Button.svelte";
+    import { getTokenDetailsByAddress, getTokens } from "../../utils/token";
+    import { NVM_ETH } from "../../utils/constants";
 
     let connected = false;
     let blocked = false;
@@ -98,6 +101,39 @@
         cleanup();
     });
 
+    const getWithdrawals = async () => {
+        const storedTransactions = getTransactions(chainId, address[0]);
+        const nahmiiExplorerURL = (await findCompanionNetwork(chainId)).blockExplorerUrls[0];
+        const response = await fetch(`${nahmiiExplorerURL}/api?module=account&action=txlist&address=0x4200000000000000000000000000000000000010&page=0&offset=1000&filterby="to"`);
+        const transactions = await response.json();
+        const filteredTransactions = transactions.result.filter(tx => tx.from == address[0]);
+        // Diff for missing withdrawals, store missing ones.
+        const missingWithdrawals = filteredTransactions.filter(async tx => {
+            const hash = storedTransactions.withdrawals.find(element => element.hash == tx.hash);
+            if (hash) {
+                return false;
+            } else {
+                const tokenAddress = `0x${tx.input.substr(34, 40)}`;
+                let ticker;
+                if (tokenAddress == address[0]) {
+                    // Failed withdrawal
+                    storeTransaction(chainId, address[0], "-", { hash: tx.hash, timestamp: parseInt(tx.timeStamp) }, "failed", "withdrawals");
+                } else if (tokenAddress == NVM_ETH) {
+                    ticker = "ETH";
+                    storeTransaction(chainId, address[0], ticker, { hash: tx.hash, timestamp: parseInt(tx.timeStamp) }, "in progress", "withdrawals");
+                } else {
+                    // Find token ticker
+                    const L2ChainId = (await findCompanionNetwork(chainId)).chainId;
+                    const tokenDetails = getTokenDetailsByAddress(tokenAddress, L2ChainId, getTokens());
+                    ticker = tokenDetails.symbol;
+                    storeTransaction(chainId, address[0], ticker, { hash: tx.hash, timestamp: parseInt(tx.timeStamp) }, "in progress", "withdrawals");
+                }
+                return true;
+            }
+        });
+        // TODO: Trigger UI update on localstorage change.
+    }
+
     const claimFunds = async (event) => {
         const { hash, timestamp, token } = event.detail.transaction;
         blocked = true;
@@ -173,6 +209,8 @@
                 transactions={deposits}
                 transactionType="deposits"
             />
+
+            <Button on:click={getWithdrawals}>Test</Button>
         {:else}
             <p class="center">Please connect a wallet.</p>
         {/if}
