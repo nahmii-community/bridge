@@ -58,6 +58,36 @@ export const getTokenDetails = (selectedToken, chainId, tokenList) => {
     }
 }
 
+export const getTokenDetailsByAddress = (tokenAddress, chainId, tokenList) => {
+    const filter = {
+        address: tokenAddress.toLowerCase(),
+        chainId: parseInt(chainId, 16),
+    };
+
+    const result = tokenList.filter(token => {
+        if (token.chainId != filter.chainId) {
+            return false;
+        }
+        if (token.address.toLowerCase() != filter.address) {
+            return false;
+        }
+        return true;
+    });
+
+    if (result) {
+        const { name, symbol, logoURI, address, decimals } = result[0];
+        return {
+            name,
+            symbol,
+            logoURI,
+            address,
+            decimals
+        };
+    } else {
+        return false;
+    }
+}
+
 export const getTokensForChain = (chainId, tokenList) => {
     const filter = {
         chainId: parseInt(chainId, 16),
