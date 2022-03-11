@@ -202,6 +202,7 @@
                 transactionType="withdrawals"
                 {fraudProofWindow}
             />
+            <Button on:click={getWithdrawals} height="40px" margin="0 30%">Find withdrawals</Button>
 
             <p>Recent Deposits</p>
             <TransactionTable
@@ -209,8 +210,6 @@
                 transactions={deposits}
                 transactionType="deposits"
             />
-
-            <Button on:click={getWithdrawals}>Test</Button>
         {:else}
             <p class="center">Please connect a wallet.</p>
         {/if}
