@@ -108,27 +108,25 @@
         const transactions = await response.json();
         const filteredTransactions = transactions.result.filter(tx => tx.from == address[0]);
         // Diff for missing withdrawals, store missing ones.
-        const missingWithdrawals = filteredTransactions.filter(async tx => {
+        filteredTransactions.forEach(async tx => {
             const hash = storedTransactions.withdrawals.find(element => element.hash == tx.hash);
             if (hash) {
-                return false;
+                return;
+            }
+            const tokenAddress = `0x${tx.input.substr(34, 40)}`;
+            let ticker;
+            if (tokenAddress == address[0]) {
+                // Failed withdrawal
+                storeTransaction(chainId, address[0], "-", { hash: tx.hash, timestamp: parseInt(tx.timeStamp) }, "failed", "withdrawals");
+            } else if (tokenAddress == NVM_ETH) {
+                ticker = "ETH";
+                storeTransaction(chainId, address[0], ticker, { hash: tx.hash, timestamp: parseInt(tx.timeStamp) }, "in progress", "withdrawals");
             } else {
-                const tokenAddress = `0x${tx.input.substr(34, 40)}`;
-                let ticker;
-                if (tokenAddress == address[0]) {
-                    // Failed withdrawal
-                    storeTransaction(chainId, address[0], "-", { hash: tx.hash, timestamp: parseInt(tx.timeStamp) }, "failed", "withdrawals");
-                } else if (tokenAddress == NVM_ETH) {
-                    ticker = "ETH";
-                    storeTransaction(chainId, address[0], ticker, { hash: tx.hash, timestamp: parseInt(tx.timeStamp) }, "in progress", "withdrawals");
-                } else {
-                    // Find token ticker
-                    const L2ChainId = (await findCompanionNetwork(chainId)).chainId;
-                    const tokenDetails = getTokenDetailsByAddress(tokenAddress, L2ChainId, getTokens());
-                    ticker = tokenDetails.symbol;
-                    storeTransaction(chainId, address[0], ticker, { hash: tx.hash, timestamp: parseInt(tx.timeStamp) }, "in progress", "withdrawals");
-                }
-                return true;
+                // Find token ticker
+                const L2ChainId = (await findCompanionNetwork(chainId)).chainId;
+                const tokenDetails = getTokenDetailsByAddress(tokenAddress, L2ChainId, getTokens());
+                ticker = tokenDetails.symbol;
+                storeTransaction(chainId, address[0], ticker, { hash: tx.hash, timestamp: parseInt(tx.timeStamp) }, "in progress", "withdrawals");
             }
         });
         await populateData();
