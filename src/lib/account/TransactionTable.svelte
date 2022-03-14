@@ -65,6 +65,8 @@
 <style>
     .container {
         margin-bottom: 1.5em;
+        max-height: 200px;
+        overflow: auto;
     }
 
     .container:last-of-type {
@@ -77,8 +79,11 @@
     }
 
     th {
-        text-align: left;
+        background-color: white;
         padding: 0.5em 0;
+        position: sticky;
+        text-align: left;
+        top: 0;
     }
 
     tr {
@@ -88,6 +93,18 @@
     td {
         font-size: 0.8em;
         padding: 0.5em 0.1em 0.5em 0;
+    }
+
+    @media (min-height: 960px) {
+        .container {
+            max-height: 250px;
+        }
+    }
+
+    @media (min-height: 1200px) {
+        .container {
+            max-height: 350px;
+        }
     }
 
     @media (min-width: 28em) {
