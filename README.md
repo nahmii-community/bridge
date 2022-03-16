@@ -25,11 +25,12 @@ npm run build
 
 ## Deploying
 
-To deploy this app to Github pages:
+The app is hosted through AWS. New commits on the main branch will trigger a rebuild of the container images in our ECR repository. (See the [workflow](https://github.com/nahmii-community/bridge/blob/bf4c0b5736be77e34e7d7ee0c41b76fa3b4c7d25/.github/workflows/aws-ecr.yaml) file for more details)
 
-```bash
-npm run deploy
-```
+To update the live running bridge instance:
+- Retrieve the commit hash of the bridge build you want to use.
+- Update the `newTag` of the `kustomization.yaml` to the commit hash you want to use in the [Nahmii/GitOps](https://github.com/nahmii/gitops) repository.
+- Create a new pull request with your changes. The updated tag should be picked up automatically.
 
 ## Contributing
 
