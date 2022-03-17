@@ -36,6 +36,7 @@
     "@sveltejs/kit": "next",
     "@zerodevx/svelte-toast": "^0.6.1",
     "eslint": "^8.11.0",
+    "eslint-plugin-svelte3": "^3.4.1",
     "ethers": "^5.4.7",
     "gh-pages": "^3.2.3",
     "lockr": "^0.9.0-beta.0",
