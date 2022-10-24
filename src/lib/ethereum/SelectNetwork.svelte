@@ -29,7 +29,7 @@
         <div class="spacer" />
         <Button on:click={() => onNetworkClick("0x15af")}>Nahmii Mainnet</Button>
         <div class="spacer" />
-        <Button on:click={() => onNetworkClick("0x3")}>Ropsten Testnet</Button>
+        <Button on:click={() => onNetworkClick("0x5")}>Goerli Testnet</Button>
         <div class="spacer" />
         <Button on:click={() => onNetworkClick("0x15b1")}>Nahmii Testnet</Button>
     </div>

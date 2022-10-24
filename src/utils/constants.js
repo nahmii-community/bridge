@@ -28,7 +28,7 @@ export const SUPPORTED_NETWORKS = [
         isSupported: true,
         L2: false,
         rpcUrls: ["https://goerli.infura.io/v3/c3085639e2374fa6b9614bd1c5e0e50d"],
-        blockExplorerUrls: ["https://ropsten.etherscan.io"],
+        blockExplorerUrls: ["https://goerli.etherscan.io/"],
         companionChainId: "0x15b1",
         standardBridge: "0x044F4B5189fbA20A0D1bf939672509Ae8e7C8F42",
         crossDomainMessenger: "0xC340EFD49Cb4d9054e62Ceeda98722138b5b5790",
@@ -49,7 +49,7 @@ export const SUPPORTED_NETWORKS = [
         chainName: "Nahmii Testnet",
         isSupported: true,
         L2: true,
-        companionChainId: "0x3",
+        companionChainId: "0x5",
         rpcUrls: ["https://l2.testnet.nahmii.io"],
         blockExplorerUrls: ["https://explorer.testnet.nahmii.io"],
         fraudProofWindow: 360
