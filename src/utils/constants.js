@@ -2,7 +2,7 @@ export const DEPOSIT_ETH_GAS_LIMIT = "330000";
 export const DEPOSIT_ERC20_GAS_LIMIT = "375000";
 export const L1L2_NETWORKS = {
     mainnet: ["0x1", "0x15af"],
-    testnet: ["0x3", "0x15b1"]
+    testnet: ["0x5", "0x15b1"]
 };
 export const MAX_APPROVAL_AMOUNT = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"; // Unlimited approval
 export const NVM_ETH = "0x4200000000000000000000000000000000000006";
@@ -23,15 +23,15 @@ export const SUPPORTED_NETWORKS = [
         fraudProofWindow: 604800
     },
     {
-        chainId: "0x3",
-        chainName: "Ropsten Testnet",
+        chainId: "0x5",
+        chainName: "Goerli Testnet",
         isSupported: true,
         L2: false,
-        rpcUrls: ["https://ropsten.infura.io/v3/f36942ff00514b7fb154a652fa510972"],
-        blockExplorerUrls: ["https://ropsten.etherscan.io"],
+        rpcUrls: ["https://goerli.infura.io/v3/c3085639e2374fa6b9614bd1c5e0e50d"],
+        blockExplorerUrls: ["https://goerli.etherscan.io/"],
         companionChainId: "0x15b1",
-        standardBridge: "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc",
-        crossDomainMessenger: "0x5401Ba2f9123f4019be76fca1D0B765Fd00138De",
+        standardBridge: "0x044F4B5189fbA20A0D1bf939672509Ae8e7C8F42",
+        crossDomainMessenger: "0xC340EFD49Cb4d9054e62Ceeda98722138b5b5790",
         fraudProofWindow: 360
     },
     {
@@ -49,7 +49,7 @@ export const SUPPORTED_NETWORKS = [
         chainName: "Nahmii Testnet",
         isSupported: true,
         L2: true,
-        companionChainId: "0x3",
+        companionChainId: "0x5",
         rpcUrls: ["https://l2.testnet.nahmii.io"],
         blockExplorerUrls: ["https://explorer.testnet.nahmii.io"],
         fraudProofWindow: 360
