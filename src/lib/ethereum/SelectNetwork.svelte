@@ -32,6 +32,10 @@
         <Button on:click={() => onNetworkClick("0x5")}>Goerli Testnet</Button>
         <div class="spacer" />
         <Button on:click={() => onNetworkClick("0x15b1")}>Nahmii Testnet</Button>
+        <div class="spacer" />
+        <Button on:click={() => onNetworkClick("0x7A69")}>Local L1</Button>
+        <div class="spacer" />
+        <Button on:click={() => onNetworkClick("0x22B")}>Local L2</Button>
     </div>
 </Modal>
 

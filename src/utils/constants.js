@@ -2,7 +2,8 @@ export const DEPOSIT_ETH_GAS_LIMIT = "330000";
 export const DEPOSIT_ERC20_GAS_LIMIT = "375000";
 export const L1L2_NETWORKS = {
     mainnet: ["0x1", "0x15af"],
-    testnet: ["0x5", "0x15b1"]
+    testnet: ["0x5", "0x15b1"],
+    local: ["0x7A69", "0x22B"]
 };
 export const MAX_APPROVAL_AMOUNT = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"; // Unlimited approval
 export const NVM_ETH = "0x4200000000000000000000000000000000000006";
@@ -53,5 +54,27 @@ export const SUPPORTED_NETWORKS = [
         rpcUrls: ["https://l2.testnet.nahmii.io"],
         blockExplorerUrls: ["https://explorer.testnet.nahmii.io"],
         fraudProofWindow: 360
+    },
+    {
+        chainId: "0x7a69",
+        chainName: "Local L1",
+        isSupported: true,
+        L2: false,
+        companionChainId: "0x22b",
+        rpcUrls: ["http://172.18.0.2/hardhat"],
+        standardBridge: "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d",
+        crossDomainMessenger: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+        blockExplorerUrls: [""],
+        fraudProofWindow: 10
+    },
+    {
+        chainId: "0x22b",
+        chainName: "Local L2",
+        isSupported: true,
+        L2: true,
+        companionChainId: "0x7a69",
+        rpcUrls: ["http://172.18.0.2/l2-ngeth"],
+        blockExplorerUrls: [""],
+        fraudProofWindow: 10
     }
 ]
