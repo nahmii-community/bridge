@@ -9,67 +9,89 @@
     "timestamp": "2021-09-27T14:56:31.029+00:00",
     "tokens": [
         {
-            "chainId": 3,
-            "address": "0x11ca3411f42a7f6c8ca3a1ef5f8045893ff0bba5",
+            "chainId": 5,
+            "address": "0x2c0a523d57ba29A08Ee237e44B119C276fb178Fb",
             "name": "Nahmii USD",
             "symbol": "NUSD",
             "decimals": 6,
             "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
             "extensions": {
-                "nahmiiBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
+                "nahmiiBridgeAddress": "0x2ba3c5e36d886b3731c996e1a3cfe3e2bf4e79a2"
             }
         },
         {
-            "chainId": 5553,
-            "address": "0xab151cD390C6b0eB41A4a45E1E372972C3067b1a",
+            "chainId": 5554,
+            "address": "0x7Af72aD5E8793023DC722d617fe3338ac6b5ccE9",
             "name": "Nahmii USD",
             "symbol": "NUSD",
             "decimals": 6,
-            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "logoURI": "https://raw.githubusercontent.com/NiiFi/tokenIcons/dev/0xab151cD390C6b0eB41A4a45E1E372972C3067b1a/logo.png",
             "extensions": {
-                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+              "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
             }
         },
         {
-            "chainId": 3,
-            "address": "0x01D8755f8ea44d90F8f2d6458153853c84abbf32",
+            "chainId": 5,
+            "address": "0x5E0E1f48Ec5AD1936bf1c58B26a56338b1B84f16",
             "name": "Nahmii EURO",
             "symbol": "NEURO",
             "decimals": 6,
             "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
             "extensions": {
-                "nahmiiBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
+                "nahmiiBridgeAddress": "0x2ba3c5e36d886b3731c996e1a3cfe3e2bf4e79a2"
             }
         },
         {
-            "chainId": 5553,
-            "address": "0xB59C984a529490fde6698702342b292840743bb8",
+            "chainId": 5554,
+            "address": "0x190b2aA820495c0e92840E8FA699741976cd6439",
             "name": "Nahmii EURO",
             "symbol": "NEURO",
             "decimals": 6,
-            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "logoURI": "https://raw.githubusercontent.com/NiiFi/tokenIcons/dev/0xB59C984a529490fde6698702342b292840743bb8/logo.png",
             "extensions": {
-                "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+              "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
             }
         },
         {
-            "chainId": 3,
-            "address": "0xA2CD104095E6e5569A32B567C8e4D2DB99445D5e",
+            "chainId": 5,
+            "address": "0x265926FaC9DCb71fc4add536A38eeA96290c6816",
             "name": "KniightCoin",
             "symbol": "KNII",
             "decimals": 18,
             "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
             "extensions": {
-                "nahmiiBridgeAddress": "0x21De2607E90edb1736bc460a4cd58c0FCd74ABcc"
+                "nahmiiBridgeAddress": "0x2ba3c5e36d886b3731c996e1a3cfe3e2bf4e79a2"
             }
         },
         {
-            "chainId": 5553,
-            "address": "0xB68553758df8c253746d3cED96aA1De896F09470",
+            "chainId": 5554,
+            "address": "0xE2B21D4684b2bA62F3BE1FE286eacb90D26E394d",
             "name": "KniightCoin",
             "symbol": "KNII",
             "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/NiiFi/tokenIcons/dev/0xB68553758df8c253746d3cED96aA1De896F09470/logo.png",
+            "extensions": {
+              "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5,
+            "address": "0x95ab0fb7f2005EfF3A7c0Bc8b09Dc38Ecd236990",
+            "name": "Troll",
+            "symbol": "TRL",
+            "decimals": 18,
             "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2ba3c5e36d886b3731c996e1a3cfe3e2bf4e79a2"
+            }
+        },
+        {
+            "chainId": 5554,
+            "address": "0xE4F27b04cC7729901876B44f4EAA5102EC150265",
+            "name": "Troll",
+            "symbol": "TRL",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/NiiFi/tokenIcons/dev/0xB68553758df8c253746d3cED96aA1De896F09470/logo.png",
             "extensions": {
                 "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
             }
