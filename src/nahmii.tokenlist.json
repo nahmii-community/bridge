@@ -87,6 +87,28 @@
         },
         {
             "chainId": 5554,
+            "address": "0x514832A97F0b440567055A73fe03AA160017b990",
+            "name": "Nahmii",
+            "symbol": "NII",
+            "decimals": 15,
+            "logoURI": "https://raw.githubusercontent.com/NiiFi/tokenIcons/dev/0xB68553758df8c253746d3cED96aA1De896F09470/logo.png",
+            "extensions": {
+              "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
+            }
+        },
+        {
+            "chainId": 5,
+            "address": "0xa07FBffdCbeA840C0C0696c1559526271da6956C",
+            "name": "Nahmii",
+            "symbol": "NII",
+            "decimals": 15,
+            "logoURI": "https://raw.githubusercontent.com/hubiinetwork/marketing-external/master/img/nahmii/nahmii-token-2020-transparent-384x384.png",
+            "extensions": {
+                "nahmiiBridgeAddress": "0x2ba3c5e36d886b3731c996e1a3cfe3e2bf4e79a2"
+            }
+        },
+        {
+            "chainId": 5554,
             "address": "0xE4F27b04cC7729901876B44f4EAA5102EC150265",
             "name": "Troll",
             "symbol": "TRL",
