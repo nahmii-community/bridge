@@ -337,7 +337,29 @@
             "extensions": {
                 "nahmiiBridgeAddress": "0x4200000000000000000000000000000000000010"
             }
-        }
+        },
+        {
+            "chainId": 4064,
+            "address": "0xf12834163448d64F75F157A2e911b9999b333757",
+            "name": "Nahmii",
+            "symbol": "NII",
+            "decimals": 15,
+            "logoURI": "https://raw.githubusercontent.com/NiiFi/tokenIcons/dev/0xab151cD390C6b0eB41A4a45E1E372972C3067b1a/logo.png",
+            "extensions": {
+              "nahmiiBridgeAddress": "0xaC4A5C1818f2060aD111fEab6f137d79006172f1"
+            }
+          },
+          {
+            "chainId": 4064,
+            "address": "0xde70cf1735737C4AA79272e3d10d93523dE4e5Ad",
+            "name": "Nahmii USD",
+            "symbol": "NUSD",
+            "decimals": 6,
+            "logoURI": "https://raw.githubusercontent.com/NiiFi/tokenIcons/dev/0xab151cD390C6b0eB41A4a45E1E372972C3067b1a/logo.png",
+            "extensions": {
+              "nahmiiBridgeAddress": "0xaC4A5C1818f2060aD111fEab6f137d79006172f1"
+            }
+          }
     ],
     "version": {
         "major": 1,
